@@ -1,0 +1,24 @@
+{
+  "study_area": "Shenzhen core / Futian small bbox",
+  "bbox_wgs84": {
+    "west": 114.03,
+    "south": 22.5,
+    "east": 114.08,
+    "north": 22.55
+  },
+  "aligned_crs": "EPSG:32650",
+  "sources": {
+    "dem": {
+      "name": "Copernicus DEM GLO-30",
+      "url": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N22_00_E114_00_DEM/Copernicus_DSM_COG_10_N22_00_E114_00_DEM.tif"
+    },
+    "worldcover": {
+      "name": "ESA WorldCover 2021 v200",
+      "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N21E114_Map.tif"
+    },
+    "osm": {
+      "name": "OpenStreetMap drive network",
+      "tool": "OSMnx / Overpass API"
+    }
+  }
+}

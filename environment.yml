@@ -1,0 +1,10 @@
+name: flood-route-mvp
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.11
+  - networkx
+  - matplotlib
+  - numpy
+  - pandas

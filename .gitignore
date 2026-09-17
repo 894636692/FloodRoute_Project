@@ -1,31 +1,9 @@
-# Python environments and caches
-.venv/
-venv/
-env/
+.codex_tmp/
 __pycache__/
 *.py[cod]
-.ipynb_checkpoints/
 .pytest_cache/
-
-# Credentials and local settings
-.env
-.env.*
-!.env.example
-*.pem
-*.key
+.mypy_cache/
+.ruff_cache/
 .vscode/
-.idea/
-
-# Data and generated outputs: keep directory placeholders only
-/data/**
-!/data/**/
-!/data/**/.gitkeep
-/outputs/**
-!/outputs/**/
-!/outputs/**/.gitkeep
-/work/**
-!/work/.gitkeep
-
-# OS files
-Thumbs.db
-.DS_Store
+*.part
+.repo_remote/

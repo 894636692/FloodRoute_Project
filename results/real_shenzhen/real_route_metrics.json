@@ -1,0 +1,42 @@
+{
+  "start_osmid": 8071647082,
+  "goal_osmid": 3084586845,
+  "start_lonlat": [
+    114.032,
+    22.526
+  ],
+  "goal_lonlat": [
+    114.078,
+    22.526
+  ],
+  "note": "OSM/DEM/WorldCover are real. Rainfall/water scenario is simulated until observations are connected.",
+  "metrics": {
+    "shortest": {
+      "length_m": 4983.8,
+      "nodes": 41,
+      "observed_risk_mean": 0.7676,
+      "true_risk_mean": 0.8402,
+      "true_risk_max": 0.9633,
+      "trusted_risk_mean": 0.9434,
+      "high_true_risk_nodes": 38
+    },
+    "risk": {
+      "length_m": 5123.9,
+      "nodes": 51,
+      "observed_risk_mean": 0.705,
+      "true_risk_mean": 0.7736,
+      "true_risk_max": 0.9344,
+      "trusted_risk_mean": 0.8765,
+      "high_true_risk_nodes": 34
+    },
+    "trusted": {
+      "length_m": 5123.6,
+      "nodes": 51,
+      "observed_risk_mean": 0.7069,
+      "true_risk_mean": 0.7756,
+      "true_risk_max": 0.9344,
+      "trusted_risk_mean": 0.8765,
+      "high_true_risk_nodes": 34
+    }
+  }
+}
