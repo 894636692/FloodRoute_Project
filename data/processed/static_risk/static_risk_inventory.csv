@@ -1,0 +1,9 @@
+﻿name,path,type,count_or_size,note
+dem_clip,D:\LaotuZhBi\laotu-data\data\processed\static_risk\dem_clip.tif,Raster,1542641,研究区 DEM 裁剪
+worldcover_clip_30m,D:\LaotuZhBi\laotu-data\data\processed\static_risk\worldcover_clip_30m.tif,Raster,58328,WorldCover 重采样到 DEM 30m 网格
+slope_degrees,D:\LaotuZhBi\laotu-data\data\processed\static_risk\slope_degrees.tif,Raster,1316372,由 DEM 生成的坡度
+risk_elevation,D:\LaotuZhBi\laotu-data\data\processed\static_risk\risk_elevation.tif,Raster,1150062,低高程风险，0-1
+risk_slope,D:\LaotuZhBi\laotu-data\data\processed\static_risk\risk_slope.tif,Raster,1088694,低坡度风险，0-1
+risk_landcover,D:\LaotuZhBi\laotu-data\data\processed\static_risk\risk_landcover.tif,Raster,77069,土地覆盖风险，0-1
+static_risk,D:\LaotuZhBi\laotu-data\data\processed\static_risk\static_risk.tif,Raster,1212685,"静态综合风险，mean=0.7034, min=0.0600, max=1.0000"
+roads_static_risk,D:\LaotuZhBi\laotu-data\data\processed\static_risk\roads_static_risk.geojson,LineString GeoJSON,30100,每条道路含 risk_mean/risk_max/risk_p90

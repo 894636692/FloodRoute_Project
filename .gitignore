@@ -1,0 +1,24 @@
+# Local software and installer/cache artifacts
+software/
+*.log
+*.log.full
+
+# Python/runtime caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# QGIS temporary sidecars and local metadata
+*.qgz~
+*.qgs~
+*.gpkg-shm
+*.gpkg-wal
+*.aux.xml
+.DS_Store
+Thumbs.db
+
+# Downloaded web pages include login markup and public example appKey strings.
+# Keep structured API documents, but do not publish raw portal HTML snapshots.
+docs/*.html

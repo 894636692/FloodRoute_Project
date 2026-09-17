@@ -1,0 +1,88 @@
+[
+  {
+    "scenario": "observed_20260917_1200",
+    "dynamic_raster": "D:\\LaotuZhBi\\laotu-data\\data\\processed\\dynamic_risk\\dynamic_risk_observed_20260917_1200.tif",
+    "dynamic_roads": "D:\\LaotuZhBi\\laotu-data\\data\\processed\\dynamic_risk\\routing\\roads_dynamic_risk_observed_20260917_1200.geojson",
+    "routes": "D:\\LaotuZhBi\\laotu-data\\data\\processed\\dynamic_risk\\routing\\routes_dynamic_observed_20260917_1200.geojson",
+    "source_segments": 203823,
+    "graph_nodes": 183878,
+    "requested_start": [
+      113.9,
+      22.52
+    ],
+    "requested_end": [
+      114.05,
+      22.59
+    ],
+    "snapped_start": [
+      113.9000359,
+      22.519986
+    ],
+    "snapped_end": [
+      114.0501046,
+      22.5899207
+    ],
+    "shortest_route": {
+      "distance_m": 23246.77,
+      "distance_km": 23.247,
+      "mean_dynamic_risk": 0.787,
+      "max_dynamic_risk": 0.9108,
+      "edge_count": 685,
+      "high_risk_edges_over_0_8": 323,
+      "path_cost": 23246.77
+    },
+    "dynamic_risk_route": {
+      "distance_m": 26919.75,
+      "distance_km": 26.92,
+      "mean_dynamic_risk": 0.3288,
+      "max_dynamic_risk": 0.9231,
+      "edge_count": 1670,
+      "high_risk_edges_over_0_8": 162,
+      "path_cost": 160278.14
+    },
+    "route_changed": true
+  },
+  {
+    "scenario": "stress_30mm_stress_30mm_per_h",
+    "dynamic_raster": "D:\\LaotuZhBi\\laotu-data\\data\\processed\\dynamic_risk\\dynamic_risk_stress_30mm_stress_30mm_per_h.tif",
+    "dynamic_roads": "D:\\LaotuZhBi\\laotu-data\\data\\processed\\dynamic_risk\\routing\\roads_dynamic_risk_stress_30mm_stress_30mm_per_h.geojson",
+    "routes": "D:\\LaotuZhBi\\laotu-data\\data\\processed\\dynamic_risk\\routing\\routes_dynamic_stress_30mm_stress_30mm_per_h.geojson",
+    "source_segments": 203823,
+    "graph_nodes": 183878,
+    "requested_start": [
+      113.9,
+      22.52
+    ],
+    "requested_end": [
+      114.05,
+      22.59
+    ],
+    "snapped_start": [
+      113.9000359,
+      22.519986
+    ],
+    "snapped_end": [
+      114.0501046,
+      22.5899207
+    ],
+    "shortest_route": {
+      "distance_m": 23246.77,
+      "distance_km": 23.247,
+      "mean_dynamic_risk": 0.9878,
+      "max_dynamic_risk": 1.0,
+      "edge_count": 685,
+      "high_risk_edges_over_0_8": 685,
+      "path_cost": 23246.77
+    },
+    "dynamic_risk_route": {
+      "distance_m": 26761.2,
+      "distance_km": 26.761,
+      "mean_dynamic_risk": 0.4188,
+      "max_dynamic_risk": 1.0,
+      "edge_count": 1642,
+      "high_risk_edges_over_0_8": 457,
+      "path_cost": 200353.2
+    },
+    "route_changed": true
+  }
+]

@@ -1,0 +1,14 @@
+﻿dataset,path,feature_or_row_count,format,note
+OSM道路,D:\LaotuZhBi\laotu-data\data\processed\osm\roads.geojson,30100,LineString GeoJSON,可直接拖入 QGIS
+气象格网范围,D:\LaotuZhBi\laotu-data\data\processed\shenzhen_open_data\weather_grid_info_polygons.geojson,50,Polygon GeoJSON,预览样例 50 条
+气象格网中心点,D:\LaotuZhBi\laotu-data\data\processed\shenzhen_open_data\weather_grid_info_centroids.geojson,50,Point GeoJSON,预览样例 50 条
+气象实况格点观测,D:\LaotuZhBi\laotu-data\data\processed\shenzhen_open_data\weather_grid_observation_centroids.geojson,4,Point GeoJSON,按 GRIDID 关联到格网中心点
+气象实况格点观测,D:\LaotuZhBi\laotu-data\data\processed\shenzhen_open_data\weather_grid_observation_polygons.geojson,4,Polygon GeoJSON,按 GRIDID 关联到格网面
+气象实况格点观测表,D:\LaotuZhBi\laotu-data\data\processed\shenzhen_open_data\weather_grid_preview.csv,50,CSV,QGIS 可作为表格打开
+Open-Meteo当前天气,D:\LaotuZhBi\laotu-data\data\processed\shenzhen_open_data\open_meteo_current_point.geojson,1,Point GeoJSON,深圳中心点
+Open-Meteo逐小时降雨,D:\LaotuZhBi\laotu-data\data\processed\shenzhen_open_data\open_meteo_hourly_precip_points.geojson,72,Point GeoJSON,同一中心点多时刻记录
+Open-Meteo逐小时降雨表,D:\LaotuZhBi\laotu-data\data\processed\shenzhen_open_data\open_meteo_hourly_precip.csv,72,CSV,QGIS 可作为表格打开
+水务测站基本信息表,D:\LaotuZhBi\laotu-data\data\processed\shenzhen_open_data\station_basic_preview.csv,50,CSV,公开数据不含经纬度，先作为表格打开
+积涝点水位预览表,D:\LaotuZhBi\laotu-data\data\processed\shenzhen_open_data\waterlogging_level_preview.csv,50,CSV,公开数据不含经纬度，先作为表格打开
+正式API错误返回,D:\LaotuZhBi\laotu-data\data\processed\shenzhen_open_data\waterlogging_level_29200_01403147_page1_rows100_2026-09-17_ERROR_NOT_DATA.txt,1,TXT,不是地图数据
+正式API错误返回,D:\LaotuZhBi\laotu-data\data\processed\shenzhen_open_data\weather_grid_29200_00903509_page1_rows100_2026-09-17_ERROR_NOT_DATA.txt,1,TXT,不是地图数据
