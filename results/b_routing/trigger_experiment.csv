@@ -1,0 +1,6 @@
+﻿delay_min,distance_m,mean_risk,max_risk,confidence,triggered,trigger_reason,route_change,replan_count,route_change_count
+0,6625.98,0.9318,1.0,0.1201,True,no_current_route,True,1,1
+15,6625.98,0.9318,1.0,0.1201,False,within_min_replan_interval,False,1,1
+30,6625.98,0.9318,1.0,0.1201,False,within_min_replan_interval,False,1,1
+60,6625.98,0.9318,1.0,0.1201,False,within_min_replan_interval,False,1,1
+120,6625.98,0.9318,1.0,0.1201,False,within_min_replan_interval,False,1,1

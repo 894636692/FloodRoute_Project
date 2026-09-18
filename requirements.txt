@@ -2,3 +2,9 @@ networkx
 matplotlib
 numpy
 pandas
+geopandas
+osmnx
+rasterio
+shapely
+pyproj
+pyogrio

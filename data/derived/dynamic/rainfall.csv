@@ -1,0 +1,3 @@
+﻿station_id,timestamp,lon,lat,rain_mm,source,retrieved_at,quality_flag
+rain_center,2026-09-17T15:30:00+08:00,114.055,22.545,42.0,fixture,2026-09-17T15:31:00+08:00,good
+rain_west,2026-09-17T15:30:00+08:00,114.035,22.526,18.0,fixture,2026-09-17T15:31:00+08:00,good
