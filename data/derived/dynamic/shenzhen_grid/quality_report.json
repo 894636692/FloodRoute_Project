@@ -1,0 +1,46 @@
+{
+  "processed_at": "2026-09-18T14:58:20.222735+08:00",
+  "record_count": 100000,
+  "grid_count": 4232,
+  "timestamp_start": "2026-09-17T20:50:00+08:00",
+  "timestamp_end": "2026-09-18T00:40:00+08:00",
+  "rain_min_mm": 0.0,
+  "rain_max_mm": 0.0,
+  "rain_missing_count": 0,
+  "rain_negative_count": 0,
+  "missing_coordinate_rows": 0,
+  "invalid_time_rows": 0,
+  "duplicate_grid_timestamp_rows": 0,
+  "quality_flag_counts": {
+    "interpolated_observation_grid": 100000,
+    "time_definition_user_confirmed": 100000,
+    "retrieved_at_unknown": 100000
+  },
+  "raw_fields_readback_verified": true,
+  "raw_rows_removed": 0,
+  "time_definition_provenance": "user_confirmation",
+  "coordinate_crs": "EPSG:4326",
+  "coordinate_role": "grid_center_not_station",
+  "standard_interface_status": "candidate_requires_integration_review",
+  "blockers": [
+    "retrieved_at_unknown",
+    "B_grid_mapping_and_quality_flag_handling_not_validated"
+  ],
+  "interim_path": "data/interim/dynamic/shenzhen_rainfall_20260918T145820222735+0800/rainfall_interim.csv",
+  "output_path": "data/derived/dynamic/shenzhen_grid/rainfall.csv",
+  "grid_path": "data/derived/dynamic/shenzhen_grid/grid_cells.csv",
+  "inputs": {
+    "data": {
+      "path": "data/raw/dynamic/rainfall/shenzhen_grid_20260918T142832315164+0800/深圳范围自动站实况格点数据表_2920000903509.csv",
+      "sha256": "21f6ae170a34b8c4c2e5e8ac018209fbd988969dd913186f5fdbf104bd4c6d71"
+    },
+    "grids": {
+      "path": "data/raw/dynamic/rainfall/shenzhen_grid_20260918T142832315164+0800/深圳范围自动站实况格点信息表_2920000903510.csv",
+      "sha256": "6d53455a9c65757e553e34a3937a02a1e680d0a642405c41b697f0d6f79eae16"
+    },
+    "metadata": {
+      "path": "docs/shenzhen_rainfall_metadata.json",
+      "sha256": "02a742105efb7c6ce63b06a12e750255dcd106c827c8a4a2cc9361426cbf97a6"
+    }
+  }
+}

@@ -1,0 +1,344 @@
+{
+  "data_rows": 100000,
+  "data_columns": [
+    "气压（百帕）",
+    "极大风向（度）",
+    "入库时间",
+    "风速（米/秒）",
+    "风向（度）",
+    "24小时累计降雨量（毫米）",
+    "能见度（公里）",
+    "Tracer1小时累计降雨量预报",
+    "3小时累计降雨量（毫米）",
+    "1小时累计降雨量（毫米）",
+    "预报时间",
+    "温度（摄氏度）",
+    "预报时效（小时）",
+    "格网ID",
+    "日最高温度（摄氏度）",
+    "记录编号",
+    "预报级别",
+    "发布时间",
+    "2小时累计降雨量（毫米）",
+    "入库序号",
+    "相对湿度（百分比）",
+    "6小时累计降雨量（毫米）",
+    "极大风速（米/秒）"
+  ],
+  "grid_rows": 4232,
+  "grid_columns": [
+    "格网左下角经度（度）",
+    "格网右上角纬度（度）",
+    "格网相对Y坐标",
+    "格网相对X坐标",
+    "格网ID（唯一）",
+    "格网左下角纬度（度）",
+    "格网右上角经度（度）",
+    "格网编码"
+  ],
+  "data_missing_by_column": {
+    "气压（百帕）": 0,
+    "极大风向（度）": 0,
+    "入库时间": 0,
+    "风速（米/秒）": 0,
+    "风向（度）": 0,
+    "24小时累计降雨量（毫米）": 0,
+    "能见度（公里）": 0,
+    "Tracer1小时累计降雨量预报": 0,
+    "3小时累计降雨量（毫米）": 0,
+    "1小时累计降雨量（毫米）": 0,
+    "预报时间": 0,
+    "温度（摄氏度）": 0,
+    "预报时效（小时）": 0,
+    "格网ID": 0,
+    "日最高温度（摄氏度）": 0,
+    "记录编号": 0,
+    "预报级别": 0,
+    "发布时间": 0,
+    "2小时累计降雨量（毫米）": 0,
+    "入库序号": 0,
+    "相对湿度（百分比）": 0,
+    "6小时累计降雨量（毫米）": 0,
+    "极大风速（米/秒）": 0
+  },
+  "grid_missing_by_column": {
+    "格网左下角经度（度）": 0,
+    "格网右上角纬度（度）": 0,
+    "格网相对Y坐标": 0,
+    "格网相对X坐标": 0,
+    "格网ID（唯一）": 0,
+    "格网左下角纬度（度）": 0,
+    "格网右上角经度（度）": 0,
+    "格网编码": 0
+  },
+  "grid_unique_ids": 4232,
+  "grid_duplicate_id_rows": 0,
+  "data_unique_grid_ids": 4232,
+  "matched_data_rows": 100000,
+  "unmatched_data_rows": 0,
+  "unmatched_grid_id_examples": [],
+  "safe_many_to_one_join": true,
+  "invalid_grid_bounds_count": 0,
+  "raw_coordinate_envelope": {
+    "west": 113.7333,
+    "east": 114.6533,
+    "south": 22.4,
+    "north": 22.86
+  },
+  "coordinate_crs": "coordinate_crs_unknown",
+  "spatial_type": "interpolated_observation_grid",
+  "source_times": {
+    "预报时间": {
+      "min_without_timezone": "2026-09-17 20:50:00",
+      "max_without_timezone": "2026-09-18 00:40:00",
+      "unique_count": 24,
+      "invalid_or_missing": 0
+    },
+    "发布时间": {
+      "min_without_timezone": "2026-09-17 20:50:00",
+      "max_without_timezone": "2026-09-18 00:40:00",
+      "unique_count": 24,
+      "invalid_or_missing": 0
+    },
+    "入库时间": {
+      "min_without_timezone": "2026-09-17 20:53:03",
+      "max_without_timezone": "2026-09-18 00:48:44",
+      "unique_count": 95,
+      "invalid_or_missing": 0
+    }
+  },
+  "forecast_lead_counts": {
+    "0": 100000
+  },
+  "forecast_level_counts": {
+    "0": 100000
+  },
+  "issue_and_forecast_time_equal_rows": 100000,
+  "adjacent_source_time_gap_minutes_counts": {
+    "10.0": 23
+  },
+  "per_source_time_coverage": [
+    {
+      "source_time_without_timezone": "2026-09-17 20:50:00",
+      "rows": 2664,
+      "unique_grid_count": 2664
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 21:00:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 21:10:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 21:20:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 21:30:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 21:40:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 21:50:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 22:00:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 22:10:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 22:20:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 22:30:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 22:40:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 22:50:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 23:00:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 23:10:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 23:20:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 23:30:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 23:40:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-17 23:50:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-18 00:00:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-18 00:10:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-18 00:20:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-18 00:30:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    },
+    {
+      "source_time_without_timezone": "2026-09-18 00:40:00",
+      "rows": 4232,
+      "unique_grid_count": 4232
+    }
+  ],
+  "time_slices_with_fewer_grids_than_registry": 1,
+  "duplicate_grid_source_time_groups": 0,
+  "duplicate_grid_source_time_affected_rows": 0,
+  "duplicate_record_id_rows": 0,
+  "rainfall_columns": {
+    "1小时累计降雨量（毫米）": {
+      "interval_min_from_column_label": 60,
+      "finite_count": 100000,
+      "missing_or_nonfinite_count": 0,
+      "negative_count": 0,
+      "zero_count": 100000,
+      "positive_count": 0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "2小时累计降雨量（毫米）": {
+      "interval_min_from_column_label": 120,
+      "finite_count": 100000,
+      "missing_or_nonfinite_count": 0,
+      "negative_count": 0,
+      "zero_count": 100000,
+      "positive_count": 0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "3小时累计降雨量（毫米）": {
+      "interval_min_from_column_label": 180,
+      "finite_count": 100000,
+      "missing_or_nonfinite_count": 0,
+      "negative_count": 0,
+      "zero_count": 100000,
+      "positive_count": 0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "6小时累计降雨量（毫米）": {
+      "interval_min_from_column_label": 360,
+      "finite_count": 100000,
+      "missing_or_nonfinite_count": 0,
+      "negative_count": 0,
+      "zero_count": 100000,
+      "positive_count": 0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "24小时累计降雨量（毫米）": {
+      "interval_min_from_column_label": 1440,
+      "finite_count": 100000,
+      "missing_or_nonfinite_count": 0,
+      "negative_count": 0,
+      "zero_count": 96689,
+      "positive_count": 3311,
+      "min": 0.0,
+      "max": 0.3
+    },
+    "Tracer1小时累计降雨量预报": {
+      "interval_min_from_column_label": null,
+      "finite_count": 100000,
+      "missing_or_nonfinite_count": 0,
+      "negative_count": 100000,
+      "zero_count": 0,
+      "positive_count": 0,
+      "min": -1.0,
+      "max": -1.0
+    }
+  },
+  "raw_rows_removed": 0,
+  "standard_interface_status": "blocked",
+  "processing_stage": "sample_inspected",
+  "blockers": [
+    "coordinate_crs_unknown",
+    "timezone_unknown",
+    "observation_time_field_unconfirmed",
+    "retrieved_at_unknown"
+  ],
+  "cautions": [
+    "grid_is_not_station",
+    "sample_is_not_complete_requested_history",
+    "rainfall_window_anchor_unconfirmed",
+    "tracer_forecast_is_not_observed_rainfall",
+    "zero_rainfall_sample_does_not_validate_heavy_rain_use"
+  ],
+  "checked_at": "2026-09-18T14:28:32.315164+08:00",
+  "files": {
+    "data": {
+      "provided_path": "C:\\Users\\Gao\\Downloads\\深圳范围自动站实况格点数据表20260918022309147543\\深圳范围自动站实况格点数据表_2920000903509.csv",
+      "raw_path": "data/raw/dynamic/rainfall/shenzhen_grid_20260918T142832315164+0800/深圳范围自动站实况格点数据表_2920000903509.csv",
+      "bytes": 31217386,
+      "sha256": "21f6ae170a34b8c4c2e5e8ac018209fbd988969dd913186f5fdbf104bd4c6d71"
+    },
+    "grids": {
+      "provided_path": "C:\\Users\\Gao\\Downloads\\深圳范围自动站实况格点信息表20260918022338444244\\深圳范围自动站实况格点信息表_2920000903510.csv",
+      "raw_path": "data/raw/dynamic/rainfall/shenzhen_grid_20260918T142832315164+0800/深圳范围自动站实况格点信息表_2920000903510.csv",
+      "bytes": 202868,
+      "sha256": "6d53455a9c65757e553e34a3937a02a1e680d0a642405c41b697f0d6f79eae16"
+    }
+  },
+  "receipt_path": "data/raw/dynamic/rainfall/shenzhen_grid_20260918T142832315164+0800/archive_receipt.json",
+  "official_urls": {
+    "data": "https://opendata.sz.gov.cn/data/dataSet/toDataDetails/29200_00903509",
+    "grids": "https://opendata.sz.gov.cn/data/dataSet/toDataDetails/29200_00903510"
+  }
+}

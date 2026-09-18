@@ -1,0 +1,18 @@
+{
+  "dataset": "29200/00903509",
+  "grid_dataset": "29200/00903510",
+  "crs": "EPSG:4326",
+  "crs_evidence": "data/raw/dynamic/rainfall/metadata_20260918T143826500292+0800/evidence.json",
+  "rainfall_fields_evidence": "data/raw/dynamic/rainfall/field_metadata_20260918T144602174894+0800/evidence.json",
+  "timezone": "Asia/Shanghai",
+  "timestamp_field": "预报时间",
+  "timestamp_source_code": "FORECASTTIME",
+  "window_direction": "preceding",
+  "time_definition_provenance": "user_confirmation",
+  "user_confirmation": ["北京时间，前一小时累计量，剩下同理", "预报时间 FORECASTTIME"],
+  "official_time_definition_independently_verified": false,
+  "source_spatial_type": "interpolated_observation_grid",
+  "point_representation": "arithmetic_midpoint_of_WGS84_grid_bounds_not_physical_station",
+  "retrieved_at": null,
+  "scope": "Shenzhen weather grid only; no inference for water-level or NOAA sources"
+}

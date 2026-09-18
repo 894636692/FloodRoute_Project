@@ -1,0 +1,19 @@
+{
+  "rainfall_original_rows_recovered": 7465,
+  "rainfall_interim_rows": 8877,
+  "raw_columns_preserved": 40,
+  "raw_and_receipt_hashes_unchanged": true,
+  "derived_fixture_checks": {
+    "data/derived/dynamic/water_level.csv": {
+      "matches_HEAD": true,
+      "source": "fixture",
+      "rows": 2
+    },
+    "data/derived/dynamic/rainfall.csv": {
+      "matches_HEAD": true,
+      "source": "fixture",
+      "rows": 2
+    }
+  },
+  "quality_report_path": "data/interim/dynamic/rainfall_noaa_20260918T140132318183+0800/quality_report.json"
+}

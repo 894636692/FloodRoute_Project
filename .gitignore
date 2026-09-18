@@ -7,3 +7,19 @@ __pycache__/
 .vscode/
 *.part
 .repo_remote/
+
+# Local Python environments and credentials
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Dynamic raw/intermediate data stay local; track directory placeholders
+/data/raw/dynamic/**
+!/data/raw/dynamic/**/
+!/data/raw/dynamic/**/.gitkeep
+/data/interim/dynamic/**
+!/data/interim/dynamic/**/
+!/data/interim/dynamic/**/.gitkeep

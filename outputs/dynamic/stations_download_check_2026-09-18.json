@@ -1,0 +1,72 @@
+{
+  "checked_at": "2026-09-18T11:54:23+08:00",
+  "raw_path": "D:\\codex\\FloodRoute_Project\\data\\raw\\dynamic\\stations\\市水务局测站基本信息表20260918114804559062.zip",
+  "sha256": "1be415cd3acaac32946a368660bb42270f5d65e234193e692fb11b9bd46b7bb9",
+  "member_sha256": {
+    "市水务局测站基本信息表_2920001400987.json": "87b26d66fef9ac07817f0a19801b313cb87f31d67016820fbb8514204d779715",
+    "市水务局测站基本信息表_2920001400987.csv": "ffc656a191f751f41871b893af65b1e1d34fd83a8aed541538843b80205e6acb",
+    "市水务局测站基本信息表_2920001400987.xlsx": "795a2ce0ff63ab920acb9b90031b6b595b7dd84e888fc23b9e279d5e49d22004",
+    "市水务局测站基本信息表2920001400987.rdf": "b78092081c31b4b75944f88a3ddbab781b4b764d6ad408c5b6084e9614d28497",
+    "市水务局测站基本信息表_2920001400987.xml": "0b6f624b1cb58a478ff21d4b719612a3b393c7ed5719705bb2a7b6aee1b66bb2"
+  },
+  "csv_fields": [
+    "测站编码",
+    "测站名称",
+    "站类"
+  ],
+  "record_count": 485,
+  "unique_station_ids": 485,
+  "duplicate_id_extra_rows": 0,
+  "exact_duplicate_extra_rows": 0,
+  "missing_by_field": {
+    "测站编码": 0,
+    "测站名称": 0,
+    "站类": 0
+  },
+  "station_type_counts": {
+    "水库水位站": 204,
+    "河道水位站": 133,
+    "内涝水情站": 148
+  },
+  "duplicate_names": {
+    "梅林水库": 2,
+    "石狗公水库": 2
+  },
+  "duplicate_name_affected_rows": 4,
+  "coordinate_fields_present": false,
+  "records_without_coordinates": 485,
+  "coordinate_crs": "coordinate_crs_unknown",
+  "outside_shenzhen_count": null,
+  "spatial_check_note": "No coordinate fields; geographic validity and Shenzhen coverage cannot be checked.",
+  "observation_timestamp_present": false,
+  "source_metadata": {
+    "serviceclass": "惠民服务",
+    "language": "中文",
+    "keyword": "测站",
+    "safetylevel": "无条件开放",
+    "date": "Wed Dec 13 04:35:39 CST 2017",
+    "description": "“市水务局测站基本信息表\"存储了深圳范围测站的基本信息，包含站类、测站名称和测站编码字段。<br></br><b>该项数据与“市水务局水库水位表”（https://opendata.sz.gov.cn/data/dataSet/toDataDetails/29200_01400986）及“市水务局积涝点水位数据”（https://opendata.sz.gov.cn/data/dataSet/toDataDetails/29200_01403147）关联使用。(测站经纬度坐标信息属于保密资料不宜向社会公开)</b>",
+    "maintainer": "深圳市福田区莲花路1098号水源大厦",
+    "publishdate": "2017-12-13",
+    "industryclass": "水利、环境和公共设施管理业",
+    "title": "市水务局测站基本信息表",
+    "provideraddress": "深圳市福田区莲花路1098号水源大厦",
+    "interval": "不定期",
+    "publisher": "深圳政府数据开放平台",
+    "provider": "深圳市水务局",
+    "themeclass": "气象、水文、测绘、地震",
+    "opentype": "无条件开放",
+    "updatedate": "2024-06-27",
+    "resourceid": "29200/01400987"
+  },
+  "json_check": {
+    "strict_valid": false,
+    "error": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)",
+    "diagnostic_only_extra_outer_braces": true,
+    "diagnostic_inner_array_matches_csv": true
+  },
+  "xml_matches_csv_in_order": true,
+  "rdf_matches_csv_by_values": true,
+  "standard_station_interface_status": "blocked",
+  "blocker": "coordinates_missing; coordinate_crs_unknown"
+}
