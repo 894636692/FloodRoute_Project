@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "synthetic_point_on_real_road": true,
+  "note": "Synthetic verification point; no real station locations supplied",
+  "nearest": [
+    {
+      "u": 500023088,
+      "v": 500023095,
+      "key": 0,
+      "distance_m": 2.66309856645e-10
+    }
+  ]
+}

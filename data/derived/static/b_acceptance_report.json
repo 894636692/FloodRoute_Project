@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "graphml_gpkg_edge_ids_equal": true,
+  "provenance_edges_checked": 112218,
+  "actual_multidigraph": true,
+  "parallel_pairs": 1432,
+  "vehicle_component_nodes": 27130,
+  "route_edge_count": 185,
+  "route_distance_m": 23587.0667633836,
+  "snap_distances_m": [
+    47.99012370613365,
+    35.50307504166769
+  ],
+  "official_networkx_version": "3.4.2"
+}

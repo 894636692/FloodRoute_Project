@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"name":"Shenzhen core validation area","version":"1.0.0","test_only":true,"final_area":false,"source":"Migrated from data/processed/static_risk/study_area_bbox.geojson"},"geometry":{"type":"Polygon","coordinates":[[[113.88,22.5],[114.08,22.5],[114.08,22.62],[113.88,22.62],[113.88,22.5]]]}}]}

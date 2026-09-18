@@ -1,0 +1,2 @@
+# GDAL, NumPy and PyQGIS are provided by the installed QGIS LTR runtime.
+networkx==3.4.2

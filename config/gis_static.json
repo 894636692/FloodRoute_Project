@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "study_area": "study_area.geojson",
+  "osm": "data/raw/osm/shenzhen_center_roads_overpass_2026-09-17.json",
+  "dem_glob": "data/raw/dem/Copernicus_DSM_COG_10_N22_00_E*_DEM.tif",
+  "worldcover_glob": "data/raw/worldcover/ESA_WorldCover_10m_2021_v200_*.tif",
+  "output_dir": "data/derived/static",
+  "crs": "EPSG:32650",
+  "resolution_m": 30,
+  "sample_spacing_m": 10,
+  "elevation_percentiles": [2, 98],
+  "flatness_zero_at_deg": 15,
+  "vegetation_classes": [10, 20, 30, 40, 90, 95, 100],
+  "min_edge_coverage": 0.9,
+  "min_valid_edge_fraction": 0.9,
+  "audit_seed": 20260918,
+  "audit_count": 20
+}
