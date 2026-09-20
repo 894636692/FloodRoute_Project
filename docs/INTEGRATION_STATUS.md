@@ -22,3 +22,5 @@ A has separate history: selectively import files, never merge the branch.
 - Baseline runner is `python -m unittest discover -s tests -v`; pytest is not installed or required.
 
 Output is a road flood risk index, not a prediction of physical flood depth.
+
+Phase 1 complete: official A LFS SHA256 verified; 112218 directed edges, 46468 nodes; 36 tests passed. B fixture preserved in tests/fixtures; A schema isolated. Formal data provenance manifest retained. QGIS/osgeo only required to rebuild from original A raw inputs, not to run.

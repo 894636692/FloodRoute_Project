@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0.0",
+  "source_version": "gis-v1.0.0-74b938a1b896d06c",
+  "sources": {
+    "study_area.geojson": {
+      "bytes": 365,
+      "sha256": "73ab665fe97e0585f50a851f6a6420555a90e349d55fe2f8f7a4aa55c94a7519"
+    },
+    "data/raw/osm/shenzhen_center_roads_overpass_2026-09-17.json": {
+      "bytes": 40827355,
+      "sha256": "5f6cfac0d22a3d9a4aff29e5c920021c0be145ccdb30d2fb1f7ff41c507917e8"
+    },
+    "data/raw/dem/Copernicus_DSM_COG_10_N22_00_E113_00_DEM.tif": {
+      "bytes": 36640681,
+      "sha256": "177e4954d90aacdda1595d648410f1b1719529cee50896a429f90d3f1b7118f5"
+    },
+    "data/raw/dem/Copernicus_DSM_COG_10_N22_00_E114_00_DEM.tif": {
+      "bytes": 25030102,
+      "sha256": "accdec7ee77cacb513e01b6e4c921e7ebb36acbf7c2894e09ef4893f4f92fb74"
+    },
+    "data/raw/worldcover/ESA_WorldCover_10m_2021_v200_N21E111_Map.tif": {
+      "bytes": 87692242,
+      "sha256": "adeea611f361fc82058e964a0f936b8ccb51136defcfb43c4ef36037165e7fd4"
+    },
+    "data/raw/worldcover/ESA_WorldCover_10m_2021_v200_N21E114_Map.tif": {
+      "bytes": 53611017,
+      "sha256": "7a67580730d8f8195635f584e7e182e61f4c1b279d71db81e3adb9667812aa3b"
+    }
+  },
+  "config": {
+    "schema_version": "1.0.0",
+    "study_area": "study_area.geojson",
+    "osm": "data/raw/osm/shenzhen_center_roads_overpass_2026-09-17.json",
+    "dem_glob": "data/raw/dem/Copernicus_DSM_COG_10_N22_00_E*_DEM.tif",
+    "worldcover_glob": "data/raw/worldcover/ESA_WorldCover_10m_2021_v200_*.tif",
+    "output_dir": "data/derived/static",
+    "crs": "EPSG:32650",
+    "resolution_m": 30,
+    "sample_spacing_m": 10,
+    "elevation_percentiles": [
+      2,
+      98
+    ],
+    "flatness_zero_at_deg": 15,
+    "vegetation_classes": [
+      10,
+      20,
+      30,
+      40,
+      90,
+      95,
+      100
+    ],
+    "min_edge_coverage": 0.9,
+    "min_valid_edge_fraction": 0.9,
+    "audit_seed": 20260918,
+    "audit_count": 20
+  },
+  "study_area": {
+    "name": "Shenzhen core validation area",
+    "version": "1.0.0",
+    "test_only": true,
+    "final_area": false,
+    "source": "Migrated from data/processed/static_risk/study_area_bbox.geojson"
+  },
+  "software": {
+    "gdal": "3130300",
+    "numpy": "2.4.6",
+    "networkx": "3.4.2"
+  },
+  "normalization": {
+    "elevation_bounds_m": [
+      0.0,
+      254.53144683837857
+    ],
+    "flatness_zero_at_deg": 15
+  },
+  "grids": {
+    "dem": {
+      "transform": [
+        178950.0,
+        30.0,
+        0.0,
+        2504820.0,
+        0.0,
+        -30.0
+      ],
+      "width": 697,
+      "height": 458,
+      "crs": "32650",
+      "nodata": -9999.0
+    },
+    "slope": {
+      "transform": [
+        178950.0,
+        30.0,
+        0.0,
+        2504820.0,
+        0.0,
+        -30.0
+      ],
+      "width": 697,
+      "height": 458,
+      "crs": "32650",
+      "nodata": -9999.0
+    },
+    "worldcover": {
+      "transform": [
+        178950.0,
+        30.0,
+        0.0,
+        2504820.0,
+        0.0,
+        -30.0
+      ],
+      "width": 697,
+      "height": 458,
+      "crs": "32650",
+      "nodata": 0.0
+    }
+  }
+}

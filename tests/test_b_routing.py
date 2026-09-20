@@ -19,7 +19,7 @@ from floodroute.routing.router import RoadNetworkRouter
 from floodroute.routing.service import plan_from_files
 
 
-STATIC_PATH = ROOT / "data" / "derived" / "static" / "road_static_features.gpkg"
+STATIC_PATH = ROOT / "tests" / "fixtures" / "b_static.gpkg"
 RAINFALL_PATH = ROOT / "data" / "derived" / "dynamic" / "rainfall.csv"
 WATER_PATH = ROOT / "data" / "derived" / "dynamic" / "water_level.csv"
 REQUEST_PATH = ROOT / "examples" / "request_trusted.json"
