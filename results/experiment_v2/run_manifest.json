@@ -1,7 +1,7 @@
 {
   "selected_profile": "balanced",
-  "selection_sha256_before_test": "988e35351e38a066d0ed53dec4ad021da8994a3ace0a34dd2de09e6645c6ce27",
-  "selection_sha256_after_test": "988e35351e38a066d0ed53dec4ad021da8994a3ace0a34dd2de09e6645c6ce27",
+  "selection_sha256_before_test": "95411240a776b837262b05d43a6da2346d08b81b229a844138f1b74875f99b69",
+  "selection_sha256_after_test": "95411240a776b837262b05d43a6da2346d08b81b229a844138f1b74875f99b69",
   "test_rows": 4320,
   "test_seeds": [
     6101,
@@ -14,5 +14,6 @@
   ],
   "benchmark_width_m": 700,
   "complete": true,
-  "ground_truth_use": "generation and offline evaluation only"
+  "ground_truth_use": "generation and offline evaluation only",
+  "hash_format": "UTF-8 with LF line endings"
 }

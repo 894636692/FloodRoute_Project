@@ -86,8 +86,7 @@
           "mean_truth_exposure": 0.35729725801823325,
           "replans": 1.0,
           "switches": 1.0,
-          "planner_calls": 2.0,
-          "total_ms": 1195.1692999573424
+          "planner_calls": 2.0
         },
         {
           "seed": 4101,
@@ -95,8 +94,7 @@
           "mean_truth_exposure": 0.30891162527678345,
           "replans": 0.0,
           "switches": 0.0,
-          "planner_calls": 1.0,
-          "total_ms": 1146.2298997794278
+          "planner_calls": 1.0
         },
         {
           "seed": 4102,
@@ -104,8 +102,7 @@
           "mean_truth_exposure": 0.3568352273959395,
           "replans": 1.0,
           "switches": 1.0,
-          "planner_calls": 2.0,
-          "total_ms": 1185.4783999733627
+          "planner_calls": 2.0
         },
         {
           "seed": 4102,
@@ -113,8 +110,7 @@
           "mean_truth_exposure": 0.30881754322523575,
           "replans": 0.0,
           "switches": 0.0,
-          "planner_calls": 1.0,
-          "total_ms": 1118.5082999872975
+          "planner_calls": 1.0
         }
       ],
       "route_evaluations": 48
@@ -130,8 +126,7 @@
           "mean_truth_exposure": 0.35729725801823325,
           "replans": 1.0,
           "switches": 1.0,
-          "planner_calls": 2.0,
-          "total_ms": 1191.3415000890382
+          "planner_calls": 2.0
         },
         {
           "seed": 4101,
@@ -139,8 +134,7 @@
           "mean_truth_exposure": 0.30891162527678345,
           "replans": 0.0,
           "switches": 0.0,
-          "planner_calls": 1.0,
-          "total_ms": 1145.6100000650622
+          "planner_calls": 1.0
         },
         {
           "seed": 4102,
@@ -148,8 +142,7 @@
           "mean_truth_exposure": 0.3568352273959395,
           "replans": 1.0,
           "switches": 1.0,
-          "planner_calls": 2.0,
-          "total_ms": 1131.4424002193846
+          "planner_calls": 2.0
         },
         {
           "seed": 4102,
@@ -157,8 +150,7 @@
           "mean_truth_exposure": 0.30881754322523575,
           "replans": 0.0,
           "switches": 0.0,
-          "planner_calls": 1.0,
-          "total_ms": 1127.706200175453
+          "planner_calls": 1.0
         }
       ],
       "route_evaluations": 48
@@ -174,8 +166,7 @@
           "mean_truth_exposure": 0.35729725801823325,
           "replans": 1.0,
           "switches": 1.0,
-          "planner_calls": 2.0,
-          "total_ms": 1166.2570999469608
+          "planner_calls": 2.0
         },
         {
           "seed": 4101,
@@ -183,8 +174,7 @@
           "mean_truth_exposure": 0.30891162527678345,
           "replans": 0.0,
           "switches": 0.0,
-          "planner_calls": 1.0,
-          "total_ms": 1187.1749999700114
+          "planner_calls": 1.0
         },
         {
           "seed": 4102,
@@ -192,8 +182,7 @@
           "mean_truth_exposure": 0.3568352273959395,
           "replans": 1.0,
           "switches": 1.0,
-          "planner_calls": 2.0,
-          "total_ms": 1159.0811999049038
+          "planner_calls": 2.0
         },
         {
           "seed": 4102,
@@ -201,8 +190,7 @@
           "mean_truth_exposure": 0.30881754322523575,
           "replans": 0.0,
           "switches": 0.0,
-          "planner_calls": 1.0,
-          "total_ms": 1167.8624000633135
+          "planner_calls": 1.0
         }
       ],
       "route_evaluations": 48
@@ -218,8 +206,7 @@
           "mean_truth_exposure": 0.35729725801823325,
           "replans": 1.0,
           "switches": 1.0,
-          "planner_calls": 2.0,
-          "total_ms": 1178.9107001386583
+          "planner_calls": 2.0
         },
         {
           "seed": 4101,
@@ -227,8 +214,7 @@
           "mean_truth_exposure": 0.30891162527678345,
           "replans": 0.0,
           "switches": 0.0,
-          "planner_calls": 1.0,
-          "total_ms": 1155.6691998848692
+          "planner_calls": 1.0
         },
         {
           "seed": 4102,
@@ -236,8 +222,7 @@
           "mean_truth_exposure": 0.3568352273959395,
           "replans": 1.0,
           "switches": 1.0,
-          "planner_calls": 2.0,
-          "total_ms": 1150.4616999882273
+          "planner_calls": 2.0
         },
         {
           "seed": 4102,
@@ -245,8 +230,7 @@
           "mean_truth_exposure": 0.30881754322523575,
           "replans": 0.0,
           "switches": 0.0,
-          "planner_calls": 1.0,
-          "total_ms": 1150.002199865412
+          "planner_calls": 1.0
         }
       ],
       "route_evaluations": 48
@@ -264,8 +248,7 @@
           "mean_truth_exposure": 0.3565438887001393,
           "replans": 1.0,
           "switches": 1.0,
-          "planner_calls": 2.0,
-          "total_ms": 1140.493199811317
+          "planner_calls": 2.0
         },
         {
           "seed": 5101,
@@ -273,8 +256,7 @@
           "mean_truth_exposure": 0.30875040778747903,
           "replans": 0.0,
           "switches": 0.0,
-          "planner_calls": 1.0,
-          "total_ms": 1126.9437999580987
+          "planner_calls": 1.0
         },
         {
           "seed": 5102,
@@ -282,8 +264,7 @@
           "mean_truth_exposure": 0.3568341821640461,
           "replans": 1.0,
           "switches": 1.0,
-          "planner_calls": 2.0,
-          "total_ms": 1153.171900077723
+          "planner_calls": 2.0
         },
         {
           "seed": 5102,
@@ -291,8 +272,7 @@
           "mean_truth_exposure": 0.30881524790986786,
           "replans": 0.0,
           "switches": 0.0,
-          "planner_calls": 1.0,
-          "total_ms": 1150.122799910605
+          "planner_calls": 1.0
         }
       ],
       "route_evaluations": 48
@@ -308,8 +288,7 @@
           "mean_truth_exposure": 0.3565438887001393,
           "replans": 1.0,
           "switches": 1.0,
-          "planner_calls": 2.0,
-          "total_ms": 1182.1471999865025
+          "planner_calls": 2.0
         },
         {
           "seed": 5101,
@@ -317,8 +296,7 @@
           "mean_truth_exposure": 0.30875040778747903,
           "replans": 0.0,
           "switches": 0.0,
-          "planner_calls": 1.0,
-          "total_ms": 1205.0089001422748
+          "planner_calls": 1.0
         },
         {
           "seed": 5102,
@@ -326,8 +304,7 @@
           "mean_truth_exposure": 0.3568341821640461,
           "replans": 1.0,
           "switches": 1.0,
-          "planner_calls": 2.0,
-          "total_ms": 1174.5970000047237
+          "planner_calls": 2.0
         },
         {
           "seed": 5102,
@@ -335,8 +312,7 @@
           "mean_truth_exposure": 0.30881524790986786,
           "replans": 0.0,
           "switches": 0.0,
-          "planner_calls": 1.0,
-          "total_ms": 1165.7840999541804
+          "planner_calls": 1.0
         }
       ],
       "route_evaluations": 48

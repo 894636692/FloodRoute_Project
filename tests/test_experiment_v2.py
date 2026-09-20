@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'src'))
-from floodroute.experiments.v2 import validate_split, profile_config
+from floodroute.experiments.v2 import validate_split, profile_config, selection_digest
 from floodroute.runtime import load_config
 from floodroute.experiments.benchmarks import benchmark_truth
 from floodroute.experiments.scenario import observe
@@ -49,7 +49,7 @@ class ExperimentV2Tests(unittest.TestCase):
         validate_split(split)
         selection = json.loads((folder/'parameter_selection.json').read_text())
         manifest = json.loads((folder/'run_manifest.json').read_text())
-        digest = hashlib.sha256((folder/'parameter_selection.json').read_bytes()).hexdigest()
+        digest = selection_digest(folder/'parameter_selection.json')
         self.assertFalse(selection['test_used_for_selection'])
         self.assertEqual(digest, manifest['selection_sha256_before_test'])
         self.assertEqual(digest, manifest['selection_sha256_after_test'])

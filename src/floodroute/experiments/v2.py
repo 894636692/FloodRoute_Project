@@ -20,6 +20,11 @@ from .robustness import BASELINES, truth_metrics
 from .benchmarks import benchmark_truth, benchmark_run, dry_centre
 
 
+def selection_digest(path):
+    """Git-normalized UTF-8/LF hash, identical on Windows and fresh checkouts."""
+    return hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+
+
 def validate_split(split):
     groups = [set(split[key]) for key in ('calibration', 'validation', 'test')]
     if any(not values for values in groups) or any(a & b for a,b in itertools.combinations(groups, 2)):
@@ -113,7 +118,7 @@ def score_profile(runtime, grids, design, params, seeds, centre):
             triggered = summary.loc['triggered']; always = summary.loc['always']; never = summary.loc['never']
             safe_switch = triggered.switches >= 1 and triggered.mean_truth_exposure < never.mean_truth_exposure
             eligible &= bool(safe_switch if name == 'T1' else triggered.replans < always.replans)
-            summaries.append(dict(seed=seed, benchmark=name, **triggered.to_dict()))
+            summaries.append(dict(seed=seed, benchmark=name, **triggered.drop('total_ms').to_dict()))
     frame = pd.DataFrame(summaries)
     score = route_score + .05*frame.mean_truth_exposure.mean() + .002*frame.replans.mean()
     return {'score': float(score), 'route_score': route_score, 'eligible': eligible,
@@ -151,7 +156,7 @@ def run_v2(runtime, grids, directory):
         'selected_profile': chosen, 'final_parameters': params, 'selection_rule': design['selection_rule'],
         'objective': design['objective'], 'test_used_for_selection': False}
     write_json(directory/'parameter_selection.json', selection)
-    selection_hash = hashlib.sha256((directory/'parameter_selection.json').read_bytes()).hexdigest()
+    selection_hash = selection_digest(directory/'parameter_selection.json')
     selected_config = profile_config(load_config(), params)
     write_json(ROOT/'config/selected_v1_1.json', selected_config)
     # This is the FIRST use of test seeds to generate data or evaluate any method.
@@ -172,9 +177,10 @@ def run_v2(runtime, grids, directory):
             summary = benchmark_summary(rows); summary['benchmark'] = name; summary['seed'] = seed
             summaries.append(summary)
     pd.concat(summaries, ignore_index=True).to_csv(directory/'benchmark_summary.csv', index=False)
-    if hashlib.sha256((directory/'parameter_selection.json').read_bytes()).hexdigest() != selection_hash:
+    if selection_digest(directory/'parameter_selection.json') != selection_hash:
         raise ValueError('Selection changed during test evaluation')
     write_json(directory/'run_manifest.json', {'selected_profile': chosen, 'selection_sha256_before_test': selection_hash,
         'selection_sha256_after_test': selection_hash, 'test_rows': len(heldout), 'test_seeds': design['split']['test'],
         'benchmark_centre_utm': centre, 'benchmark_width_m': design['benchmark_width_m'],
+        'hash_format': 'UTF-8 with LF line endings',
         'complete': True, 'ground_truth_use': 'generation and offline evaluation only'})

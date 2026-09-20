@@ -8,5 +8,9 @@ from floodroute.gis.grid_mapping import grid_polygons
 from floodroute.experiments.v2 import run_v2
 
 if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--output', type=Path, default=ROOT/'results/experiment_v2')
+    args = parser.parse_args()
     runtime = Runtime()
-    run_v2(runtime, grid_polygons(ROOT/runtime.config['grids_path']), ROOT/'results/experiment_v2')
+    run_v2(runtime, grid_polygons(ROOT/runtime.config['grids_path']), args.output)
