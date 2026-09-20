@@ -31,7 +31,7 @@ from shapely.geometry import LineString
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data" / "processed" / "shenzhen_core"
-OUT_DIR = ROOT / "results" / "real_shenzhen"
+OUT_DIR = ROOT / "legacy" / "results" / "real_shenzhen"
 
 # West -> east route across the small Shenzhen study area.
 START_LONLAT = (114.032, 22.526)

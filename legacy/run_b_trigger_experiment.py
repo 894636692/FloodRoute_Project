@@ -17,7 +17,7 @@ from floodroute.experiments.trigger_experiment import run_delay_experiment
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run B trigger experiment with prepared dynamic fixtures.")
     parser.add_argument("--request", default="examples/request_trusted.json")
-    parser.add_argument("--static", default="data/derived/static/road_static_features.gpkg")
+    parser.add_argument("--static", default="tests/fixtures/b_static.gpkg")
     parser.add_argument("--rainfall", default="data/derived/dynamic/rainfall.csv")
     parser.add_argument("--water", default="data/derived/dynamic/water_level.csv")
     parser.add_argument("--output", default="results/b_routing/trigger_experiment.csv")

@@ -44,3 +44,5 @@ Phase 9 complete: chronological replay controllers retain current route/evaluati
 Phase 10 complete: graph/static edges/node spatial index cached; preserved parallel-edge choices, weighted risk/confidence/p95/high-risk metrics. 56 tests passed. Full 360 independent rows + 51 replay rows reproduced identically excluding timings. Candidate motor-road filter added after discovering footways/steps/construction in A; full A data untouched. Final real routes 10280/10362/10362 m; final replay always 16 replans/9 changes, triggered 2/0, exposure 0.543238 vs 0.547032. No turn restrictions; speed 8 m/s is estimated.
 
 Phase 11 complete: Streamlit real/scenario/time/OD/mode map and metrics + separate replay log. AppTest validates both scenes and invalid-OD handling; pip check clean; local server health returns ok. Browser connector fails (nodeRepl.fetch), so visual inspection is pending, not claimed. Service bound to loopback only.
+
+Phase 12 complete: root MVP and old route/B fixture entry scripts archived in legacy; imports adjusted and fixture writer cannot overwrite formal A output. All 57 tests passed after moves.

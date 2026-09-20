@@ -19,7 +19,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 EDGES_PATH = ROOT / "data" / "processed" / "shenzhen_core" / "osm_edges_utm.geojson"
 NODES_PATH = ROOT / "results" / "real_shenzhen" / "real_nodes_sampled.csv"
-OUT_PATH = ROOT / "data" / "derived" / "static" / "road_static_features.gpkg"
+OUT_PATH = ROOT / "tests" / "fixtures" / "b_static.gpkg"
 
 
 def highway_to_text(value) -> str:

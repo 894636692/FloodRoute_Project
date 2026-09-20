@@ -1,8 +1,8 @@
 import unittest
 
-from config import Config
-from data import build_demo_city, make_observed_data
-from model import calculate_scores, plan_route, route_metrics, should_replan
+from legacy.config import Config
+from legacy.data import build_demo_city, make_observed_data
+from legacy.model import calculate_scores, plan_route, route_metrics, should_replan
 
 
 class MvpTest(unittest.TestCase):

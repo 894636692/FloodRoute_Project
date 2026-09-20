@@ -8,8 +8,8 @@ from __future__ import annotations
 
 import math
 import networkx as nx
-from config import Config
-from data import CityData, Point
+from legacy.config import Config
+from legacy.data import CityData, Point
 
 
 def _clamp(value: float) -> float:

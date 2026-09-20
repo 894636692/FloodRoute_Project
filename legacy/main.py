@@ -10,15 +10,15 @@ import csv
 import json
 from pathlib import Path
 
-from config import Config
-from data import (
+from legacy.config import Config
+from legacy.data import (
     CityData,
     build_demo_city,
     load_city_from_csv,
     load_observed_from_csv,
     make_observed_data,
 )
-from model import (
+from legacy.model import (
     ascii_map,
     calculate_scores,
     city_height,
@@ -29,8 +29,8 @@ from model import (
 )
 
 
-ROOT = Path(__file__).resolve().parent
-RESULTS_DIR = ROOT / "results"
+ROOT = Path(__file__).resolve().parents[1]
+RESULTS_DIR = ROOT / "legacy" / "results"
 
 
 def save_json(path: Path, data: object) -> None:
