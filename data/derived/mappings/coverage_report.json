@@ -8,6 +8,6 @@
   "uncovered_edges": 0,
   "input_sha256": {
     "data/derived/static/road_static_features.gpkg": "768982eb7ca617e0845082d4b6d846ae7e284d9128f82952c9db8a8bb6600aec",
-    "data/derived/dynamic/shenzhen_grid/grid_cells.csv": "14260763dbd5c69f541e59e4020e20fc923c814e833fb7ae5b5a4f7dfd104063"
+    "data/derived/dynamic/shenzhen_grid/grid_cells.csv": "4629fdcbf6d800c9c245cb597251ce0ffbfc6751c397e824df1bd8858be36e0a"
   }
 }

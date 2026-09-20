@@ -12,8 +12,8 @@
   },
   "sha256": {
     "data/derived/static/road_static_features.gpkg": "768982eb7ca617e0845082d4b6d846ae7e284d9128f82952c9db8a8bb6600aec",
-    "data/derived/dynamic/shenzhen_grid/rainfall.csv": "a91e80cbf69fdfdd4a695af880ea076ac04357de4e730e63691fc4e902d31742",
-    "data/derived/dynamic/shenzhen_grid/grid_cells.csv": "14260763dbd5c69f541e59e4020e20fc923c814e833fb7ae5b5a4f7dfd104063",
+    "data/derived/dynamic/shenzhen_grid/rainfall.csv": "a49b05ff9711e249ca13540383885a48ea69852c0ebfc86fe9dd5565ab22f4c5",
+    "data/derived/dynamic/shenzhen_grid/grid_cells.csv": "4629fdcbf6d800c9c245cb597251ce0ffbfc6751c397e824df1bd8858be36e0a",
     "data/derived/mappings/edge_grid_weights.parquet": "3211c158028937df8b70150ec1abe66514b1f66e301fc609f914d8a131f3ca80"
   }
 }

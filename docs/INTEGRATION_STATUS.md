@@ -9,13 +9,14 @@ A has separate history: selectively import files, never merge the branch.
 | Phase | State | Validation |
 |---|---|---|
 | 0 | Complete | Fresh fetch; tracked working tree clean; 35 unittest tests pass |
-| 1–13 | Pending | Execute sequentially and commit separately |
+| 1–12 | Complete | See phase log below |
+| 13 | Complete; visual review pending | Final documents and acceptance report |
 
 ## Data and blockers
 
 - REAL: Shenzhen hourly grid rainfall and grid registry; observed rainfall currently zero.
-- DERIVED_FROM_REAL: A formal OSM/DEM/WorldCover features (LFS retrieval pending).
-- SIMULATED_SCENARIO: not yet built; root dynamic CSVs are legacy fixtures.
+- DERIVED_FROM_REAL: A formal OSM/DEM/WorldCover features (LFS retrieved and SHA256 verified).
+- SIMULATED_SCENARIO: generated and tested; root dynamic CSVs remain legacy fixtures.
 - OPTIONAL_EXTERNAL: historical regional forcing; no external credentials available.
 - Shenzhen water is inactive: public spatial coordinates, time semantics and datum unverified.
 - Existing local untracked raw/interim files, reports and work files preserved.
@@ -46,3 +47,7 @@ Phase 10 complete: graph/static edges/node spatial index cached; preserved paral
 Phase 11 complete: Streamlit real/scenario/time/OD/mode map and metrics + separate replay log. AppTest validates both scenes and invalid-OD handling; pip check clean; local server health returns ok. Browser connector fails (nodeRepl.fetch), so visual inspection is pending, not claimed. Service bound to loopback only.
 
 Phase 12 complete: root MVP and old route/B fixture entry scripts archived in legacy; imports adjusted and fixture writer cannot overwrite formal A output. All 57 tests passed after moves.
+
+Phase 13: final architecture/provenance/protocol/limitations/demo guide/README/FINAL_STATUS written. Dependency lock and cross-platform LF contracts added. Formal rainfall inventory updated without changing raw files. Final automated rerun below; browser visual review remains pending.
+
+Final acceptance: 57 tests passed in 23.660 s; pip check clean; git lfs fsck --objects HEAD passed; git diff --check passed. Browser visual acceptance pending. Main SHA unchanged. Integration commits local only.

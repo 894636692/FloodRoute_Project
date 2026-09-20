@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-20",
+  "branch": "integration/final-v1",
+  "tests": {
+    "command": "python -m unittest discover -s tests -q",
+    "run": 57,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 23.66
+  },
+  "pip_check": "passed",
+  "git_lfs_fsck": "passed",
+  "visual_review": "pending_browser_connector_failure",
+  "core_runtime_external_credentials_required": false
+}
