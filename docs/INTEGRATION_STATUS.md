@@ -24,3 +24,5 @@ A has separate history: selectively import files, never merge the branch.
 Output is a road flood risk index, not a prediction of physical flood depth.
 
 Phase 1 complete: official A LFS SHA256 verified; 112218 directed edges, 46468 nodes; 36 tests passed. B fixture preserved in tests/fixtures; A schema isolated. Formal data provenance manifest retained. QGIS/osgeo only required to rebuild from original A raw inputs, not to run.
+
+Phase 2 complete: 26 C tests + 2 formal source tests passed. Grid rainfall accepted with user-confirmed time semantics retained in quality flags; missing retrieval time remains unknown. Water and forecast disabled in config/final_v1.json.

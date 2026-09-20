@@ -1,0 +1,19 @@
+{
+  "schema_version": "final-v1",
+  "static_path": "data/derived/static/road_static_features.gpkg",
+  "rainfall_path": "data/derived/dynamic/shenzhen_grid/rainfall.csv",
+  "grids_path": "data/derived/dynamic/shenzhen_grid/grid_cells.csv",
+  "mapping_path": "data/derived/mappings/edge_grid_weights.parquet",
+  "sources": {
+    "rain": {"active": true, "tau_min": 45, "scale": 80, "weight": 0.55},
+    "water": {"active": false, "tau_min": 20, "scale": 80, "weight": 0.20},
+    "forecast": {"active": false, "tau_min": 90, "scale": 80, "weight": 0.15}
+  },
+  "static": {"weight": 0.45, "missing_prior": 0.5, "low_elev_norm": 0.42, "flatness_risk": 0.24, "builtup_frac": 0.22, "water_frac": 0.10, "vegetation_relief": 0.02},
+  "uncertainty": {"base": 0.08, "missing": 0.5, "quality": 0.15, "static_missing": 0.3},
+  "trusted": {"uncertainty_weight": 0.30, "staleness_weight": 0.25},
+  "routing": {"risk_alpha": 4.0, "trusted_alpha": 4.8, "default_speed_mps": 8.0, "high_risk": 0.65},
+  "scenario": {"random_seed": 20260920, "start": "2023-09-07T12:00:00+08:00", "steps": 17, "step_min": 15, "peak_mm": 120, "background_mm": 2, "width_fraction": 0.12},
+  "trigger": {"min_confidence": 0.55, "high_risk_ratio": 0.22, "risk_increase": 0.08, "cooldown_min": 30, "minimum_improvement": 0.03, "hysteresis": 0.03},
+  "experiment": {"delays_min": [0,15,30,60,120], "missing_rates": [0,0.2,0.4], "noise_levels": [0,0.1,0.2], "universal_tau_min": 60}
+}
