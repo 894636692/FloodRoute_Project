@@ -15,3 +15,5 @@ dependencies:
   - pyproj
   - pyogrio
   - pyarrow>=17
+  - streamlit>=1.45,<2
+  - pydeck>=0.9,<1
