@@ -34,3 +34,5 @@ Phase 4 complete: formal vectorized risk/static/dynamic/freshness/trusted module
 Phase 5 complete: real A+C pipeline produced shortest/risk/trusted GeoJSON and provenance; acceptance test passed. Route lengths 10447/10491/10491 m, real rain remains zero. Metrics are length weighted; confidence is an index, not calibrated probability.
 
 Phase 6 complete: 71944 simulated grid records across 17 times; fixed seed/config, separate truth and observation generator. Two tests verify reproducibility and future-truth invariance. No historical observation claim.
+
+Phase 7 complete: official 2023-09-07/08 reference verified. Optional accumulation GeoTIFF importer implemented; unit/time/nodata test passes on synthetic raster. No actual IMERG file or credentials, no core dependency; HDF/NetCDF unsupported explicitly.
