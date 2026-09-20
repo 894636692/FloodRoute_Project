@@ -1,0 +1,22 @@
+{
+  "split": {"calibration": [4101, 4102], "validation": [5101, 5102], "test": [6101, 6102, 6103]},
+  "development_benchmark_seed": 8801,
+  "candidates": {
+    "baseline": {"rain_tau": 45, "freshness_weight": 0.25, "uncertainty_weight": 0.3, "risk_alpha": 4, "trusted_alpha": 4.8, "trigger_threshold": 0.08, "minimum_improvement": 0.03},
+    "responsive": {"rain_tau": 30, "freshness_weight": 0.15, "uncertainty_weight": 0.2, "risk_alpha": 5, "trusted_alpha": 6, "trigger_threshold": 0.06, "minimum_improvement": 0.02},
+    "balanced": {"rain_tau": 60, "freshness_weight": 0.15, "uncertainty_weight": 0.3, "risk_alpha": 4, "trusted_alpha": 5, "trigger_threshold": 0.08, "minimum_improvement": 0.03},
+    "persistent": {"rain_tau": 90, "freshness_weight": 0.35, "uncertainty_weight": 0.4, "risk_alpha": 5, "trusted_alpha": 6, "trigger_threshold": 0.1, "minimum_improvement": 0.04}
+  },
+  "ods": [[114.030, 22.535, 114.090, 22.570], [114.035, 22.550, 114.070, 22.540]],
+  "decision_steps": [6, 10],
+  "calibration_conditions": [[0, 0, 0], [30, 0.2, 0.1], [60, 0.4, 0.1]],
+  "test_delays_min": [0, 15, 30, 60, 120],
+  "test_missing_rates": [0, 0.2, 0.4],
+  "test_noise": [0, 0.1],
+  "universal_tau_min": 60,
+  "benchmark_width_m": 700,
+  "selection_rule": "calibration ranks four fixed profiles; top two eligible profiles validated; choose lowest validation score; test not generated until selection artifact is saved",
+  "objective": "mean(trusted truth_exposure + 0.10 * distance / paired shortest distance) + 0.05 * mean(T1,T2 replay truth_exposure) + 0.002 * mean(T1,T2 replans)",
+  "eligibility": "T1 must switch to a safer route and T2 must reduce replanning relative to always on calibration and validation seeds",
+  "replication_unit": "scenario seed; OD, times and perturbations are paired repeated measurements, not independent samples"
+}

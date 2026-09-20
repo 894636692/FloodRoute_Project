@@ -1,0 +1,207 @@
+{
+  "split": {
+    "calibration": [
+      4101,
+      4102
+    ],
+    "validation": [
+      5101,
+      5102
+    ],
+    "test": [
+      6101,
+      6102,
+      6103
+    ]
+  },
+  "development_benchmark_seed": 8801,
+  "candidates": {
+    "baseline": {
+      "rain_tau": 45,
+      "freshness_weight": 0.25,
+      "uncertainty_weight": 0.3,
+      "risk_alpha": 4,
+      "trusted_alpha": 4.8,
+      "trigger_threshold": 0.08,
+      "minimum_improvement": 0.03
+    },
+    "responsive": {
+      "rain_tau": 30,
+      "freshness_weight": 0.15,
+      "uncertainty_weight": 0.2,
+      "risk_alpha": 5,
+      "trusted_alpha": 6,
+      "trigger_threshold": 0.06,
+      "minimum_improvement": 0.02
+    },
+    "balanced": {
+      "rain_tau": 60,
+      "freshness_weight": 0.15,
+      "uncertainty_weight": 0.3,
+      "risk_alpha": 4,
+      "trusted_alpha": 5,
+      "trigger_threshold": 0.08,
+      "minimum_improvement": 0.03
+    },
+    "persistent": {
+      "rain_tau": 90,
+      "freshness_weight": 0.35,
+      "uncertainty_weight": 0.4,
+      "risk_alpha": 5,
+      "trusted_alpha": 6,
+      "trigger_threshold": 0.1,
+      "minimum_improvement": 0.04
+    }
+  },
+  "ods": [
+    [
+      114.03,
+      22.535,
+      114.09,
+      22.57
+    ],
+    [
+      114.035,
+      22.55,
+      114.07,
+      22.54
+    ]
+  ],
+  "decision_steps": [
+    6,
+    10
+  ],
+  "calibration_conditions": [
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      30,
+      0.2,
+      0.1
+    ],
+    [
+      60,
+      0.4,
+      0.1
+    ]
+  ],
+  "test_delays_min": [
+    0,
+    15,
+    30,
+    60,
+    120
+  ],
+  "test_missing_rates": [
+    0,
+    0.2,
+    0.4
+  ],
+  "test_noise": [
+    0,
+    0.1
+  ],
+  "universal_tau_min": 60,
+  "benchmark_width_m": 700,
+  "selection_rule": "calibration ranks four fixed profiles; top two eligible profiles validated; choose lowest validation score; test not generated until selection artifact is saved",
+  "objective": "mean(trusted truth_exposure + 0.10 * distance / paired shortest distance) + 0.05 * mean(T1,T2 replay truth_exposure) + 0.002 * mean(T1,T2 replans)",
+  "eligibility": "T1 must switch to a safer route and T2 must reduce replanning relative to always on calibration and validation seeds",
+  "replication_unit": "scenario seed; OD, times and perturbations are paired repeated measurements, not independent samples",
+  "benchmark_centre_utm": [
+    195554.11468285436,
+    2497091.431724525
+  ],
+  "evaluation_risk_config": {
+    "schema_version": "final-v1",
+    "static_path": "data/derived/static/road_static_features.gpkg",
+    "rainfall_path": "data/derived/dynamic/shenzhen_grid/rainfall.csv",
+    "grids_path": "data/derived/dynamic/shenzhen_grid/grid_cells.csv",
+    "mapping_path": "data/derived/mappings/edge_grid_weights.parquet",
+    "sources": {
+      "rain": {
+        "active": true,
+        "tau_min": 45,
+        "scale": 80,
+        "weight": 0.55
+      },
+      "water": {
+        "active": false,
+        "tau_min": 20,
+        "scale": 80,
+        "weight": 0.2
+      },
+      "forecast": {
+        "active": false,
+        "tau_min": 90,
+        "scale": 80,
+        "weight": 0.15
+      }
+    },
+    "static": {
+      "weight": 0.45,
+      "missing_prior": 0.5,
+      "low_elev_norm": 0.42,
+      "flatness_risk": 0.24,
+      "builtup_frac": 0.22,
+      "water_frac": 0.1,
+      "vegetation_relief": 0.02
+    },
+    "uncertainty": {
+      "base": 0.08,
+      "missing": 0.5,
+      "quality": 0.15,
+      "static_missing": 0.3
+    },
+    "trusted": {
+      "uncertainty_weight": 0.3,
+      "staleness_weight": 0.25
+    },
+    "routing": {
+      "risk_alpha": 4.0,
+      "trusted_alpha": 4.8,
+      "default_speed_mps": 8.0,
+      "high_risk": 0.65
+    },
+    "scenario": {
+      "random_seed": 20260920,
+      "start": "2023-09-07T12:00:00+08:00",
+      "steps": 17,
+      "step_min": 15,
+      "peak_mm": 120,
+      "background_mm": 2,
+      "width_fraction": 0.12
+    },
+    "trigger": {
+      "min_confidence": 0.55,
+      "high_risk_ratio": 0.22,
+      "risk_increase": 0.08,
+      "cooldown_min": 30,
+      "minimum_improvement": 0.03,
+      "hysteresis": 0.03
+    },
+    "experiment": {
+      "delays_min": [
+        0,
+        15,
+        30,
+        60,
+        120
+      ],
+      "missing_rates": [
+        0,
+        0.2,
+        0.4
+      ],
+      "noise_levels": [
+        0,
+        0.1,
+        0.2
+      ],
+      "universal_tau_min": 60
+    }
+  },
+  "test_generation_started": false
+}

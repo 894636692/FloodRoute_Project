@@ -1,0 +1,18 @@
+{
+  "selected_profile": "balanced",
+  "selection_sha256_before_test": "988e35351e38a066d0ed53dec4ad021da8994a3ace0a34dd2de09e6645c6ce27",
+  "selection_sha256_after_test": "988e35351e38a066d0ed53dec4ad021da8994a3ace0a34dd2de09e6645c6ce27",
+  "test_rows": 4320,
+  "test_seeds": [
+    6101,
+    6102,
+    6103
+  ],
+  "benchmark_centre_utm": [
+    195554.11468285436,
+    2497091.431724525
+  ],
+  "benchmark_width_m": 700,
+  "complete": true,
+  "ground_truth_use": "generation and offline evaluation only"
+}
