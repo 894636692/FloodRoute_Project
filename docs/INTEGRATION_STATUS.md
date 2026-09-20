@@ -32,3 +32,5 @@ Phase 3 complete: all 112218 edges mapped, 121153 intersection records; road-len
 Phase 4 complete: formal vectorized risk/static/dynamic/freshness/trusted modules; 4 focused tests pass. Missing values use declared 0.5 prior with explicit uncertainty; only active sources contribute. Legacy B APIs retained for regression until archive cleanup.
 
 Phase 5 complete: real A+C pipeline produced shortest/risk/trusted GeoJSON and provenance; acceptance test passed. Route lengths 10447/10491/10491 m, real rain remains zero. Metrics are length weighted; confidence is an index, not calibrated probability.
+
+Phase 6 complete: 71944 simulated grid records across 17 times; fixed seed/config, separate truth and observation generator. Two tests verify reproducibility and future-truth invariance. No historical observation claim.

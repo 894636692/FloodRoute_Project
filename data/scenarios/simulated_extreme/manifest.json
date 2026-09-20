@@ -1,0 +1,16 @@
+{
+  "data_type": "SIMULATED_SCENARIO",
+  "scenario_type": "simulated_extreme",
+  "geometry": "real Shenzhen grid",
+  "not_historical_observation": true,
+  "parameters": {
+    "random_seed": 20260920,
+    "start": "2023-09-07T12:00:00+08:00",
+    "steps": 17,
+    "step_min": 15,
+    "peak_mm": 120,
+    "background_mm": 2,
+    "width_fraction": 0.12
+  },
+  "truth_use": "offline evaluation and observation generation only; never planner input"
+}
