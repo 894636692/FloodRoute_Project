@@ -30,3 +30,5 @@ Phase 2 complete: 26 C tests + 2 formal source tests passed. Grid rainfall accep
 Phase 3 complete: all 112218 edges mapped, 121153 intersection records; road-length coverage 99.9999999984%. Retain A study area. Mapping tests (2) pass, input hashes persisted. Parquet runtime dependency added.
 
 Phase 4 complete: formal vectorized risk/static/dynamic/freshness/trusted modules; 4 focused tests pass. Missing values use declared 0.5 prior with explicit uncertainty; only active sources contribute. Legacy B APIs retained for regression until archive cleanup.
+
+Phase 5 complete: real A+C pipeline produced shortest/risk/trusted GeoJSON and provenance; acceptance test passed. Route lengths 10447/10491/10491 m, real rain remains zero. Metrics are length weighted; confidence is an index, not calibrated probability.
