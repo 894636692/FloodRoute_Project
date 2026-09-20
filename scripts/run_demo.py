@@ -4,5 +4,5 @@ import subprocess, sys
 
 if __name__=='__main__':
     root=Path(__file__).resolve().parents[1]
-    raise SystemExit(subprocess.call([sys.executable,'-m','streamlit','run',str(root/'src/floodroute/ui/app.py'),
+    raise SystemExit(subprocess.call([sys.executable,'-m','streamlit','run',str(root/'src/floodroute/ui/app_v1_1.py'),
         '--server.address=127.0.0.1','--browser.gatherUsageStats=false',*sys.argv[1:]],cwd=root))

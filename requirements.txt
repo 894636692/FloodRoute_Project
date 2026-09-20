@@ -11,3 +11,5 @@ pyogrio
 pyarrow>=17
 streamlit>=1.45,<2
 pydeck>=0.9,<1
+folium>=0.20,<0.21
+streamlit-folium>=0.27,<0.28
