@@ -1,0 +1,13 @@
+{
+  "crs": "EPSG:32650",
+  "edge_count": 112218,
+  "mapped_edges": 112218,
+  "mapping_rows": 121153,
+  "road_length_coverage": 0.9999999999842615,
+  "decision": "retain_study_area",
+  "uncovered_edges": 0,
+  "input_sha256": {
+    "data/derived/static/road_static_features.gpkg": "768982eb7ca617e0845082d4b6d846ae7e284d9128f82952c9db8a8bb6600aec",
+    "data/derived/dynamic/shenzhen_grid/grid_cells.csv": "14260763dbd5c69f541e59e4020e20fc923c814e833fb7ae5b5a4f7dfd104063"
+  }
+}

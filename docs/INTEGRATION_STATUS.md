@@ -26,3 +26,5 @@ Output is a road flood risk index, not a prediction of physical flood depth.
 Phase 1 complete: official A LFS SHA256 verified; 112218 directed edges, 46468 nodes; 36 tests passed. B fixture preserved in tests/fixtures; A schema isolated. Formal data provenance manifest retained. QGIS/osgeo only required to rebuild from original A raw inputs, not to run.
 
 Phase 2 complete: 26 C tests + 2 formal source tests passed. Grid rainfall accepted with user-confirmed time semantics retained in quality flags; missing retrieval time remains unknown. Water and forecast disabled in config/final_v1.json.
+
+Phase 3 complete: all 112218 edges mapped, 121153 intersection records; road-length coverage 99.9999999984%. Retain A study area. Mapping tests (2) pass, input hashes persisted. Parquet runtime dependency added.
