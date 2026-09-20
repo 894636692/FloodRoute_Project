@@ -29,26 +29,56 @@ def can_plan(state):
             and state['start']['snapped_node_id'] != state['goal']['snapped_node_id'])
 
 
-def clear_points(state):
-    state.update(start=None, goal=None, result=None, click_error=None)
+def clear_points(state, keep_result=False):
+    state.update(start=None, goal=None, result=state.get('result') if keep_result else None, click_error=None)
+    state['result_stale'] = bool(keep_result and state.get('result'))
     state['map_epoch'] = state.get('map_epoch', 0) + 1
 
 
-def swap_points(state):
+def swap_points(state, keep_result=False):
     state['start'], state['goal'] = state.get('goal'), state.get('start')
-    state['result'] = None
+    state['result_stale'] = bool(keep_result and state.get('result'))
+    if not keep_result: state['result'] = None
     state['map_epoch'] = state.get('map_epoch', 0) + 1
 
 
-def accept_click(state, router, click, selection, max_distance_m):
-    # Caller resets the component after consuming a click, so stale events cannot
-    # silently turn an old start click into a new goal after changing selection.
+def accept_click(state, router, click, selection, max_distance_m, keep_result=False):
+    # Legacy callers can clear results; the current event consumer retains them
+    # with an explicit stale flag and deduplicates without remounting the map.
     point = snap_click(router, click['lng'], click['lat'], max_distance_m)
     state['start' if selection == '选择起点' else 'goal'] = point
-    state['result'] = None
+    state['result_stale'] = bool(keep_result and state.get('result'))
+    if not keep_result: state['result'] = None
     state['click_error'] = None
     state['map_epoch'] = state.get('map_epoch', 0) + 1
     return point
+
+
+def consume_map_event(state, router, event, selection, max_distance_m):
+    """Consume each coordinate event once; never evaluate risk or search a route."""
+    if event.get('zoom') is not None: state['map_zoom'] = event['zoom']
+    bounds = event.get('bounds')
+    if bounds and bounds.get('_southWest', {}).get('lat') is not None:
+        state['map_bounds'] = bounds
+        a,b=bounds['_southWest'],bounds['_northEast']
+        state['map_center'] = [(a['lat']+b['lat'])/2,(a['lng']+b['lng'])/2]
+    click=event.get('last_clicked')
+    if not click:return False
+    xy=(round(click['lat'],8),round(click['lng'],8))
+    # Ignore the carried-over coordinate even when selection mode changes.
+    if xy == state.get('last_processed_coordinates'):return False
+    state['last_processed_coordinates']=xy
+    state['last_processed_click_id']=(selection,*xy)
+    accept_click(state,router,click,selection,max_distance_m,keep_result=True)
+    return True
+
+
+def complete_plan(state, result):
+    state['result']=result
+    state['result_stale']=False
+    state['fit_revision']=state.get('fit_revision',0)+1
+    # Preserve provenance if endpoints are edited while the old result is retained.
+    result['selected_points']={k:dict(state[k]) for k in ('start','goal')}
 
 
 def make_request(state, timestamp, label):

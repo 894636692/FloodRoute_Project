@@ -1,0 +1,203 @@
+{
+  "stage": "after",
+  "measurement": "Python perf_counter; browser paint and network NOT measured",
+  "cold_start": {
+    "resources_ms": 3793.361800024286,
+    "dynamic_data_ms": 309.2610000167042,
+    "display_geojson_ms": 9.588300017639995,
+    "read_static_ms": 755.2960999892093,
+    "build_graph_ms": 433.81240003509447,
+    "spatial_index_ms": 4.60919999750331,
+    "start_snap_ms": 0.7190000033006072,
+    "goal_snap_ms": 0.5981000140309334
+  },
+  "phases": {
+    "offline_cold_start": {
+      "map_construct_ms": 0.417600036598742,
+      "html_generation_ms": 45.56040000170469,
+      "snap_ms": 0,
+      "python_total_ms": 45.978000038303435,
+      "create_map_ms": 0.3828000044450164,
+      "road_layer_ms": 0.021000043489038944
+    },
+    "offline_warm_rerun": {
+      "map_construct_ms": 0.34900003811344504,
+      "html_generation_ms": 44.54490001080558,
+      "snap_ms": 0,
+      "python_total_ms": 44.89390004891902,
+      "create_map_ms": 0.32789999386295676,
+      "road_layer_ms": 0.011299969628453255
+    },
+    "offline_start_click": {
+      "map_construct_ms": 0.35180000122636557,
+      "html_generation_ms": 46.04089999338612,
+      "snap_ms": 0.7190000033006072,
+      "python_total_ms": 47.11169999791309,
+      "create_map_ms": 0.2809999859891832,
+      "road_layer_ms": 0.010399962775409222,
+      "markers_ms": 0.03539997851476073
+    },
+    "offline_goal_click": {
+      "map_construct_ms": 0.26599998818710446,
+      "html_generation_ms": 46.072800003457814,
+      "snap_ms": 0.5981000140309334,
+      "python_total_ms": 46.93690000567585,
+      "create_map_ms": 0.2022999688051641,
+      "road_layer_ms": 0.008000002708286047,
+      "markers_ms": 0.03139994805678725
+    },
+    "offline_route_plan": {
+      "map_construct_ms": 0.3570999833755195,
+      "html_generation_ms": 47.05079999985173,
+      "snap_ms": 0,
+      "python_total_ms": 186.58709997544065,
+      "create_map_ms": 0.2243000199086964,
+      "road_layer_ms": 0.008400005754083395,
+      "route_layer_ms": 0.007700000423938036,
+      "markers_ms": 0.03200001083314419
+    },
+    "online_cold_start": {
+      "map_construct_ms": 2.3740999749861658,
+      "html_generation_ms": 2.291699987836182,
+      "snap_ms": 0,
+      "python_total_ms": 4.665799962822348,
+      "create_map_ms": 0.291300006210804,
+      "tile_layer_ms": 2.070699993055314
+    },
+    "online_warm_rerun": {
+      "map_construct_ms": 2.2490000119432807,
+      "html_generation_ms": 1.1508999741636217,
+      "snap_ms": 0,
+      "python_total_ms": 3.3998999861069024,
+      "create_map_ms": 0.16569998115301132,
+      "tile_layer_ms": 2.0738000166602433
+    },
+    "online_start_click": {
+      "map_construct_ms": 2.1386999869719148,
+      "html_generation_ms": 1.8479999853298068,
+      "snap_ms": 0.7190000033006072,
+      "python_total_ms": 4.705699975602329,
+      "create_map_ms": 0.18699996871873736,
+      "tile_layer_ms": 1.9054000149480999,
+      "markers_ms": 0.02500001573935151
+    },
+    "online_goal_click": {
+      "map_construct_ms": 2.3909000447019935,
+      "html_generation_ms": 2.271799952723086,
+      "snap_ms": 0.5981000140309334,
+      "python_total_ms": 5.260800011456013,
+      "create_map_ms": 0.18169998656958342,
+      "tile_layer_ms": 2.13939999230206,
+      "markers_ms": 0.04259991692379117
+    },
+    "online_route_plan": {
+      "map_construct_ms": 2.4892000365071,
+      "html_generation_ms": 4.240699985530227,
+      "snap_ms": 0,
+      "python_total_ms": 145.90910001425073,
+      "create_map_ms": 0.3641000366769731,
+      "tile_layer_ms": 1.9944000523537397,
+      "route_layer_ms": 0.010999967344105244,
+      "markers_ms": 0.0315000070258975
+    }
+  },
+  "component_transport": {
+    "offline_cold_start": {
+      "map_and_component_serialization_ms": 125.82659994950518,
+      "base_payload_bytes": 638696,
+      "overlay_payload_bytes": 319,
+      "effective_key": "c9858c7249c4f6d3dd5d7534110578764b834a02da3f958ab9e89440d3122e5f",
+      "python_total_ms": 125.82659994950518
+    },
+    "offline_warm_rerun": {
+      "map_and_component_serialization_ms": 124.28260000888258,
+      "base_payload_bytes": 638696,
+      "overlay_payload_bytes": 319,
+      "effective_key": "c9858c7249c4f6d3dd5d7534110578764b834a02da3f958ab9e89440d3122e5f",
+      "python_total_ms": 124.28260000888258
+    },
+    "offline_start_click": {
+      "map_and_component_serialization_ms": 128.41170001775026,
+      "base_payload_bytes": 638696,
+      "overlay_payload_bytes": 969,
+      "effective_key": "c9858c7249c4f6d3dd5d7534110578764b834a02da3f958ab9e89440d3122e5f",
+      "python_total_ms": 129.13070002105087
+    },
+    "offline_goal_click": {
+      "map_and_component_serialization_ms": 123.91780002508312,
+      "base_payload_bytes": 638696,
+      "overlay_payload_bytes": 1609,
+      "effective_key": "c9858c7249c4f6d3dd5d7534110578764b834a02da3f958ab9e89440d3122e5f",
+      "python_total_ms": 124.51590003911406
+    },
+    "offline_route_plan": {
+      "map_and_component_serialization_ms": 127.91470001684502,
+      "base_payload_bytes": 638696,
+      "overlay_payload_bytes": 22181,
+      "effective_key": "c9858c7249c4f6d3dd5d7534110578764b834a02da3f958ab9e89440d3122e5f",
+      "python_total_ms": 267.0939000090584
+    },
+    "online_cold_start": {
+      "map_and_component_serialization_ms": 5.5676999618299305,
+      "base_payload_bytes": 1938,
+      "overlay_payload_bytes": 319,
+      "effective_key": "8a79af66e73065c7595d0c5ddf9d6aac1377d9807e54f7f5e4582dcc111a3fb1",
+      "python_total_ms": 5.5676999618299305
+    },
+    "online_warm_rerun": {
+      "map_and_component_serialization_ms": 5.1188999786973,
+      "base_payload_bytes": 1938,
+      "overlay_payload_bytes": 319,
+      "effective_key": "8a79af66e73065c7595d0c5ddf9d6aac1377d9807e54f7f5e4582dcc111a3fb1",
+      "python_total_ms": 5.1188999786973
+    },
+    "online_start_click": {
+      "map_and_component_serialization_ms": 5.482300010044128,
+      "base_payload_bytes": 1938,
+      "overlay_payload_bytes": 969,
+      "effective_key": "8a79af66e73065c7595d0c5ddf9d6aac1377d9807e54f7f5e4582dcc111a3fb1",
+      "python_total_ms": 6.201300013344735
+    },
+    "online_goal_click": {
+      "map_and_component_serialization_ms": 5.847199994605035,
+      "base_payload_bytes": 1938,
+      "overlay_payload_bytes": 1609,
+      "effective_key": "8a79af66e73065c7595d0c5ddf9d6aac1377d9807e54f7f5e4582dcc111a3fb1",
+      "python_total_ms": 6.445300008635968
+    },
+    "online_route_plan": {
+      "map_and_component_serialization_ms": 8.829600003082305,
+      "base_payload_bytes": 1938,
+      "overlay_payload_bytes": 22181,
+      "effective_key": "8a79af66e73065c7595d0c5ddf9d6aac1377d9807e54f7f5e4582dcc111a3fb1",
+      "python_total_ms": 148.0087999952957
+    }
+  },
+  "baseline_commit": "e8efc43",
+  "resource_build_counts": {
+    "read_static_ms": 1,
+    "build_graph_ms": 1,
+    "spatial_index_ms": 1
+  },
+  "routing_ms": 19.502100010868162,
+  "risk_state_ms": 119.67709998134524,
+  "routing_edges": 55727,
+  "display_features": 1,
+  "display_geojson_bytes": 636537,
+  "html_bytes": {
+    "offline_cold_start": 640363,
+    "offline_warm_rerun": 640363,
+    "offline_start_click": 641332,
+    "offline_goal_click": 642043,
+    "offline_route_plan": 662545,
+    "online_cold_start": 3404,
+    "online_warm_rerun": 3404,
+    "online_start_click": 4373,
+    "online_goal_click": 5084,
+    "online_route_plan": 25586
+  },
+  "external_tile_latency_ms": null,
+  "browser_first_structure_ms": null,
+  "browser_interactive_ms": null,
+  "notes": "Cold resource timings include nested stages; do not sum overlapping timers. Warm cases reuse resources."
+}

@@ -1,0 +1,11 @@
+{
+  "use": "display only; never routing",
+  "source_edges": 55727,
+  "selected_edges": 26367,
+  "display_features": 1,
+  "simplification_m": 15,
+  "coordinate_decimals": 6,
+  "omitted_for_display": "service/link/other minor road classes; opposite directions visually merged",
+  "source_sha256": "768982eb7ca617e0845082d4b6d846ae7e284d9128f82952c9db8a8bb6600aec",
+  "display_bytes": 586930
+}
