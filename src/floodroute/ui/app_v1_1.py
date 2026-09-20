@@ -157,8 +157,8 @@ try:
             message_slot.info(result['message'])
             time.sleep(CFG['replay_frame_seconds'])
         st.session_state.result = result
-        # A fresh render after playback avoids duplicate component IDs.
-        st.rerun()
+        # Final interactive map has a different key from every playback frame.
+        # Do not rerun a still-active button: that can start playback again.
 except (ValueError, nx.NetworkXNoPath, nx.NodeNotFound):
     st.session_state.result = None
     message_slot.error('当前条件下无法生成路线，请重新选择不同的起终点或调整场景时间。')

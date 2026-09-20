@@ -136,5 +136,18 @@ class UIChineseTests(unittest.TestCase):
                 self.assertEqual(len(app.exception), 0)
                 self.assertIsNotNone(app.session_state['result'])
                 self.assertEqual(app.session_state['result']['response']['mode'], MODES[mode])
+            app.sidebar.selectbox[0].select('受控极端降雨场景').run()
+            seen = []
+            original_step = ReplayController.step
+            def checked_step(controller, state, request):
+                seen.append((request.start_lon, request.start_lat, request.goal_lon, request.goal_lat))
+                return original_step(controller, state, request)
+            with patch.object(ReplayController, 'step', checked_step):
+                next(b for b in app.sidebar.button if b.label == '动态回放').click().run()
+            self.assertEqual(len(app.exception), 0)
+            self.assertEqual(len(seen), 17)
+            self.assertEqual(len(set(seen)), 1)
+            self.assertEqual(app.session_state['result']['mode_label'], '可信优先')
+            self.assertEqual(pd.Timestamp(app.session_state['result']['timestamp']).hour, 16)
 
 if __name__ == '__main__': unittest.main()
