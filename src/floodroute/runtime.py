@@ -2,6 +2,7 @@
 from pathlib import Path
 from types import SimpleNamespace
 import json
+from dataclasses import replace
 import numpy as np
 import pandas as pd
 from floodroute.gis.io import read_static
@@ -38,9 +39,15 @@ class Runtime:
 
     def plan(self, state, request):
         # Explicit adapter retains B's directed routing service while migrating the engine.
+        mode=request.mode
+        if mode=='risk_uncertainty':
+            state=state.copy(); state['risk']=state.risk_uncertainty
+            request=replace(request,mode='risk')
         states={idx:SimpleNamespace(risk=row.risk, trusted_risk=row.trusted_risk, confidence=row.confidence)
                 for idx,row in zip(state.index,state.itertuples(index=False))}
-        return self.router.plan(request,states)
+        route=self.router.plan(request,states)
+        route.mode=mode
+        return route
 
 
 def route_metrics(route, state, lengths, high_risk=.65):

@@ -36,3 +36,5 @@ Phase 5 complete: real A+C pipeline produced shortest/risk/trusted GeoJSON and p
 Phase 6 complete: 71944 simulated grid records across 17 times; fixed seed/config, separate truth and observation generator. Two tests verify reproducibility and future-truth invariance. No historical observation claim.
 
 Phase 7 complete: official 2023-09-07/08 reference verified. Optional accumulation GeoTIFF importer implemented; unit/time/nodata test passes on synthetic raster. No actual IMERG file or credentials, no core dependency; HDF/NetCDF unsupported explicitly.
+
+Phase 8 complete: independent factorial runner and paired tau policies, order-invariant repeatability test passed; real-network smoke produced 8 routes. Full 360-row run scheduled after Phase 10 caching (current planner ~5 seconds/route). Formal evaluation uses mid-sequence with two hours of prehistory. No claims of optimal trusted performance.
