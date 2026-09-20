@@ -1,5 +1,7 @@
 # Final v1 architecture
 
+> 以下公式保留 v1 基线。v1.1 新界面使用 `config/selected_v1_1.json`，差异见文末；正式数据与风险组成未改变。
+
 ```text
 A GPKG → static susceptibility + missing-feature fraction
 C grid corners → polygons 4326→32650 → cached edge/grid intersection weights
@@ -60,3 +62,20 @@ Costs: shortest=L; risk=L(1+4R); risk+U=L(1+4 clip(R+.30U)); trusted=L(1+4.8T), 
 Travel time=L/8 m/s is an estimate. Exposure/confidence/freshness/U/high-risk fraction are length weighted;
 p95 is a length-weighted quantile. Max preserves edge extremes. Invalid/remote (>2 km) OD points,
 identical snapped nodes or no directed path yield clear errors.
+
+## v1.1 interaction and experiment boundary
+
+`scripts/run_demo.py` → `ui/app_v1_1.py` → `ui/observations.py` → available observations → `Runtime.observed_state` → `Runtime.plan`.
+The app receives observation snapshots; the provider privately invokes scenario observation generation. Neither route planning nor the UI reads offline evaluation results.
+
+`ui/map_view.py` uses Folium and streamlit-folium's `last_clicked`. `ui/controller.py` transforms WGS84 clicks to EPSG:32650, reuses the cached motor-node spatial index and stores clicked coordinates, snapped OSM node ID, snapped WGS84 coordinates and metric distance. UI maximum distance is 500 m in `config/ui_v1_1.json`; the old programmatic router's 2 km guard remains compatible. No per-click rebuilding of the node table or spatial index occurs.
+
+Session state holds endpoints, result and map-component epoch. Clear/swap/new points or scene/time/strategy/perturbation changes invalidate the previous result. Consumed events reset the component so an old click cannot be reused after changing selection mode. Original `app.py` and its 57-test baseline remain; new UI regressions are separate.
+
+Replay uses fixed user-selected endpoints and unchanged `ReplayController`: new observations → current route evaluation → trigger/cooldown → candidate search → minimum improvement → switch/keep. Initial planning is the only exception because there is no previous route. Metrics are recomputed under current observations even when retaining the old route. The result time is displayed separately from the single-run time selector.
+
+Selected v1.1 parameters: rain tau 60 min, uncertainty weight .30, staleness weight .15, risk alpha 4, trusted alpha 5, risk-increase threshold .08, minimum improvement .03. Static/rain coefficients, uncertainty construction and inactive water/forecast remain unchanged. UI and v2 planning use `selected_v1_1.json`; original v1 experiment commands deliberately retain `final_v1.json`.
+
+`experiments/v2.py` owns disjoint calibration/validation/test seeds and offline evaluation. Evaluation uses frozen base risk coefficients. Four methods receive paired observations at fixed OD/time cases. Selection is persisted and hashed before test data generation. Hashes normalize UTF-8 text to LF for Windows/Git reproducibility; timings do not enter selection artifacts or scoring.
+
+`experiments/benchmarks.py` generates real-grid spatial rainfall fields centred on a dry baseline route midpoint. No target alternative edge IDs are encoded. T1/T2 latent data and offline metrics remain in the experiment directory. `scripts/run_trigger_benchmarks.py` replays frozen parameters without reselecting them. These are constructed software stress tests, not natural-event reconstructions.

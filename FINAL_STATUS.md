@@ -1,5 +1,8 @@
 # FloodRoute final v1 验收记录
 
+> v1.1 后续工作位于 `experiment-ui/v1.1`；稳定分支与 `v1.0-engineering` 标签保留原提交。
+> 以下为 v1 历史记录。新中文界面、分组选参、触发基准与复现结果见 [FINAL_STATUS_V1_1.md](FINAL_STATUS_V1_1.md)。界面目视验收仍待确认。
+
 日期：2026-09-20。分支：`integration/final-v1`。
 Phase 0–13 的实现、数据链路和自动化验收完成；**浏览器目视验收待完成**。
 main 和原始合作分支保留，未 merge A 独立历史，未 force push。

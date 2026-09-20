@@ -1,0 +1,21 @@
+{
+  "medium": "student research report, no journal-specific compliance claim",
+  "font": "Microsoft YaHei",
+  "dpi": 220,
+  "replication": "3 scenario seeds; within-seed paired repeated conditions averaged",
+  "uncertainty": "sample SD across seed means; not a confidence interval",
+  "source_sha256": "9db2acb8cf36fb97b8e5eaefe6db6764f7e1ab5310d17b9c80ea5b354a0566eb",
+  "hash_format": "UTF-8 with LF line endings",
+  "files": [
+    "信息时效参数消融.png",
+    "数据缺失率与风险暴露.png",
+    "观测延迟与风险暴露.png",
+    "触发式重规划时间线.png"
+  ],
+  "alt_text": {
+    "观测延迟与风险暴露": "比较四种方法在不同观测延迟下的种子平均风险暴露。",
+    "数据缺失率与风险暴露": "比较四种方法在不同数据缺失率下的种子平均风险暴露。",
+    "信息时效参数消融": "可信优先的三种时效性设置；统一尺度与所选单一降雨源尺度相同。",
+    "触发式重规划时间线": "风险上升和小幅波动两种场景中，比较风险暴露及重新规划次数。"
+  }
+}

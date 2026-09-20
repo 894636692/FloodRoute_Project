@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-20",
+  "test_command": "python -m unittest discover -s tests -q",
+  "tests": 78,
+  "duration_seconds": 50.745,
+  "passed": true,
+  "old_tests_preserved": 57,
+  "new_tests": 21,
+  "full_ui_replay_frames": 17,
+  "streamlit_health": "ok",
+  "local_url": "http://127.0.0.1:8502",
+  "manual_visual_review": "pending",
+  "visual_review_blocker": "Browser connection: nodeRepl.fetch request failed",
+  "chart_files_visually_reviewed": 4,
+  "independent_experiment_runs": 2,
+  "heldout_route_count": 4320,
+  "stable_ref": "73cae1aaf0cfe33405b0536592e1a2d89486870c",
+  "test_log_sha256": "cfe05a63dee8baf5674dbf45d2a17d603beecbd0a786a7fa5b8ab252799eb6b4"
+}
