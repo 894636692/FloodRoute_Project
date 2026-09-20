@@ -1,0 +1,13 @@
+{
+  "routing_profile": "candidate motor roads",
+  "comparisons": {
+    "independent": {
+      "rows": 360,
+      "repeat_identical_excluding_wall_clock": true
+    },
+    "replay": {
+      "rows": 51,
+      "repeat_identical_excluding_wall_clock": true
+    }
+  }
+}

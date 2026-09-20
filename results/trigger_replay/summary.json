@@ -1,40 +1,5 @@
 {
-  "timestamp": "2026-09-18T00:40:00+08:00",
-  "routes": {
-    "shortest": {
-      "distance_m": 10279.902722198703,
-      "risk_exposure": 0.2990348993157545,
-      "max_risk": 0.37647919583513495,
-      "p95_risk": 0.36827504204273354,
-      "high_risk_length_ratio": 0.0,
-      "confidence": 0.8449326787406763,
-      "freshness": 0.999999999991326,
-      "uncertainty": 0.15506732125199446,
-      "computation_ms": 26.571700000204146
-    },
-    "risk": {
-      "distance_m": 10361.510411375662,
-      "risk_exposure": 0.28961170667278924,
-      "max_risk": 0.37647919583513495,
-      "p95_risk": 0.3694798271752362,
-      "high_risk_length_ratio": 0.0,
-      "confidence": 0.8449332089648887,
-      "freshness": 0.9999999999907696,
-      "uncertainty": 0.15506679102731183,
-      "computation_ms": 18.199500045739114
-    },
-    "trusted": {
-      "distance_m": 10361.510411375662,
-      "risk_exposure": 0.28961170667278924,
-      "max_risk": 0.37647919583513495,
-      "p95_risk": 0.3694798271752362,
-      "high_risk_length_ratio": 0.0,
-      "confidence": 0.8449332089648887,
-      "freshness": 0.9999999999907696,
-      "uncertainty": 0.15506679102731183,
-      "computation_ms": 17.42929994361475
-    }
-  },
+  "data_type": "SIMULATED_SCENARIO",
   "config": {
     "schema_version": "final-v1",
     "static_path": "data/derived/static/road_static_features.gpkg",
@@ -124,6 +89,39 @@
       "universal_tau_min": 60
     }
   },
-  "rain_mm_min": 0.0,
-  "rain_mm_max": 0.0
+  "observed": {
+    "delay_min": 30,
+    "missing": 0.2,
+    "noise": 0.1
+  },
+  "summary": [
+    {
+      "policy": "always",
+      "replan_count": 16,
+      "route_change_count": 9,
+      "planner_calls": 17,
+      "truth_exposure": 0.5432383862878915,
+      "distance_m": 10314.973378978568,
+      "computation_ms": 1926.965500053484
+    },
+    {
+      "policy": "never",
+      "replan_count": 0,
+      "route_change_count": 0,
+      "planner_calls": 1,
+      "truth_exposure": 0.5470319888137471,
+      "distance_m": 10279.902722198703,
+      "computation_ms": 1602.9543000622652
+    },
+    {
+      "policy": "triggered",
+      "replan_count": 2,
+      "route_change_count": 0,
+      "planner_calls": 3,
+      "truth_exposure": 0.5470319888137471,
+      "distance_m": 10279.902722198703,
+      "computation_ms": 1628.796599979978
+    }
+  ],
+  "metric_note": "Fixed OD repeated decisions, not vehicle movement. Exposure is mean of length-weighted snapshot exposures. Counts exclude initial plan."
 }

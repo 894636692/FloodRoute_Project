@@ -11,6 +11,7 @@ from floodroute.dynamic.grid_source import read_rainfall
 from floodroute.risk.dynamic import map_rainfall
 from floodroute.risk.trusted import RiskEngine
 from floodroute.routing.router import RoadNetworkRouter
+from floodroute.routing.access import motor_edges
 from floodroute.common.schema import RouteRequest
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -31,23 +32,14 @@ class Runtime:
         for path, digest in manifest['input_sha256'].items():
             if fingerprint(ROOT/path)!=digest: raise ValueError('Stale grid mapping: rebuild for '+path)
         self.engine=RiskEngine(self.edges,self.config)
-        self.router=RoadNetworkRouter(self.edges)
+        self.router=RoadNetworkRouter(motor_edges(self.edges))
 
     def observed_state(self, observed, timestamp):
         rain=map_rainfall(observed,self.weights,self.coverage,timestamp)
         return self.engine.compute({'rain':rain})
 
     def plan(self, state, request):
-        # Explicit adapter retains B's directed routing service while migrating the engine.
-        mode=request.mode
-        if mode=='risk_uncertainty':
-            state=state.copy(); state['risk']=state.risk_uncertainty
-            request=replace(request,mode='risk')
-        states={idx:SimpleNamespace(risk=row.risk, trusted_risk=row.trusted_risk, confidence=row.confidence)
-                for idx,row in zip(state.index,state.itertuples(index=False))}
-        route=self.router.plan(request,states)
-        route.mode=mode
-        return route
+        return self.router.plan_frame(request,state,self.config['routing'])
 
 
 def route_metrics(route, state, lengths, high_risk=.65):

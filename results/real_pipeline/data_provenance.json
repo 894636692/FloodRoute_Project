@@ -5,6 +5,11 @@
   "time_semantics": "Asia/Shanghai preceding hour ending at FORECASTTIME; user confirmed",
   "retrieved_at": "unknown; snapshot replay demonstrates ingestion, not historical online availability",
   "risk_output": "road flood risk index, not water depth",
+  "routing_network": {
+    "profile": "candidate motor roads; excludes explicit restricted access; turn restrictions not modelled",
+    "formal_edges": 112218,
+    "routing_edges": 55727
+  },
   "sha256": {
     "data/derived/static/road_static_features.gpkg": "768982eb7ca617e0845082d4b6d846ae7e284d9128f82952c9db8a8bb6600aec",
     "data/derived/dynamic/shenzhen_grid/rainfall.csv": "a91e80cbf69fdfdd4a695af880ea076ac04357de4e730e63691fc4e902d31742",

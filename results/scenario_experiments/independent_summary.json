@@ -1,0 +1,173 @@
+{
+  "data_type": "SIMULATED_SCENARIO",
+  "rows": 360,
+  "config": {
+    "schema_version": "final-v1",
+    "static_path": "data/derived/static/road_static_features.gpkg",
+    "rainfall_path": "data/derived/dynamic/shenzhen_grid/rainfall.csv",
+    "grids_path": "data/derived/dynamic/shenzhen_grid/grid_cells.csv",
+    "mapping_path": "data/derived/mappings/edge_grid_weights.parquet",
+    "sources": {
+      "rain": {
+        "active": true,
+        "tau_min": 45,
+        "scale": 80,
+        "weight": 0.55
+      },
+      "water": {
+        "active": false,
+        "tau_min": 20,
+        "scale": 80,
+        "weight": 0.2
+      },
+      "forecast": {
+        "active": false,
+        "tau_min": 90,
+        "scale": 80,
+        "weight": 0.15
+      }
+    },
+    "static": {
+      "weight": 0.45,
+      "missing_prior": 0.5,
+      "low_elev_norm": 0.42,
+      "flatness_risk": 0.24,
+      "builtup_frac": 0.22,
+      "water_frac": 0.1,
+      "vegetation_relief": 0.02
+    },
+    "uncertainty": {
+      "base": 0.08,
+      "missing": 0.5,
+      "quality": 0.15,
+      "static_missing": 0.3
+    },
+    "trusted": {
+      "uncertainty_weight": 0.3,
+      "staleness_weight": 0.25
+    },
+    "routing": {
+      "risk_alpha": 4.0,
+      "trusted_alpha": 4.8,
+      "default_speed_mps": 8.0,
+      "high_risk": 0.65
+    },
+    "scenario": {
+      "random_seed": 20260920,
+      "start": "2023-09-07T12:00:00+08:00",
+      "steps": 17,
+      "step_min": 15,
+      "peak_mm": 120,
+      "background_mm": 2,
+      "width_fraction": 0.12
+    },
+    "trigger": {
+      "min_confidence": 0.55,
+      "high_risk_ratio": 0.22,
+      "risk_increase": 0.08,
+      "cooldown_min": 30,
+      "minimum_improvement": 0.03,
+      "hysteresis": 0.03
+    },
+    "experiment": {
+      "delays_min": [
+        0,
+        15,
+        30,
+        60,
+        120
+      ],
+      "missing_rates": [
+        0,
+        0.2,
+        0.4
+      ],
+      "noise_levels": [
+        0,
+        0.1,
+        0.2
+      ],
+      "universal_tau_min": 60
+    }
+  },
+  "summary": [
+    {
+      "mode": "risk",
+      "tau_policy": "source_specific",
+      "distance_m": 10329.333066665396,
+      "truth_exposure": 0.6363614107451393,
+      "high_risk_length_ratio": 0.4244415016834313,
+      "computation_ms": 98.57285333047103
+    },
+    {
+      "mode": "risk",
+      "tau_policy": "universal",
+      "distance_m": 10329.333066665396,
+      "truth_exposure": 0.6363614107451393,
+      "high_risk_length_ratio": 0.4244415016834313,
+      "computation_ms": 97.32907777781494
+    },
+    {
+      "mode": "risk_uncertainty",
+      "tau_policy": "source_specific",
+      "distance_m": 10305.32521237047,
+      "truth_exposure": 0.6363158277691612,
+      "high_risk_length_ratio": 0.4250194385653325,
+      "computation_ms": 98.62854222689445
+    },
+    {
+      "mode": "risk_uncertainty",
+      "tau_policy": "universal",
+      "distance_m": 10305.32521237047,
+      "truth_exposure": 0.6363158277691612,
+      "high_risk_length_ratio": 0.4250194385653325,
+      "computation_ms": 97.73392000546058
+    },
+    {
+      "mode": "shortest",
+      "tau_policy": "source_specific",
+      "distance_m": 10279.902722198703,
+      "truth_exposure": 0.6421914589263749,
+      "high_risk_length_ratio": 0.4294832288463664,
+      "computation_ms": 98.51075778715312
+    },
+    {
+      "mode": "shortest",
+      "tau_policy": "universal",
+      "distance_m": 10279.902722198703,
+      "truth_exposure": 0.6421914589263749,
+      "high_risk_length_ratio": 0.4294832288463664,
+      "computation_ms": 97.37850222995297
+    },
+    {
+      "mode": "trusted",
+      "tau_policy": "source_specific",
+      "distance_m": 10294.545194079537,
+      "truth_exposure": 0.6386446854345984,
+      "high_risk_length_ratio": 0.4275462298935535,
+      "computation_ms": 98.99540667085805
+    },
+    {
+      "mode": "trusted",
+      "tau_policy": "universal",
+      "distance_m": 10297.678112527501,
+      "truth_exposure": 0.6379985927687505,
+      "high_risk_length_ratio": 0.42655500003196906,
+      "computation_ms": 97.85040889400989
+    }
+  ],
+  "request": {
+    "start_lon": 114.03,
+    "start_lat": 22.535,
+    "goal_lon": 114.09,
+    "goal_lat": 22.57,
+    "timestamp": "2023-09-07T14:00:00+08:00",
+    "mode": "trusted"
+  },
+  "input_sha256": {
+    "data/derived/static/road_static_features.gpkg": "768982eb7ca617e0845082d4b6d846ae7e284d9128f82952c9db8a8bb6600aec",
+    "data/derived/dynamic/shenzhen_grid/grid_cells.csv": "14260763dbd5c69f541e59e4020e20fc923c814e833fb7ae5b5a4f7dfd104063",
+    "data/derived/mappings/edge_grid_weights.parquet": "3211c158028937df8b70150ec1abe66514b1f66e301fc609f914d8a131f3ca80"
+  },
+  "interpretation": "Paired scenario comparisons; one deterministic seed and OD, not independent empirical flood events. One active source: tau comparison tests 45 vs 60 minutes only."
+}

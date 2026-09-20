@@ -23,6 +23,8 @@ def run():
         'time_semantics':'Asia/Shanghai preceding hour ending at FORECASTTIME; user confirmed',
         'retrieved_at':'unknown; snapshot replay demonstrates ingestion, not historical online availability',
         'risk_output':'road flood risk index, not water depth',
+        'routing_network':{'profile':'candidate motor roads; excludes explicit restricted access; turn restrictions not modelled',
+                           'formal_edges':len(runtime.edges),'routing_edges':len(runtime.router.edges)},
         'sha256':{cfg[key]:fingerprint(ROOT/cfg[key]) for key in ['static_path','rainfall_path','grids_path','mapping_path']}})
     print(metrics)
     return metrics

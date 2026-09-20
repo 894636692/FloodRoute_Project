@@ -9,6 +9,9 @@ from uuid import uuid4
 
 import geopandas as gpd
 import networkx as nx
+import numpy as np
+import pandas as pd
+import hashlib
 from shapely.geometry import LineString, mapping
 
 from floodroute.common.config import FloodRouteConfig
@@ -29,6 +32,10 @@ class PlannedRoute:
     confidence: float
     geometry: LineString
     edge_risks: list[float]
+    p95_risk: float = 0.0
+    high_risk_length_ratio: float = 0.0
+    freshness: float = 0.0
+    uncertainty: float = 0.0
     triggered: bool = False
     trigger_reason: str = ""
 
@@ -42,6 +49,10 @@ class PlannedRoute:
             "mean_risk": round(self.mean_risk, 4),
             "max_risk": round(self.max_risk, 4),
             "confidence": round(self.confidence, 4),
+            "p95_risk": self.p95_risk,
+            "high_risk_length_ratio": self.high_risk_length_ratio,
+            "freshness": self.freshness,
+            "uncertainty": self.uncertainty,
             "triggered": self.triggered,
             "trigger_reason": self.trigger_reason,
             "edge_ids": [[u, v, key] for u, v, key in self.edge_ids],
@@ -60,6 +71,18 @@ class RoadNetworkRouter:
         self.edges = static_edges.copy()
         self.graph = nx.MultiDiGraph()
         self._build_base_graph()
+        self.edge_index = pd.MultiIndex.from_frame(self.edges[['u','v','key']])
+        self.edge_positions = {edge_id:i for i,edge_id in enumerate(self.edge_index)}
+        self.edge_lengths = self.edges.length_m.to_numpy(float)
+        nodes = {}
+        for row in self.edges.itertuples():
+            for node, xy in [(int(row.u),row.geometry.coords[0]),(int(row.v),row.geometry.coords[-1])]:
+                if node in nodes and np.linalg.norm(np.array(nodes[node])-xy)>.01:
+                    raise ValueError('Inconsistent node coordinates')
+                nodes[node] = xy
+        self.nodes = gpd.GeoDataFrame({'osmid':list(nodes)},
+            geometry=gpd.points_from_xy([p[0] for p in nodes.values()],[p[1] for p in nodes.values()]),crs=self.edges.crs)
+        self.node_index = self.nodes.sindex
 
     @classmethod
     def from_gpkg(cls, path: str | Path, config: FloodRouteConfig | None = None) -> "RoadNetworkRouter":
@@ -82,18 +105,45 @@ class RoadNetworkRouter:
             )
 
     def nearest_node(self, lon: float, lat: float) -> int:
-        endpoints = []
-        for row in self.edges.itertuples():
-            endpoints.append({"osmid": int(row.u), "geometry": row.geometry.coords[0]})
-            endpoints.append({"osmid": int(row.v), "geometry": row.geometry.coords[-1]})
-        gdf = gpd.GeoDataFrame(
-            endpoints,
-            geometry=gpd.points_from_xy([item["geometry"][0] for item in endpoints], [item["geometry"][1] for item in endpoints]),
-            crs=self.edges.crs,
-        ).drop_duplicates("osmid")
+        if not np.isfinite([lon,lat]).all() or not (-180<=lon<=180 and -90<=lat<=90):
+            raise ValueError('Invalid longitude/latitude')
         target = gpd.GeoSeries.from_xy([lon], [lat], crs=DISPLAY_CRS).to_crs(self.edges.crs).iloc[0]
-        distances = gdf.geometry.distance(target)
-        return int(gdf.loc[distances.idxmin(), "osmid"])
+        indices, distances = self.node_index.nearest(target,return_all=False,return_distance=True)
+        if distances[0] > 2000:
+            raise ValueError('Requested point is over 2 km from network')
+        return int(self.nodes.iloc[indices[1,0]].osmid)
+
+    def plan_frame(self, request, frame, routing_config):
+        """Fast formal API: cached graph and spatial index; observed risk frame only."""
+        frame=frame.reindex(self.edge_index)
+        for col in ['risk','trusted_risk','risk_uncertainty','confidence']:
+            if not np.isfinite(frame[col]).all():raise ValueError('Missing/nonfinite edge state: '+col)
+        mode=request.mode
+        column={'shortest':'risk','risk':'risk','risk_uncertainty':'risk_uncertainty','trusted':'trusted_risk'}[mode]
+        alpha=routing_config['trusted_alpha'] if mode=='trusted' else routing_config['risk_alpha']
+        costs=self.edge_lengths if mode=='shortest' else self.edge_lengths*(1+alpha*frame[column].to_numpy())
+        def weight(u,v,choices):
+            return min(costs[self.edge_positions[(u,v,k)]] for k in choices)
+        start=self.nearest_node(request.start_lon,request.start_lat)
+        goal=self.nearest_node(request.goal_lon,request.goal_lat)
+        if start==goal:raise ValueError('Start and goal snap to the same node; choose distinct points')
+        nodes=nx.shortest_path(self.graph,start,goal,weight=weight)
+        ids=[];coordinates=[]
+        for u,v in zip(nodes[:-1],nodes[1:]):
+            key=min(self.graph[u][v],key=lambda k:costs[self.edge_positions[(u,v,k)]])
+            ids.append((int(u),int(v),int(key)))
+            xy=list(self.graph[u][v][key]['geometry'].coords)
+            coordinates.extend(xy[1:] if coordinates else xy)
+        positions=[self.edge_positions[e] for e in ids];selected=frame.iloc[positions]
+        lengths=self.edge_lengths[positions];risk=selected.risk.to_numpy()
+        order=np.argsort(risk); cumulative=np.cumsum(lengths[order])/lengths.sum()
+        p95=risk[order][min(np.searchsorted(cumulative,.95),len(risk)-1)]
+        mean=lambda col:float(np.average(selected[col],weights=lengths))
+        route_id='V1-'+hashlib.sha256(json.dumps([ids,mode,request.timestamp]).encode()).hexdigest()[:12]
+        return PlannedRoute(route_id,mode,list(map(int,nodes)),ids,float(lengths.sum()),
+            float(lengths.sum()/routing_config['default_speed_mps']),mean('risk'),float(risk.max()),mean('confidence'),
+            LineString(coordinates),list(map(float,risk)),float(p95),
+            float(lengths[risk>=routing_config['high_risk']].sum()/lengths.sum()),mean('freshness'),mean('uncertainty'))
 
     def _weight_name(self, mode: str) -> str:
         if mode == "shortest":
@@ -164,9 +214,10 @@ class RoadNetworkRouter:
             else:
                 coordinates.extend(coords)
         geometry = LineString(coordinates)
-        mean_risk = sum(risks) / len(risks) if risks else 0.0
+        lengths = [graph[u][v][key]['length_m'] for u,v,key in edge_ids if (u,v,key) in states]
+        mean_risk = float(np.average(risks, weights=lengths)) if risks else 0.0
         max_risk = max(risks) if risks else 0.0
-        confidence = sum(confidences) / len(confidences) if confidences else 0.0
+        confidence = float(np.average(confidences, weights=lengths)) if confidences else 0.0
         return PlannedRoute(
             route_id=f"R-{uuid4().hex[:8]}",
             mode=request.mode,
