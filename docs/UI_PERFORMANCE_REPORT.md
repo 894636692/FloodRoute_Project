@@ -1,79 +1,85 @@
-# UI 性能修正报告
+# UI 端到端性能验收报告
 
 日期：2026-09-20。分支：`experiment-ui/v1.1`。人工目视验收：**pending**。
 
-本轮只改变 UI、展示资产和资源缓存。正式 GIS、真实动态数据、风险/寻路/Trigger 算法、选参配置及 Experiment v2 结果未修改。寻路仍使用全部 **55,727** 条候选机动车道路。
+本轮只优化地图的装载与状态更新路径。风险、Routing、Trigger、实验参数、实验结果和真实数据均未修改。测量使用浏览器 `performance.now()`，从用户动作开始计时，到页面上 marker、路线或指标真正可见为止；Python 计时只作为其中的诊断子阶段。
 
-## 诊断与测量范围
+## 验收方法
 
-采用 `time.perf_counter`，记录冷启动资源、静态数据读取、图构建、节点索引、动态表读取、地图/道路/瓦片/起终点/路线创建、HTML/GeoJSON、吸附及规划阶段。
+- 浏览器：Codex In-app Browser（Chromium），视口 1920×1200。
+- 冷启动：3 次。每次关闭旧测试服务、重新启动 Streamlit、禁用浏览器缓存，再打开一个新 URL。
+- 热交互：起点点击 10 次、终点点击 10 次、路线规划 10 次。
+- 可见完成条件：目标 marker/路线和指标出现，并连续经过 3 次 `requestAnimationFrame`。
+- p90：线性插值，位置 `(n-1)×0.9`。
+- 在线瓦片：禁用浏览器缓存，单独记录 Leaflet `loading`/`load` 事件和 Resource Timing；不把瓦片时间混入应用内部延迟。
+- 原始捕获保存在本地 `work/ui_e2e_*.json`；可提交汇总为 `results/ui_end_to_end_performance.json`。
 
-基线地图函数取自提交 `e8efc43`，在当前环境重放；此比较冻结的是旧地图呈现，不是完整旧应用环境，动态源读取计时采用当前缓存实现，不能用于声称旧版完整冷启动加速。两个阶段均使用原本已选定的 `selected_v1_1.json`。基线动态 key 按事件变化，改后使用固定 key。同一进程只加载一次重资源，各操作复用资源。各阶段为单次本机样本，不是百分位或严格浏览器交互基准。
+基线的 10 条误分类终点事件和 1 条未造成 marker 变化的重复点击已排除并重新测量，排除原因与数量写入汇总 JSON。冷启动基线第 3 次出现 21.3 秒页面外壳、25.5 秒地图可交互的真实异常值；报告保留原值，因此 n=3 的基线 p90 很高，不将其隐藏为“平均表现”。
 
-额外调用真实 `streamlit_folium.st_folium` 序列化链路，仅替换最终浏览器传输函数以捕获组件参数。表中为**地图创建、组件序列化、吸附（选点时）及风险/寻路（规划时）的 Python 时间**，不含 Streamlit 全部布局、WebSocket 传输、浏览器绘制、瓦片网络。因此不能据此宣布用户点击总耗时达标。
+## 用户可见结果
 
-| 操作 | 修改前 / ms | 修改后 / ms |
-|---|---:|---:|
-| 在线 · 普通热刷新 | 2485.9 | 5.1 |
-| 在线 · 选起点 | 2613.8 | 6.2 |
-| 在线 · 选终点 | 2607.6 | 6.4 |
-| 在线 · 规划路线 | 2720.9 | 148.0 |
-| 离线 · 普通热刷新 | 2542.6 | 124.3 |
-| 离线 · 选起点 | 2619.4 | 129.1 |
-| 离线 · 选终点 | 2735.2 | 124.5 |
-| 离线 · 规划路线 | 2732.4 | 267.1 |
+| 指标 | 修改前 median / p90 / min / max | 修改后 median / p90 / min / max | 目标 | 结论 |
+|---|---:|---:|---:|---|
+| 页面外壳可见（3次） | 1437.6 / 17297.8 / 1360.9 / 21262.8 ms | 318.8 / 320.9 / 292.7 / 321.4 ms | median < 1000 ms | 通过 |
+| 地图可点击（3次） | 6322.9 / 21660.3 / 6094.6 / 25494.6 ms | 2257.0 / 2265.1 / 2228.9 / 2267.1 ms | 尽量 < 3000 ms、约不超过 5000 ms | 通过 |
+| 起点 marker 可见（10次） | 1708.4 / 2263.0 / 1577.7 / 2344.7 ms | 266.3 / 277.5 / 244.8 / 301.1 ms | median < 500、p90 < 1000 ms | 通过 |
+| 终点 marker 可见（10次） | 2275.6 / 2328.4 / 1526.3 / 2355.0 ms | 250.2 / 266.1 / 241.6 / 285.0 ms | median < 500、p90 < 1000 ms | 通过 |
+| 路线与新指标可见（10次） | 2885.6 / 2930.4 / 1809.4 / 2947.9 ms | 309.8 / 337.2 / 298.9 / 379.5 ms | median < 1000 ms | 通过 |
 
-冷资源初始化：修改前 3490 ms，修改后 3793 ms。首次动态表读取约 309 ms；首次轻量显示层加载约 10 ms。冷资源时间包含静态读取/图/索引子阶段，不能重复相加。独立 routing 为 19.5 ms，风险状态生成为 119.7 ms。
+中位数降幅分别为：页面外壳 77.8%，地图可点击 64.3%，起点点击 84.4%，终点点击 89.0%，路线规划 89.3%。
 
-`browser_first_structure_ms`、`browser_interactive_ms` 和 `external_tile_latency_ms` 均为 **null（未测得）**。本轮 Edge 重试仍返回 `nodeRepl.fetch request failed`，不能确认是否有外部瓦片瓶颈。3–5 秒首次可交互及三种浏览器宽度仍待人工验收。
+## 地图生命周期结论
 
-## 找到的主要问题
+基线确实存在完整重挂载，因此 `full_map_remount = true`：起点点击 6/10、终点点击 8/10、路线规划 10/10 发生 iframe、document、Leaflet map 和地图容器一起更换。
 
-- 完整道路 GeoJSON 每次加入在线/离线地图，单次生成 HTML 约 13.4 MB；真实组件序列化约 2.5–2.7 秒。
-- 旧组件 key 包含选点模式和递增序号；底图脚本本身也包含变动的起终点/路线，导致有效 key 改变、iframe 重新挂载。
-- 原 Runtime 已有缓存，不能把原卡顿归因于每次点击重建图。本轮把长度索引和动态表也缓存，并增加构造计数测试。
-- 瓦片网络没有测量证据，不能归因于它。
+优化后的 30 次热交互全部满足：
 
-## 实施措施
+- `full_map_remount = false`；iframe、document、Leaflet map、地图容器 ID 始终不变。
+- 点击起点/终点不会重新初始化 zoom/center；规划完成才按新路线执行 `fitBounds`。
+- 离线点击没有瓦片请求；在线瓦片层由持久组件独立管理。
+- 起终点更新调用 `setLatLng`；路线更新只替换 route layer。
+- 起点状态消息约 345–348 B，终点约 385–388 B，路线状态消息约 3425–3427 B。
+- 状态消息均为 JSON；`html_payload = false`，没有重新发送整张地图 HTML。
 
-1. `resources.load_runtime` 缓存完整 Runtime，复用静态表、路由图、节点与空间索引、格网映射；长度 lookup 单独缓存。动态源表及观测/时间列表使用 `cache_data`。解析规则不变。
-2. 在线模式只含 OSM 瓦片和增量覆盖物，不包含完整路网；署名保留。
-3. 离线新增独立展示资产：选取 26,367 条主要/住宅道路，合并反向重叠几何，在 EPSG:32650 下按 15 米简化后转回 WGS84、保留六位小数。资产 586,930 bytes，1 个 MultiLineString feature（内部仍含多段线）。路由模块从不读取此资产，正式路网保持完整。构建脚本及来源哈希见 manifest。
-4. `key="main_route_map"`，基础 Leaflet 脚本不随起终点、时间或路线变更；通过 `feature_group_to_add` 增量替换覆盖物。有效哈希测试证实在线、离线各自跨选点/规划保持一致；切换在线/离线会更换基础地图，属于有意重建。
-5. 选点只吸附和更新状态；旧结果保留并标记 stale，显示“规划条件已变化，请重新规划。”。旧路线暂时隐藏，旧指标/下载保留各自原始起终点和数据类型。只有提交规划或显式启动动态回放才执行规划逻辑。
-6. 保存 bounds、zoom 和由 bounds 推得的中心；同一地图实例直接保留当前视角，不用 Python 每次强制 setView。切换底图时无路线则恢复存储视角。新的路线用几何、点击点及吸附点一起计算 bounds，40 px padding、最大缩放16。客户端 revision guard 保证普通 rerun 不重复 fit；回放只在路线几何改变时 fit。
-7. 使用最后处理坐标去重，切换选择模式也不会误消费旧坐标。限制：组件只提供最后坐标，连续在完全同一坐标重复点击无法区分新事件；选另一个位置即可。有效点击与远距离拒绝均不会重复循环。
-8. 时间/策略/模拟参数纳入 form，点击“开始规划”或“动态回放”统一提交；场景保留在 form 外用于立即切换真实/模拟控件。未提交的表单字段是编辑草稿，后端在提交前不会将其视为新规划条件。
-9. 已启用 Streamlit 1.64 的工作区 fragment 和地图/回放 fragment。组件回调请求工作区 fragment 更新，使侧栏状态同步；浏览器组件初始化值的兼容后备路径可进行一次全页 rerun，但不重建资源、不规划。具名 fragment rerun 只能从 callback 调用，此约束已在回归中修正。依赖下限同步为1.64。
-10. 动态回放保持原17时次与原 ReplayController；先准备帧，再由定时 fragment 逐帧更新同一个组件。渲染计时器不运行算法，最后停止计时器。首次加载先给出标题/控件/指标占位和加载提示；热选点没有全页 spinner。
+实现位于 `src/floodroute/ui/components/leaflet_picker/`。本地 Leaflet 1.9.4 资源与离线展示道路随组件加载，浏览器中的 `L.Map` 只创建一次。Streamlit rerun 仍会更新页面状态，但不再销毁地图。
 
-## 地图体积
+## 内部、后端与瓦片分解
 
-| 内容 | 修改前 | 修改后 |
-|---|---:|---:|
-| 在线已规划完整 HTML（独立渲染检查） | 13,419,929 B | 25,586 B |
-| 离线已规划完整 HTML（独立渲染检查） | 13,419,333 B | 662,545 B |
-| 在线组件基础 script/header/html | 13,417,633 B（含路线） | 1,938 B（覆盖物另传） |
-| 离线组件基础 script/header/html | 13,417,144 B（含路线） | 638,696 B（覆盖物另传） |
-| 规划后增量覆盖物脚本 | 含在整个基础脚本中 | 22,181 B |
-| 显示道路 feature | 55,727 | 在线0 / 离线1个合并几何 |
+| 子阶段 | median / p90 / min / max |
+|---|---:|
+| Python 起点吸附 | 3.0 / 3.9 / 2.7 / 8.7 ms |
+| Python 终点吸附 | 2.9 / 3.3 / 2.6 / 4.0 ms |
+| Python 路由 | 12.8 / 14.1 / 12.3 / 17.2 ms |
+| Leaflet 起点状态渲染 | 4.9 / 6.6 / 2.9 / 7.0 ms |
+| Leaflet 终点状态渲染 | 4.2 / 6.1 / 1.3 / 11.0 ms |
+| Leaflet 路线状态渲染 | 2.3 / 11.2 / 1.4 / 12.0 ms |
 
-组件基础脚本仍可能随 Streamlit 消息发送，不能把22KB称为完整网络传输量；关键是基础脚本/组件身份稳定，Leaflet 实例与瓦片不因普通选点重建。JSON 记录每阶段有效key及字节数。
+用户可见总耗时减去 Python 子阶段后，起点、终点、路线的中位数分别为 263.1、247.6、296.6 ms。这一余量包含 Streamlit rerun、WebSocket/组件消息调度和浏览器绘制，无法仅凭单个时钟再精确拆成三项，所以 JSON 使用 `streamlit_transport_and_browser_residual` 命名，避免误称为纯渲染耗时。
 
-## 缓存与回归
+禁用缓存的在线 OSM 测量加载 21 张瓦片：从切换在线底图前到全部完成为 335.5 ms；Leaflet `loading` 到 `load` 为 166.4 ms；最长单张资源 164.0 ms；测量结束时待加载 0 张。组件状态渲染只用 5.7 ms。Marker 和路线属于独立 Leaflet layer，不等待瓦片下载，因此 `external_tile_latency` 与 `internal_interaction_latency` 已解耦。
 
-profile 中静态读取、图构建、节点索引均计数1，after 连续三次调用缓存 loader 返回同一实例。新增16项性能架构测试覆盖真实组件有效key、点击不规划、只提交规划、缓存、去重、视角、stale、fit guard、bounds、在线去道路及显示资产隔离。保留原78项断言，完整测试 **94项全部通过**（39.947秒），日志 `work/ui_final_performance_tests.log`，最终状态见 FINAL_STATUS_V1_1.md。
+## 改动
 
-Python 阶段已明显低于1秒，没有证据达到必须重写自定义 Leaflet 组件的条件，本轮保留 Folium。真实前端性能仍需人工计时；若后续仍慢，再据浏览器证据决定下一步。
+1. 在页面标题和侧栏框架显示后，后台预加载 Runtime；首次地图先显示轻量组件和“地图正在加载……”，不等待图、空间索引和动态表初始化。
+2. 用最小持久 Leaflet 组件替换 `streamlit-folium` 地图输出。Python 只发送 marker、route、bounds、瓦片模式、revision 和后端诊断时间。
+3. 地图点击只把经纬度与 request ID 发给 Streamlit；Python 吸附后返回吸附点，前端只更新对应 marker。
+4. 在线瓦片层独立开关；离线道路从本地组件资产读取。Marker/route 更新不触发 tile layer 重建。
+5. 增加浏览器探针、仅本机诊断服务和汇总脚本。正式服务仍由 `scripts/run_demo.py` 启动。
 
-## 复现
+## 瓶颈判断
+
+修改前首要瓶颈是 `streamlit-folium` iframe/Leaflet 完整重挂载和大地图 HTML 序列化。修改后它已消失。热交互中 Python 只占约 3–13 ms，Leaflet 更新约 2–12 ms；剩余约 0.25–0.30 秒主要位于 Streamlit rerun、组件消息传输和浏览器提交绘制的组合路径。该余量已达到本轮目标，没有证据支持继续修改算法或数据。
+
+首次地图约 2.26 秒，主要仍是 Streamlit 首次会话、组件 iframe 和本地地图资产初始化。在线瓦片本次为 0.34 秒，且不阻塞 marker/route；若用户网络环境更慢，应单独归因为外部 tile 网络，而不是 Python snapping/routing。
+
+## 回归与复现
+
+性能阈值没有写入普通单元测试，避免机器与网络波动造成假失败。架构测试检查持久组件只创建一次地图、使用增量 marker/route 更新、应用不再调用 `st_folium`，并保留全部原功能测试。
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/profile_ui.py --stage before
-.\.venv\Scripts\python.exe scripts/profile_ui.py --stage after
+.\.venv\Scripts\python.exe scripts\summarize_ui_performance.py
 .\.venv\Scripts\python.exe -m unittest discover -s tests -q
+python scripts/run_demo.py --server.port=8502
 ```
 
-展示层再生成：`python scripts/build_display_roads.py`。该命令只更新显示资产，不写正式数据。缓存跨会话共享；有意更新输入文件后应重启服务或清缓存再使用新文件。本轮没有更新输入数据。
-
-证据：`results/ui_performance_before.json`、`results/ui_performance_after.json`。Streamlit fragment 行为参考[官方文档](https://docs.streamlit.io/develop/api-reference/execution-flow/st.fragment)。
+汇总证据：[ui_end_to_end_performance.json](../results/ui_end_to_end_performance.json)。人工检查表仍在 [UI_FINAL_REVIEW.md](UI_FINAL_REVIEW.md)，所有项目继续保持未勾选。

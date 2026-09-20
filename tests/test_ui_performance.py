@@ -122,6 +122,20 @@ class PerformanceArchitectureTests(unittest.TestCase):
         self.assertLess(manifest['display_bytes'],1_000_000)
         self.assertIn('never routing',manifest['use'])
 
+    def test_persistent_leaflet_component_updates_layers_in_place(self):
+        javascript=(ROOT/'src/floodroute/ui/components/leaflet_picker/frontend/picker.js').read_text(encoding='utf-8')
+        self.assertEqual(javascript.count('L.map('),1)
+        self.assertIn("markers[k].setLatLng(ll)",javascript)
+        self.assertIn('if(route)map.removeLayer(route)',javascript)
+        self.assertIn('map.fitBounds(args.bounds',javascript)
+        self.assertNotIn('document.write',javascript)
+
+    def test_app_uses_persistent_component_not_st_folium(self):
+        source=(ROOT/'src/floodroute/ui/app_v1_1.py').read_text(encoding='utf-8')
+        self.assertIn('leaflet_picker(',source)
+        self.assertIn('preload_runtime()',source)
+        self.assertNotIn('st_folium(',source)
+
     def test_runtime_resource_cache(self):
         from floodroute.ui import resources
         resources.load_runtime.clear()
@@ -147,7 +161,7 @@ class PerformanceArchitectureTests(unittest.TestCase):
         runtime=load_runtime()
         point=runtime.router.nodes.to_crs(4326).geometry.iloc[0]
         event={'last_clicked':{'lng':point.x,'lat':point.y}}
-        with patch('streamlit_folium.st_folium',return_value=event), patch.object(runtime,'plan',wraps=runtime.plan) as plan:
+        with patch('floodroute.ui.components.leaflet_picker.leaflet_picker',return_value=event), patch.object(runtime,'plan',wraps=runtime.plan) as plan:
             app=AppTest.from_file(str(ROOT/'src/floodroute/ui/app_v1_1.py'),default_timeout=90).run()
             self.assertEqual(len(app.exception),0)
             self.assertIsNotNone(app.session_state['start']);plan.assert_not_called()

@@ -1,0 +1,572 @@
+{
+  "schema_version": 1,
+  "measured_at": "2026-09-20T22:02:00+08:00",
+  "measurement": {
+    "clock": "browser performance.now()",
+    "browser": "Codex In-app Browser (Chromium)",
+    "viewport": "1920x1200",
+    "cold_start_cache_disabled": true,
+    "cold_start_process_restart_each_sample": true,
+    "cold_start_repetitions": 3,
+    "warm_repetitions_per_event": 10,
+    "percentile_method": "linear interpolation, rank=(n-1)*p",
+    "visible_completion_rule": "requested marker/route and metrics present for three requestAnimationFrame callbacks",
+    "note": "All user-visible intervals are end-to-end browser measurements. Python timings are diagnostic sub-intervals only."
+  },
+  "targets_ms": {
+    "page_shell_visible": {
+      "median_lt": 1000
+    },
+    "map_interactive": {
+      "preferred_median_lt": 3000,
+      "maximum_about": 5000
+    },
+    "start_click": {
+      "median_lt": 500,
+      "p90_lt": 1000
+    },
+    "goal_click": {
+      "median_lt": 500,
+      "p90_lt": 1000
+    },
+    "route_plan": {
+      "median_lt": 1000
+    }
+  },
+  "cold_start": {
+    "page_shell_visible": {
+      "before": {
+        "count": 3,
+        "min_ms": 1360.9,
+        "median_ms": 1437.6,
+        "p90_ms": 17297.8,
+        "max_ms": 21262.8,
+        "samples_ms": [
+          1437.6,
+          1360.9,
+          21262.8
+        ]
+      },
+      "after": {
+        "count": 3,
+        "min_ms": 292.7,
+        "median_ms": 318.8,
+        "p90_ms": 320.9,
+        "max_ms": 321.4,
+        "samples_ms": [
+          321.4,
+          318.8,
+          292.7
+        ]
+      },
+      "comparison": {
+        "median_saved_ms": 1118.8,
+        "median_reduction_percent": 77.8
+      }
+    },
+    "map_interactive": {
+      "before": {
+        "count": 3,
+        "min_ms": 6094.6,
+        "median_ms": 6322.9,
+        "p90_ms": 21660.3,
+        "max_ms": 25494.6,
+        "samples_ms": [
+          6322.9,
+          6094.6,
+          25494.6
+        ]
+      },
+      "after": {
+        "count": 3,
+        "min_ms": 2228.9,
+        "median_ms": 2257,
+        "p90_ms": 2265.1,
+        "max_ms": 2267.1,
+        "samples_ms": [
+          2257.0,
+          2267.1,
+          2228.9
+        ]
+      },
+      "comparison": {
+        "median_saved_ms": 4065.9,
+        "median_reduction_percent": 64.3
+      }
+    }
+  },
+  "warm_interactions": {
+    "start_click": {
+      "before": {
+        "count": 10,
+        "min_ms": 1577.7,
+        "median_ms": 1708.4,
+        "p90_ms": 2263.0,
+        "max_ms": 2344.7,
+        "samples_ms": [
+          1683.6,
+          1577.7,
+          1733.2,
+          2253.9,
+          2344.7,
+          1583.3,
+          1589.6,
+          1895.9,
+          1635.7,
+          2026.4
+        ]
+      },
+      "after": {
+        "count": 10,
+        "min_ms": 244.8,
+        "median_ms": 266.3,
+        "p90_ms": 277.5,
+        "max_ms": 301.1,
+        "samples_ms": [
+          244.8,
+          274.9,
+          246.8,
+          263.7,
+          257.9,
+          301.1,
+          267.6,
+          274.2,
+          274.8,
+          265.0
+        ]
+      },
+      "comparison": {
+        "median_saved_ms": 1442.1,
+        "median_reduction_percent": 84.4
+      },
+      "target": {
+        "median_lt_ms": 500,
+        "p90_lt_ms": 1000,
+        "passed": true
+      }
+    },
+    "goal_click": {
+      "before": {
+        "count": 10,
+        "min_ms": 1526.3,
+        "median_ms": 2275.6,
+        "p90_ms": 2328.4,
+        "max_ms": 2355,
+        "samples_ms": [
+          1526.3,
+          2294.3,
+          1668.7,
+          2325.5,
+          2355.0,
+          2267.9,
+          2283.2,
+          2246.1,
+          1624.1,
+          2311.3
+        ]
+      },
+      "after": {
+        "count": 10,
+        "min_ms": 241.6,
+        "median_ms": 250.2,
+        "p90_ms": 266.1,
+        "max_ms": 285,
+        "samples_ms": [
+          285.0,
+          245.0,
+          248.2,
+          258.2,
+          258.1,
+          264.0,
+          246.0,
+          247.5,
+          241.6,
+          252.3
+        ]
+      },
+      "comparison": {
+        "median_saved_ms": 2025.4,
+        "median_reduction_percent": 89.0
+      },
+      "target": {
+        "median_lt_ms": 500,
+        "p90_lt_ms": 1000,
+        "passed": true
+      }
+    },
+    "route_plan": {
+      "before": {
+        "count": 10,
+        "min_ms": 1809.4,
+        "median_ms": 2885.6,
+        "p90_ms": 2930.4,
+        "max_ms": 2947.9,
+        "samples_ms": [
+          1809.4,
+          2888.5,
+          2907.9,
+          2882.7,
+          2818.6,
+          2928.5,
+          2900.8,
+          2947.9,
+          2493.9,
+          2784.3
+        ]
+      },
+      "after": {
+        "count": 10,
+        "min_ms": 298.9,
+        "median_ms": 309.8,
+        "p90_ms": 337.2,
+        "max_ms": 379.5,
+        "samples_ms": [
+          379.5,
+          299.8,
+          310.0,
+          332.5,
+          299.7,
+          309.7,
+          309.9,
+          299.5,
+          298.9,
+          321.5
+        ]
+      },
+      "comparison": {
+        "median_saved_ms": 2575.8,
+        "median_reduction_percent": 89.3
+      },
+      "target": {
+        "median_lt_ms": 1000,
+        "p90_lt_ms": null,
+        "passed": true
+      }
+    }
+  },
+  "map_lifecycle": {
+    "before": {
+      "start_click": {
+        "sample_count": 10,
+        "full_map_remount": true,
+        "full_map_remount_count": 6,
+        "iframe_remount_count": 6,
+        "document_replaced_count": 6,
+        "container_changed_count": 6,
+        "tile_request_delta_total": 0
+      },
+      "goal_click": {
+        "sample_count": 10,
+        "full_map_remount": true,
+        "full_map_remount_count": 8,
+        "iframe_remount_count": 8,
+        "document_replaced_count": 8,
+        "container_changed_count": 8,
+        "tile_request_delta_total": 0
+      },
+      "route_plan": {
+        "sample_count": 10,
+        "full_map_remount": true,
+        "full_map_remount_count": 10,
+        "iframe_remount_count": 10,
+        "document_replaced_count": 10,
+        "container_changed_count": 10,
+        "tile_request_delta_total": 0
+      }
+    },
+    "after": {
+      "start_click": {
+        "sample_count": 10,
+        "full_map_remount": false,
+        "full_map_remount_count": 0,
+        "iframe_remount_count": 0,
+        "document_replaced_count": 0,
+        "container_changed_count": 0,
+        "tile_request_delta_total": 0
+      },
+      "goal_click": {
+        "sample_count": 10,
+        "full_map_remount": false,
+        "full_map_remount_count": 0,
+        "iframe_remount_count": 0,
+        "document_replaced_count": 0,
+        "container_changed_count": 0,
+        "tile_request_delta_total": 0
+      },
+      "route_plan": {
+        "sample_count": 10,
+        "full_map_remount": false,
+        "full_map_remount_count": 0,
+        "iframe_remount_count": 0,
+        "document_replaced_count": 0,
+        "container_changed_count": 0,
+        "tile_request_delta_total": 0
+      }
+    },
+    "after_identifiers_stable": true,
+    "after_zoom_center_reinitialized_on_click": false,
+    "after_route_fit_bounds": true,
+    "after_map_html_payload_resent": false
+  },
+  "python_backend": {
+    "start_snap": {
+      "count": 10,
+      "min_ms": 2.7,
+      "median_ms": 3.0,
+      "p90_ms": 3.9,
+      "max_ms": 8.7,
+      "samples_ms": [
+        3.1,
+        2.7,
+        2.9,
+        2.8,
+        3.0,
+        8.7,
+        3.3,
+        2.9,
+        2.7,
+        3.0
+      ]
+    },
+    "goal_snap": {
+      "count": 10,
+      "min_ms": 2.6,
+      "median_ms": 2.9,
+      "p90_ms": 3.3,
+      "max_ms": 4.0,
+      "samples_ms": [
+        3.3,
+        3.0,
+        2.7,
+        2.7,
+        3.0,
+        4.0,
+        2.9,
+        2.9,
+        2.9,
+        2.6
+      ]
+    },
+    "route": {
+      "count": 10,
+      "min_ms": 12.3,
+      "median_ms": 12.8,
+      "p90_ms": 14.1,
+      "max_ms": 17.2,
+      "samples_ms": [
+        17.2,
+        13.8,
+        12.8,
+        13.0,
+        12.7,
+        13.6,
+        12.8,
+        12.6,
+        12.4,
+        12.3
+      ]
+    }
+  },
+  "leaflet_component_render": {
+    "start_click": {
+      "count": 10,
+      "min_ms": 2.9,
+      "median_ms": 4.9,
+      "p90_ms": 6.6,
+      "max_ms": 7.0,
+      "samples_ms": [
+        5.0,
+        4.8,
+        6.5,
+        5.2,
+        2.9,
+        7.0,
+        4.7,
+        6.6,
+        3.9,
+        3.1
+      ]
+    },
+    "goal_click": {
+      "count": 10,
+      "min_ms": 1.3,
+      "median_ms": 4.2,
+      "p90_ms": 6.1,
+      "max_ms": 11.0,
+      "samples_ms": [
+        11.0,
+        4.8,
+        5.0,
+        3.3,
+        5.6,
+        3.7,
+        1.3,
+        2.4,
+        4.8,
+        1.3
+      ]
+    },
+    "route_plan": {
+      "count": 10,
+      "min_ms": 1.4,
+      "median_ms": 2.3,
+      "p90_ms": 11.2,
+      "max_ms": 12.0,
+      "samples_ms": [
+        11.1,
+        1.9,
+        2.6,
+        1.4,
+        1.5,
+        12.0,
+        2.1,
+        2.5,
+        1.6,
+        5.2
+      ]
+    }
+  },
+  "streamlit_transport_and_browser_residual": {
+    "start_click": {
+      "count": 10,
+      "min_ms": 241.7,
+      "median_ms": 263.1,
+      "p90_ms": 274.2,
+      "max_ms": 292.4,
+      "samples_ms": [
+        241.7,
+        272.2,
+        243.9,
+        260.9,
+        254.9,
+        292.4,
+        264.3,
+        271.3,
+        272.1,
+        262.0
+      ]
+    },
+    "goal_click": {
+      "count": 10,
+      "min_ms": 238.7,
+      "median_ms": 247.6,
+      "p90_ms": 262.2,
+      "max_ms": 281.7,
+      "samples_ms": [
+        281.7,
+        242.0,
+        245.5,
+        255.5,
+        255.1,
+        260.0,
+        243.1,
+        244.6,
+        238.7,
+        249.7
+      ]
+    },
+    "route_plan": {
+      "count": 10,
+      "min_ms": 286.0,
+      "median_ms": 296.6,
+      "p90_ms": 323.8,
+      "max_ms": 362.3,
+      "samples_ms": [
+        362.3,
+        286.0,
+        297.2,
+        319.5,
+        287.0,
+        296.1,
+        297.1,
+        286.9,
+        286.5,
+        309.2
+      ]
+    }
+  },
+  "component_payload": {
+    "start_click": {
+      "count": 10,
+      "min_bytes": 345,
+      "median_bytes": 347,
+      "p90_bytes": 348.0,
+      "max_bytes": 348,
+      "samples_bytes": [
+        348,
+        347,
+        348,
+        346,
+        347,
+        345,
+        348,
+        345,
+        348,
+        347
+      ]
+    },
+    "goal_click": {
+      "count": 10,
+      "min_bytes": 385,
+      "median_bytes": 386,
+      "p90_bytes": 388.0,
+      "max_bytes": 388,
+      "samples_bytes": [
+        385,
+        387,
+        386,
+        388,
+        386,
+        386,
+        385,
+        388,
+        386,
+        388
+      ]
+    },
+    "route_plan": {
+      "count": 10,
+      "min_bytes": 3425,
+      "median_bytes": 3426,
+      "p90_bytes": 3426.1,
+      "max_bytes": 3427,
+      "samples_bytes": [
+        3426,
+        3426,
+        3426,
+        3426,
+        3426,
+        3426,
+        3426,
+        3426,
+        3425,
+        3427
+      ]
+    }
+  },
+  "external_tile_latency": {
+    "measured_at": "2026-09-20T22:01:52+08:00",
+    "browser": "Codex In-app Browser (Chromium)",
+    "cache_disabled": true,
+    "mode": "online OpenStreetMap tiles",
+    "online_tile_complete_ms": 335.5,
+    "tile_loading_to_complete_ms": 166.4,
+    "component_render_ms": 5.7,
+    "tile_count": 21,
+    "pending_tiles": 0,
+    "max_resource_duration_ms": 164.0,
+    "min_resource_duration_ms": 3.7,
+    "notes": "Measured from the browser Performance API. The 335.5 ms interval starts immediately before the Streamlit checkbox event; 166.4 ms is Leaflet tile-loading to tile-load completion. Marker and route layers do not wait for tile completion."
+  },
+  "baseline_capture_exclusions": {
+    "count": 11,
+    "reason": "10 misclassified goal events excluded and repeated; one existing-marker click excluded"
+  },
+  "raw_capture_files": [
+    "work/ui_e2e_before.json",
+    "work/ui_e2e_after.json",
+    "work/ui_e2e_cold_before.json",
+    "work/ui_e2e_cold_after.json",
+    "work/ui_e2e_tiles.json"
+  ]
+}

@@ -7,6 +7,16 @@ LOAD_COUNTS = {'runtime': 0, 'display': 0}
 
 
 @st.cache_resource(show_spinner=False)
+def preload_runtime():
+    """Share one background load; only a click/plan waits if it is still running."""
+    from concurrent.futures import ThreadPoolExecutor
+    pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix='floodroute-load')
+    future = pool.submit(load_runtime)
+    future.add_done_callback(lambda _: pool.shutdown(wait=False))
+    return future
+
+
+@st.cache_resource(show_spinner=False)
 def load_runtime():
     LOAD_COUNTS['runtime'] += 1
     path = ROOT/'config/selected_v1_1.json'

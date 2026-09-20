@@ -4,17 +4,7 @@ import sys
 import json
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / 'src'))
-import pandas as pd
 import streamlit as st
-import networkx as nx
-from streamlit_folium import st_folium
-from floodroute.runtime import route_metrics
-from floodroute.experiments.replay import ReplayController
-from floodroute.ui.controller import (MODES, can_plan, clear_points, swap_points,
-    consume_map_event, complete_plan, make_request, replay_message)
-from floodroute.ui.map_view import build_map, overlays, MAP_KEY
-from floodroute.ui.resources import load_runtime, edge_lengths, display_roads
-from floodroute.ui.observations import scenario_times, get_observations
 
 st.set_page_config(page_title='涝途智避', layout='wide', initial_sidebar_state='expanded')
 st.markdown('<style>[data-testid="stAppDeployButton"],#MainMenu,footer{display:none;}'
@@ -53,6 +43,22 @@ for k, value in dict(start=None, goal=None, result=None, click_error=None,
 
 st.title('涝途智避')
 st.caption('深圳城市内涝风险评估与应急路径规划实验系统')
+with st.sidebar:
+    st.header('规划条件')
+
+# Render the shell before importing GIS resources. Resource loading runs in the
+# background; the map's local assets can become interactive independently.
+import pandas as pd
+import networkx as nx
+from time import perf_counter
+from floodroute.runtime import route_metrics
+from floodroute.experiments.replay import ReplayController
+from floodroute.ui.controller import (MODES, can_plan, clear_points, swap_points,
+    consume_map_event, complete_plan, make_request, replay_message)
+from floodroute.ui.map_view import MAP_KEY
+from floodroute.ui.components.leaflet_picker import leaflet_picker
+from floodroute.ui.resources import preload_runtime, edge_lengths
+from floodroute.ui.observations import scenario_times, get_observations
 
 
 def display_time(value):
@@ -80,14 +86,13 @@ def endpoint_status():
 def workspace():
     # Layout placeholders exist before the first heavy resource load. Subsequent
     # interactions rerun this fragment and reuse the graph, indexes and tables.
-    note_slot = st.empty()
-    panel_slot = st.empty()
+    note_slot = st.container()
+    panel_slot = st.container()
     def edit_points(action):
         action(st.session_state, keep_result=True)
         st.session_state.playback_active = False
 
     with st.sidebar:
-        st.header('规划条件')
         scene = st.selectbox('数据场景', list(SCENES))
         kind = SCENES[scene]
         times = scenario_times(kind)
@@ -125,11 +130,22 @@ def workspace():
         st.session_state.result_stale = st.session_state.result is not None
         st.session_state.playback_active = False
         st.session_state.last_conditions = signature
-    if not st.session_state.get('resources_ready'):
-        panel_slot.markdown('**正在加载地图……**  \n路径距离：— ｜ 风险暴露：— ｜ 可信度：— ｜ 信息新鲜度：—  \n不确定性：— ｜ 预计行程：— ｜ 重规划状态：—')
-    runtime = load_runtime()
-    st.session_state.resources_ready = True
-    lengths = edge_lengths()
+    resource_future = preload_runtime()
+    if plan or replay:
+        runtime = resource_future.result()
+        lengths = edge_lengths()
+
+    def consume_event(event):
+        wait_at = perf_counter()
+        click_runtime = resource_future.result()
+        wait_ms = (perf_counter()-wait_at)*1000
+        started = perf_counter()
+        changed = consume_map_event(st.session_state, click_runtime.router, event,
+                                    event.get('selection', selection), CFG['max_snap_distance_m'])
+        if changed:
+            st.session_state.backend_timing = {'request_id': event.get('request_id', 0),
+                'python_snapping_ms': (perf_counter()-started)*1000, 'resource_wait_ms': wait_ms}
+        return changed
 
     def package(route, state, at, label, status, message=''):
         return {'response': route.to_response(), 'metrics': route_metrics(route, state, lengths,
@@ -143,7 +159,9 @@ def workspace():
             with st.spinner('正在计算道路风险与路线…'):
                 observed = get_observations(kind, timestamp, delay, missing, noise)
                 state = runtime.observed_state(observed, timestamp)
+                routing_at = perf_counter()
                 route = runtime.plan(state, make_request(st.session_state, timestamp, mode))
+                st.session_state.backend_timing = {'python_routing_ms': (perf_counter()-routing_at)*1000}
                 complete_plan(st.session_state, package(route, state, timestamp, mode, '单次规划'))
         if replay:
             controller = ReplayController(runtime, 'triggered')
@@ -197,14 +215,10 @@ def workspace():
                     col.metric(label, value, help=HELPS.get(label))
         at = display_time(result['timestamp']) if result else '尚未规划'
         st.caption('当前结果：' + at + (' ｜ 在线底图：已开启' if online else ' ｜ 地图模式：离线实验地图'))
-        # Keep the base Leaflet script invariant across click/condition updates.
-        chart = build_map(None if online else display_roads(), {}, None, online, CFG)
         response = result['response'] if result and not stale else None
-        group = overlays(st.session_state, response, revision if response else None)
         def on_map_change():
             try:
-                changed = consume_map_event(st.session_state, runtime.router,
-                    st.session_state.get(MAP_KEY, {}), selection, CFG['max_snap_distance_m'])
+                changed = consume_event(st.session_state.get(MAP_KEY, {}) or {})
             except ValueError as exc:
                 st.session_state.click_error = str(exc)
                 changed = True
@@ -213,15 +227,12 @@ def workspace():
                 # Named fragment reruns are permitted from widget callbacks.
                 st.rerun('planning_workspace')
 
-        restore_view = st.session_state.get('last_map_online', online) != online and not response
-        st.session_state.last_map_online = online
-        event = st_folium(chart, key=MAP_KEY, on_change=on_map_change, height=560, use_container_width=True,
-                         feature_group_to_add=group,
-                         center=st.session_state.get('map_center') if restore_view else None,
-                         zoom=st.session_state.get('map_zoom') if restore_view else None,
-                         returned_objects=['last_clicked', 'bounds', 'zoom'])
+        event = leaflet_picker(st.session_state, response, revision, online, CFG, selection,
+                               timing=st.session_state.get('backend_timing'), key=MAP_KEY,
+                               on_change=on_map_change)
         try:
-            changed = consume_map_event(st.session_state, runtime.router, event or {}, selection, CFG['max_snap_distance_m'])
+            # An empty initial render must not wait for GIS loading.
+            changed = consume_event(event) if event else False
         except ValueError as exc:
             st.session_state.click_error = str(exc)
             changed = True
