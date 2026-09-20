@@ -33,8 +33,8 @@ def map_rainfall(observed, weights, coverage, timestamp):
         raise ValueError('Duplicate grid/timestamp not resolved')
     obs=obs.sort_values('timestamp').groupby('grid_id').tail(1)
     obs['age_min']=(t-obs.timestamp).dt.total_seconds()/60
-    obs['quality']=obs.quality_flag.map(quality_penalty)
-    bad=obs.quality_flag.map(lambda x: bool(set(str(x).lower().split(';')) & BAD))
+    obs['quality']=obs.quality_flag.map(quality_penalty).astype(float)
+    bad=obs.quality_flag.map(lambda x: bool(set(str(x).lower().split(';')) & BAD)).astype(bool)
     obs.loc[bad | ~np.isfinite(obs.rain_mm) | obs.rain_mm.lt(0),'rain_mm']=np.nan
     joined=weights.merge(obs[['grid_id','rain_mm','age_min','quality']],on='grid_id',how='left',validate='many_to_one')
     valid=joined.rain_mm.notna()
