@@ -119,9 +119,11 @@ def show_result(result, interactive=True, frame_key='map'):
                   f"{r['travel_time_s']/60:.1f} 分钟", result['status']]
         clock_slot.caption('当前结果时间：' + pd.Timestamp(result['timestamp']).strftime('%Y年%m月%d日 %H:%M'))
     with metric_slot.container():
-        for col, label, value in zip(st.columns(7),
-            ['路径距离', '风险暴露', '可信度', '信息新鲜度', '不确定性', '预计行程', '重规划状态'], values):
-            col.metric(label, value, help=HELPS.get(label))
+        labels = ['路径距离', '风险暴露', '可信度', '信息新鲜度', '不确定性', '预计行程', '重规划状态']
+        # Two short rows leave room for units/status when a browser sidebar is open.
+        for start, stop in [(0, 4), (4, 7)]:
+            for col, label, value in zip(st.columns(stop-start), labels[start:stop], values[start:stop]):
+                col.metric(label, value, help=HELPS.get(label))
     with map_slot.container():
         st.caption('在线底图已开启' if online else '当前为离线实验地图模式')
         chart = build_map(road_background(), st.session_state, result['response'] if result else None, online, CFG)
