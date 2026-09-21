@@ -7,5 +7,18 @@
   "coordinate_decimals": 6,
   "omitted_for_display": "service/link/other minor road classes; opposite directions visually merged",
   "source_sha256": "768982eb7ca617e0845082d4b6d846ae7e284d9128f82952c9db8a8bb6600aec",
-  "display_bytes": 586930
+  "display_bytes": 586930,
+  "map_query_assets": {
+    "use": "display/query only; never routing or experiment input",
+    "grid_features": 4232,
+    "grid_bytes": 775503,
+    "risk_source_motor_edges": 55727,
+    "risk_display_edges": 26254,
+    "risk_display_bytes": 4292024,
+    "risk_omitted_for_display": "service class and visually duplicate opposite directions",
+    "risk_simplification_m": 12,
+    "coordinate_decimals": 5,
+    "static_sha256": "768982eb7ca617e0845082d4b6d846ae7e284d9128f82952c9db8a8bb6600aec",
+    "grid_sha256": "4629fdcbf6d800c9c245cb597251ce0ffbfc6751c397e824df1bd8858be36e0a"
+  }
 }

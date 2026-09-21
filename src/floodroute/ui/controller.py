@@ -1,27 +1,37 @@
 """Small UI state functions. Inputs are clicked WGS84 points, never latent truth."""
 import geopandas as gpd
 import numpy as np
+from shapely.geometry import Point
 from floodroute.common.schema import RouteRequest
 
 MODES = {'最短路径': 'shortest', '风险优先': 'risk', '可信优先': 'trusted'}
-FAR_ERROR = '所选位置距离可规划道路较远，请重新选择靠近道路的位置。'
+FAR_ERROR = '该位置附近没有可规划道路，请选择道路附近的位置。'
 
 
-def snap_click(router, lon, lat, max_distance_m):
-    """Return clicked/snapped WGS84 coordinates and distance measured in UTM metres.
+def snap_click(router, lon, lat, max_distance_m, selectable_distance_m=None):
+    """Snap a WGS84 click to a motor road and retain a routable endpoint node.
 
-    Reuses the router's existing motor-road node table and spatial index.
+    Road proximity controls UI acceptance. The displayed marker is the closest
+    point on that road; ``snapped_node_id`` is the nearer endpoint used by the
+    existing router. All distances are calculated in EPSG:32650 metres.
     """
     if not np.isfinite([lon, lat]).all() or not (-180 <= lon <= 180 and -90 <= lat <= 90):
         raise ValueError('点击位置的经纬度无效，请重新选择。')
-    target = gpd.GeoSeries.from_xy([lon], [lat], crs=4326).to_crs(32650).iloc[0]
-    indices, distances = router.node_index.nearest(target, return_all=False, return_distance=True)
-    if distances[0] > max_distance_m:
+    target = gpd.GeoSeries([Point(lon, lat)], crs=4326).to_crs(router.edges.crs).iloc[0]
+    indices, distances = router.edges.sindex.nearest(target, return_all=False, return_distance=True)
+    road_distance = float(distances[0])
+    threshold = min(float(max_distance_m), float(selectable_distance_m or max_distance_m))
+    if road_distance > threshold:
         raise ValueError(FAR_ERROR)
-    node = router.nodes.iloc[indices[1, 0]]
-    point = gpd.GeoSeries([node.geometry], crs=32650).to_crs(4326).iloc[0]
-    return dict(clicked_lon=float(lon), clicked_lat=float(lat), snapped_node_id=int(node.osmid),
-                snapped_lon=point.x, snapped_lat=point.y, snap_distance_m=float(distances[0]))
+    edge = router.edges.iloc[int(indices[1, 0])]
+    projected = edge.geometry.interpolate(edge.geometry.project(target))
+    start, goal = Point(edge.geometry.coords[0]), Point(edge.geometry.coords[-1])
+    node_id = int(edge.u if projected.distance(start) <= projected.distance(goal) else edge.v)
+    point = gpd.GeoSeries([projected], crs=router.edges.crs).to_crs(4326).iloc[0]
+    return dict(clicked_lon=float(lon), clicked_lat=float(lat), snapped_node_id=node_id,
+                snapped_lon=float(point.x), snapped_lat=float(point.y),
+                snap_distance_m=road_distance,
+                snapped_edge_id=f'{int(edge.u)}:{int(edge.v)}:{int(edge.key)}')
 
 
 def can_plan(state):
@@ -30,7 +40,8 @@ def can_plan(state):
 
 
 def clear_points(state, keep_result=False):
-    state.update(start=None, goal=None, result=state.get('result') if keep_result else None, click_error=None)
+    state.update(start=None, goal=None, result=state.get('result') if keep_result else None,
+                 click_error=None, click_notice=None)
     state['result_stale'] = bool(keep_result and state.get('result'))
     state['map_epoch'] = state.get('map_epoch', 0) + 1
 
@@ -42,34 +53,51 @@ def swap_points(state, keep_result=False):
     state['map_epoch'] = state.get('map_epoch', 0) + 1
 
 
-def accept_click(state, router, click, selection, max_distance_m, keep_result=False):
+def accept_click(state, router, click, selection, max_distance_m,
+                 selectable_distance_m=None, keep_result=False):
     # Legacy callers can clear results; the current event consumer retains them
     # with an explicit stale flag and deduplicates without remounting the map.
-    point = snap_click(router, click['lng'], click['lat'], max_distance_m)
+    point = snap_click(router, click['lng'], click['lat'], max_distance_m, selectable_distance_m)
     state['start' if selection == '选择起点' else 'goal'] = point
     state['result_stale'] = bool(keep_result and state.get('result'))
     if not keep_result: state['result'] = None
     state['click_error'] = None
+    state['click_notice'] = None
     state['map_epoch'] = state.get('map_epoch', 0) + 1
     return point
 
 
-def consume_map_event(state, router, event, selection, max_distance_m):
-    """Consume each coordinate event once; never evaluate risk or search a route."""
+def consume_map_event(state, router, event, selection, max_distance_m,
+                      selectable_distance_m=None):
+    """Consume one map event without evaluating risk or searching a route.
+
+    Rejected endpoint clicks leave endpoints, result, centre and zoom untouched.
+    Information queries bypass the selectable-road threshold by design.
+    """
+    click=event.get('last_clicked')
+    if not click:return False
+    xy=(round(click['lat'],8),round(click['lng'],8))
+    request_id=event.get('request_id')
+    if request_id is not None and request_id == state.get('last_processed_request_id'):return False
+    # Test/legacy events have no request id; ignore their carried-over coordinate.
+    if request_id is None and xy == state.get('last_processed_coordinates'):return False
+    state['last_processed_request_id']=request_id
+    state['last_processed_coordinates']=xy
+    state['last_processed_click_id']=(selection,*xy)
+
+    if event.get('road_edge_id') or selection == '查看信息':
+        state['query_point']={'lon':float(click['lng']),'lat':float(click['lat'])}
+        state['query_road_edge_id']=event.get('road_edge_id')
+    else:
+        accept_click(state,router,click,selection,max_distance_m,
+                     selectable_distance_m,keep_result=True)
+
     if event.get('zoom') is not None: state['map_zoom'] = event['zoom']
     bounds = event.get('bounds')
     if bounds and bounds.get('_southWest', {}).get('lat') is not None:
         state['map_bounds'] = bounds
         a,b=bounds['_southWest'],bounds['_northEast']
         state['map_center'] = [(a['lat']+b['lat'])/2,(a['lng']+b['lng'])/2]
-    click=event.get('last_clicked')
-    if not click:return False
-    xy=(round(click['lat'],8),round(click['lng'],8))
-    # Ignore the carried-over coordinate even when selection mode changes.
-    if xy == state.get('last_processed_coordinates'):return False
-    state['last_processed_coordinates']=xy
-    state['last_processed_click_id']=(selection,*xy)
-    accept_click(state,router,click,selection,max_distance_m,keep_result=True)
     return True
 
 

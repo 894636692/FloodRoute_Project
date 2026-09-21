@@ -75,7 +75,7 @@ class ClickTests(unittest.TestCase):
         self.assertNotIn('truth_risk', observed.columns)
         text = (ROOT/'src/floodroute/ui/app_v1_1.py').read_text(encoding='utf-8')
         self.assertNotIn('truth_rainfall', text)
-        self.assertIn('runtime.observed_state(observed,', text)
+        self.assertIn('runtime.observed_state_with_sources(observed,', text)
 
     def test_replay_evaluates_current_before_search(self):
         r = self.runtime

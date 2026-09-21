@@ -1,5 +1,6 @@
 {
   "max_snap_distance_m": 500,
+  "selectable_distance_m": 100,
   "default_online_tiles": false,
   "map_center": [22.55, 114.06],
   "map_zoom": 12,

@@ -35,8 +35,17 @@ class Runtime:
         self.router=RoadNetworkRouter(motor_edges(self.edges))
 
     def observed_state(self, observed, timestamp):
+        return self.observed_state_with_sources(observed, timestamp)[0]
+
+    def observed_state_with_sources(self, observed, timestamp):
+        """Return the unchanged risk state plus its mapped observed source frames.
+
+        The source frames are exposed for UI explanation only. Risk calculation
+        remains delegated to ``RiskEngine.compute`` with exactly the same input.
+        """
         rain=map_rainfall(observed,self.weights,self.coverage,timestamp)
-        return self.engine.compute({'rain':rain})
+        sources={'rain':rain}
+        return self.engine.compute(sources), sources
 
     def plan(self, state, request):
         return self.router.plan_frame(request,state,self.config['routing'])

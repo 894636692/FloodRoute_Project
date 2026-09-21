@@ -125,10 +125,44 @@ class PerformanceArchitectureTests(unittest.TestCase):
     def test_persistent_leaflet_component_updates_layers_in_place(self):
         javascript=(ROOT/'src/floodroute/ui/components/leaflet_picker/frontend/picker.js').read_text(encoding='utf-8')
         self.assertEqual(javascript.count('L.map('),1)
-        self.assertIn("markers[k].setLatLng(ll)",javascript)
+        self.assertIn("markers[kind].setLatLng(ll)",javascript)
         self.assertIn('if(route)map.removeLayer(route)',javascript)
         self.assertIn('map.fitBounds(args.bounds',javascript)
+        self.assertIn('setRainLayer(', javascript)
+        self.assertIn('setRoadRiskLayer(', javascript)
+        self.assertIn('gridGeometryLoads', javascript)
+        self.assertIn('riskGeometryLoads', javascript)
         self.assertNotIn('document.write',javascript)
+
+    def test_layer_updates_keep_one_map_and_static_geometry_out_of_payload(self):
+        javascript=(ROOT/'src/floodroute/ui/components/leaflet_picker/frontend/picker.js').read_text(encoding='utf-8')
+        component=(ROOT/'src/floodroute/ui/components/leaflet_picker/__init__.py').read_text(encoding='utf-8')
+        self.assertEqual(javascript.count('L.map('),1)
+        self.assertIn("fetch('grid_cells_display.geojson')", javascript)
+        self.assertIn("fetch('risk_roads_display.geojson')", javascript)
+        self.assertIn('rainData=rain_data or []', component)
+        self.assertNotIn('FeatureCollection', component)
+
+    def test_query_click_never_plans_or_changes_endpoints(self):
+        state={'start':{'kept':1},'goal':{'kept':2}}
+        far={'last_clicked':{'lng':0.,'lat':0.},'request_id':10,
+             'zoom':4,'bounds':{'_southWest':{'lat':-1,'lng':-1},'_northEast':{'lat':1,'lng':1}}}
+        with patch.object(self.runtime,'plan') as plan:
+            self.assertTrue(consume_map_event(state,self.runtime.router,far,'查看信息',500,100))
+        self.assertEqual(state['start'],{'kept':1});self.assertEqual(state['goal'],{'kept':2})
+        self.assertEqual(state['query_point'],{'lon':0.0,'lat':0.0});plan.assert_not_called()
+
+    def test_rejected_click_preserves_viewport_points_and_result(self):
+        prior={'response':'old'}
+        state={'start':{'kept':1},'goal':{'kept':2},'result':prior,
+               'map_zoom':15,'map_center':[22.55,114.05]}
+        far={'last_clicked':{'lng':0.,'lat':0.},'request_id':11,
+             'zoom':4,'bounds':{'_southWest':{'lat':-1,'lng':-1},'_northEast':{'lat':1,'lng':1}}}
+        with self.assertRaises(ValueError):
+            consume_map_event(state,self.runtime.router,far,'选择起点',500,100)
+        self.assertEqual(state['start'],{'kept':1});self.assertEqual(state['goal'],{'kept':2})
+        self.assertIs(state['result'],prior);self.assertEqual(state['map_zoom'],15)
+        self.assertEqual(state['map_center'],[22.55,114.05])
 
     def test_app_uses_persistent_component_not_st_folium(self):
         source=(ROOT/'src/floodroute/ui/app_v1_1.py').read_text(encoding='utf-8')
