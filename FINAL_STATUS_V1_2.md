@@ -8,7 +8,7 @@ v1.2 已形成“数据可查看 → 风险可解释 → 路线可规划 → 动
 
 ## 发布门禁
 
-- 发布实现提交：`RELEASE_COMMIT_TO_BE_RECORDED`。
+- 发布实现提交：`0aa63c824db37deb0f3720f67bdac778d53d5f25`。
 - 冻结参数：`config/selected_v1_1.json`，SHA256 `6BF703FB88A01640BE4347A84C8BF608D41F2A55169484DA0ECE6EACC692E4E6`。
 - 环境：Windows 11 家庭版中文版 64 位，版本 `10.0.26200`；Python `3.13.3`。
 - `python -m pip check`：通过，未发现依赖冲突。
