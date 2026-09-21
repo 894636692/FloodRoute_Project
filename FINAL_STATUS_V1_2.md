@@ -8,8 +8,8 @@ v1.2 已形成“数据可查看 → 风险可解释 → 路线可规划 → 动
 
 ## 发布门禁
 
-- 发布实现提交：`0aa63c824db37deb0f3720f67bdac778d53d5f25`。
-- 冻结参数：`config/selected_v1_1.json`，SHA256 `6BF703FB88A01640BE4347A84C8BF608D41F2A55169484DA0ECE6EACC692E4E6`。
+- 发布实现提交：`0f4f9a2b5e83a9ec0f051a6826731e749d356434`。
+- 冻结参数：`config/selected_v1_1.json`，原文件 SHA256 `3f8ea08239d12d19b801afec28b5156625dd08daef4f54ff72573756bd7e6dd5`。
 - 环境：Windows 11 家庭版中文版 64 位，版本 `10.0.26200`；Python `3.13.3`。
 - `python -m pip check`：通过，未发现依赖冲突。
 - `python -m unittest discover -s tests -q`：105 项通过，unittest 报告 147.980 秒，发布命令总耗时 152.606 秒。
@@ -98,3 +98,7 @@ Python snapping 中位数约3–4 ms，routing约12.8 ms，首次查询构建58.
 ## 人工验收边界
 
 Chrome 核心交互已通过，见 [docs/UI_FINAL_REVIEW.md](docs/UI_FINAL_REVIEW.md)。没有单独人工确认的具体分辨率、显示器/硬件组合、回放全过程及额外浏览器版本仍保持 pending，不扩写为独立验收样本。
+
+## 发布后的研究验证
+
+`main` 和 `v1.2.0` 保持本文件所述工程稳定版。后续历史事件外部验证与冻结参数扩展验证在 `research-validation/v1.3` 汇总，不改写 v1.2.0 的工程验收结论。研究结果见 [docs/FINAL_RESEARCH_SUMMARY.md](docs/FINAL_RESEARCH_SUMMARY.md)。

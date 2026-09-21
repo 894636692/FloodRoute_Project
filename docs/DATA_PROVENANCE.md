@@ -6,6 +6,9 @@
 | DERIVED_FROM_REAL | A GPKG, grid registry with centres, edge/grid weights, real-input risk/routes |
 | SIMULATED_SCENARIO | `data/scenarios/simulated_extreme/`, independent and temporal experiment results |
 | OPTIONAL_EXTERNAL | IMERG importer only; no actual IMERG acquired or used |
+| REAL_HISTORICAL_COARSE_FORCING | NASA POWER MERRA-2 hourly precipitation for 2023-09-07/08 external replay |
+| REPORTED_EVENT_WEAK_LABEL | Official/public reports of impacted locations, used only for offline evaluation |
+| SIMULATED_EXPANDED_VALIDATION | Three new rainfall families on the real 4,232-grid geometry, frozen parameters |
 
 ## A
 
@@ -52,3 +55,15 @@ Forecast ensembles inactive; no fabricated members. NOAA/ERA5 exploratory files 
 
 IMERG is OPTIONAL_EXTERNAL regional temporal forcing only. The 2023-09-07/08 event is a historical
 reference, never the provenance of generated rainfall; see `HISTORICAL_EVENT_REFERENCE.md`.
+
+## Historical event validation
+
+The 2023-09-07/08 replay uses NASA POWER Hourly API `PRECTOTCORR`, based on MERRA-2, explicitly requested in UTC. The original response is preserved at `data/historical/shenzhen_2023_0907/raw/nasa_power_prectotcorr_20230907_20230909_utc.json` with SHA256 `58bdd31e27c00b9ff2e16aeed4efe80440073833993a889b31faca990b9a522a`. Its meteorological grid is about 0.5° × 0.625°; the single point series is copied without interpolation to the model grid solely to exercise the frozen mapping pipeline. It is regional forcing, not Shenzhen station rain and not road-level truth.
+
+Official Shenzhen sources supply event timing, aggregate rainfall facts, transport impacts and reported locations. `source_manifest.json` records URLs and supported facts. `impact_reports.csv` stores 10 weak-label records; only one road segment is both auditable and inside the formal network. Its coordinate is an explicitly recorded OSM road-object match, not a fabricated incident coordinate. Unreported roads are not confirmed negatives.
+
+The official Shenzhen grid API requires an approved `appKey`, and GPM IMERG Final V07 requires Earthdata access. Neither authentication boundary was bypassed. Full provenance and suitability decisions are in `HISTORICAL_VALIDATION_SOURCE_AUDIT.md` and `HISTORICAL_EVENT_VALIDATION.md`.
+
+## Expanded controlled validation
+
+The three families `moving_center`, `dual_center` and `anisotropic_band` are simulated values over the real Shenzhen grid geometry. They are not historical observations. Scenario seeds `7101–7112`, OD selection seed `7201`, bootstrap seed `7301`, configuration hash and all perturbation levels were committed before results. `results/expanded_validation/protocol.json`, `scenario_manifest.csv` and `config_snapshot.json` preserve the exact evaluation provenance.

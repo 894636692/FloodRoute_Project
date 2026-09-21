@@ -16,15 +16,24 @@
    and checks explicit access. Missing tags, turn-restriction relations, barriers, vehicle dimensions,
    temporary closures and emergency permissions remain unmodeled. This is not operational navigation.
 8. **Travel/time performance.** 8 m/s is a fixed estimate. Timing excludes startup and depends on hardware.
-9. **Limited experiments.** Smooth synthetic rain is not a reconstructed historical storm. One seed/OD,
-   simple noise and missingness; trusted is not guaranteed safer or shorter.
-10. **IMERG unavailable.** No actual sample/credentials; importer tested only on synthetic accumulation TIFF.
-    HDF/NetCDF not supported. Coarse regional forcing cannot establish street-level truth.
+9. **Controlled experiments remain simulated.** The expanded test uses three spatial families, 12 seeds and
+   eight OD pairs, but it still cannot cover all Shenzhen storms, drainage failures or traffic conditions.
+   Trusted and risk+uncertainty were not consistently better than risk; Trigger missed a useful replan under
+   the preregistered rule in 7 of 36 stress events.
+10. **Historical validation is sparse and coarse.** NASA POWER MERRA-2 forcing is about 0.5° × 0.625° and
+    severely smooths the documented local extreme. Only one reported road segment was both auditable and
+    inside the formal network; it ranked at the 38.86th risk percentile and was outside the top 20%.
+    This is a retained failure case, not evidence of historical prediction accuracy. IMERG remained blocked
+    by Earthdata authorization and the Shenzhen official API required an approved appKey.
 11. **A rebuild prerequisites.** Raw inputs remain on A's original branch with hashes. GPKG retrieved and
     validated; raw GDAL pipeline was not rerun locally. Runtime does not need QGIS; cloning needs LFS.
-12. **Visual review pending.** Streamlit AppTest and live HTTP health passed. Browser connector failed
-    (`nodeRepl.fetch request failed`), so no browser screenshot or visual acceptance is claimed. Target-screen
-    review should check map rendering, alignment, Chinese layout and controls.
+12. **Visual review scope.** Core interaction passed real-user Google Chrome review with zero console errors.
+    Specific untested display resolutions, hardware combinations, extra browser versions and the full replay
+    sequence remain pending and are not claimed as separate acceptance samples.
 
 No external account is required for core v1. Missing official historical access and IMERG credentials
 do not block the implemented demo or controlled experiments.
+
+The evidence supports engineering reproducibility and limited findings within the controlled protocol. It
+does not establish road inundation depth, calibrated safety probability, citywide historical recall, or
+readiness for operational emergency navigation.

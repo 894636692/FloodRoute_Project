@@ -83,3 +83,22 @@ Selected v1.1 parameters: rain tau 60 min, uncertainty weight .30, staleness wei
 `experiments/v2.py` owns disjoint calibration/validation/test seeds and offline evaluation. Evaluation uses frozen base risk coefficients. Four methods receive paired observations at fixed OD/time cases. Selection is persisted and hashed before test data generation. Hashes normalize UTF-8 text to LF for Windows/Git reproducibility; timings do not enter selection artifacts or scoring.
 
 `experiments/benchmarks.py` generates real-grid spatial rainfall fields centred on a dry baseline route midpoint. No target alternative edge IDs are encoded. T1/T2 latent data and offline metrics remain in the experiment directory. `scripts/run_trigger_benchmarks.py` replays frozen parameters without reselecting them. These are constructed software stress tests, not natural-event reconstructions.
+
+## Research validation boundary
+
+The research branch adds two evaluation paths without changing the v1.2 runtime contract or selected parameters.
+
+```text
+NASA POWER historical hourly forcing
+  → fixed 4,232-grid adapter → frozen RiskEngine → all-road risk timeline
+  ───────────────────────── OFFLINE EVALUATION ONLY ─────────────────────────
+official public impact reports → audited weak labels → formal road matching
+  → percentile / top-k / matched-background comparison
+
+New simulated family Truth → paired observation generator → frozen planner / Trigger
+             └──────────────────────────────→ offline truth metrics only
+```
+
+`scripts/run_historical_validation.py` never imports impact labels into the planner, risk engine, rainfall mapping, Trigger, or parameter selection. Historical labels enter only after all-road risks have been computed. The historical forcing is coarse NASA POWER MERRA-2 regional rainfall and is not road-level observation.
+
+`src/floodroute/experiments/expanded.py` defines three new scenario families and deterministic OD generation. `scripts/run_expanded_validation.py` checks the exact `selected_v1_1.json` hash and `water.active=false`, then runs paired methods on identical observations. Its 27,648 rows are repeated measurements; seed-level aggregation and bootstrap treat `family × seed` as the main independent structure. Ground Truth remains confined to observation generation and offline scoring.
