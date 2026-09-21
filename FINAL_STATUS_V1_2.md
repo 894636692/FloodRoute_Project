@@ -1,10 +1,19 @@
 # FloodRoute v1.2 最终状态
 
-日期：2026-09-21。工作分支：`experiment-ui/v1.2`。
+日期：2026-09-21。发布分支：`main`；发布标签：`v1.2.0`。
 
-`manual_visual_review = pending`
+`manual_visual_review = passed`
 
-v1.2 已形成“数据可查看 → 风险可解释 → 路线可规划 → 动态变化可回放”的完整演示链路。Codex 内置 Chromium 已执行真实地图点击、数据查询、图层开关、路线规划、三档桌面宽度和端到端性能测量；用户人工目视清单仍保持未勾选。
+v1.2 已形成“数据可查看 → 风险可解释 → 路线可规划 → 动态变化可回放”的完整演示链路。Google Chrome 已完成真实用户浏览器核心操作验收；没有单独人工确认的显示器、硬件和浏览器版本组合继续在检查表中保留 pending。
+
+## 发布门禁
+
+- 发布实现提交：`RELEASE_COMMIT_TO_BE_RECORDED`。
+- 冻结参数：`config/selected_v1_1.json`，SHA256 `6BF703FB88A01640BE4347A84C8BF608D41F2A55169484DA0ECE6EACC692E4E6`。
+- 环境：Windows 11 家庭版中文版 64 位，版本 `10.0.26200`；Python `3.13.3`。
+- `python -m pip check`：通过，未发现依赖冲突。
+- `python -m unittest discover -s tests -q`：105 项通过，unittest 报告 147.980 秒，发布命令总耗时 152.606 秒。
+- CI：`.github/workflows/test.yml` 使用 `windows-latest`、Python 3.13、Git LFS 与 `requirements-lock.txt`，只执行依赖和工程回归测试。
 
 ## 保护范围
 
@@ -53,7 +62,7 @@ Python snapping 中位数约3–4 ms，routing约12.8 ms，首次查询构建58.
 
 ## 测试
 
-全部 **105 项**测试通过，耗时 **37.606 秒**。新增测试覆盖：
+全部 **105 项**测试通过。最初 v1.2 验收运行耗时 **37.606 秒**；发布门禁在 Windows 11 / Python 3.13.3 上重新运行，unittest 报告 **147.980 秒**。新增测试覆盖：
 
 - 真实格网/正式道路/当前风险状态查询；
 - rain 缺失保持 unknown，不用0替代；
@@ -86,6 +95,6 @@ Python snapping 中位数约3–4 ms，routing约12.8 ms，首次查询构建58.
 - 风险输出是道路内涝风险指数，不是积水深度、通行保证或真实导航预计时间。
 - 受控场景和留出实验结论保持克制；不证明可信优先普遍最优或真实灾害下绝对安全。
 
-## 仍需用户人工检查
+## 人工验收边界
 
-所有项目继续保持未勾选，见 [docs/UI_FINAL_REVIEW.md](docs/UI_FINAL_REVIEW.md)：中文文案、无效提示自然度、查询/图层视觉、道路点击解释、在线/离线差异、颜色、路线聚焦和三档实际窗口使用体验。
+Chrome 核心交互已通过，见 [docs/UI_FINAL_REVIEW.md](docs/UI_FINAL_REVIEW.md)。没有单独人工确认的具体分辨率、显示器/硬件组合、回放全过程及额外浏览器版本仍保持 pending，不扩写为独立验收样本。

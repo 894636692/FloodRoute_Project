@@ -3,7 +3,7 @@
 面向异步多源信息可信度的道路内涝风险与触发式路径规划研究原型。
 **输出是 road flood risk index，不是道路积水深度预测。**
 
-当前工作分支：`experiment-ui/v1.2`。稳定分支 `integration/final-v1`、标签 `v1.0-engineering` 和 v1.1 分支保留原提交。
+正式稳定版本由 `main` 与标签 `v1.2.0` 标识。开发历史保留远端分支 `integration/final-v1`、`experiment-ui/v1.1`、`experiment-ui/v1.2`，以及标签 `v1.0-engineering`。
 本轮在持久 Leaflet 地图上增加 100 米有效道路选点、任意位置查询、真实降雨格网和道路风险解释图层；正式 GIS、真实降雨、风险/路由核心和既有实验结果保持不变。
 
 ## 快速运行
@@ -49,7 +49,7 @@ python scripts/run_demo.py
 v1.1 新实验：`python scripts/run_experiment_v2.py`，随后运行 `python scripts/plot_experiment_v2.py` 生成中文图。
 只重跑冻结参数的触发基准：`python scripts/run_trigger_benchmarks.py`。
 完整复现另存目录：`python scripts/run_experiment_v2.py --output work/experiment_v2_reproduction`。
-新结果见 `results/experiment_v2/`、[v1.2 验收](FINAL_STATUS_V1_2.md)、[地图查询指南](docs/MAP_DATA_QUERY_GUIDE.md)、[实验报告](docs/EXPERIMENT_V2_REPORT.md)。以下保留 v1 结果。
+新结果见 `results/experiment_v2/`、[v1.2 验收](FINAL_STATUS_V1_2.md)、[v1.2 发布说明](docs/RELEASE_V1_2.md)、[地图查询指南](docs/MAP_DATA_QUERY_GUIDE.md)、[实验报告](docs/EXPERIMENT_V2_REPORT.md)。以下保留 v1 结果。
 
 - `results/real_pipeline/`：三种路线、指标和来源哈希。
 - `results/scenario_experiments/independent.csv`：45 组合 × 4 基线 × 2 tau = 360 条。
