@@ -1,0 +1,78 @@
+{
+  "protocol_version": "1.0",
+  "protocol_date": "2026-09-21",
+  "release_basis": {
+    "tag": "v1.2.0",
+    "commit": "0f4f9a2b5e83a9ec0f051a6826731e749d356434"
+  },
+  "protocol_parent_commit": "d58f069",
+  "config_path": "config/selected_v1_1.json",
+  "config_sha256": "3f8ea08239d12d19b801afec28b5156625dd08daef4f54ff72573756bd7e6dd5",
+  "water_active": false,
+  "scenario_families": [
+    "moving_center",
+    "dual_center",
+    "anisotropic_band"
+  ],
+  "scenario_start": "2023-09-07T12:00:00+08:00",
+  "scenario_steps": 12,
+  "scenario_step_min": 15,
+  "seeds": [7101, 7102, 7103, 7104, 7105, 7106, 7107, 7108, 7109, 7110, 7111, 7112],
+  "od": {
+    "count": 8,
+    "selection_seed": 7201,
+    "shortest_distance_m": [3000, 15000],
+    "directions": ["E", "W", "N", "S", "NE", "SW", "NW", "SE"],
+    "selection_uses_risk_results": false
+  },
+  "decision_times": [
+    {"phase": "development", "step_index": 4, "timestamp": "2023-09-07T13:00:00+08:00"},
+    {"phase": "high_risk", "step_index": 8, "timestamp": "2023-09-07T14:00:00+08:00"}
+  ],
+  "delays_min": [0, 30, 60],
+  "missing_rates": [0.0, 0.3],
+  "noise_levels": [0.0, 0.2],
+  "methods": ["shortest", "risk", "risk_uncertainty", "trusted"],
+  "planned_route_decisions": 27648,
+  "paired_observations": true,
+  "primary_metric": "length_weighted_truth_exposure",
+  "metrics": [
+    "distance_m",
+    "truth_exposure",
+    "max_truth_risk",
+    "p95_truth_risk",
+    "high_risk_length_ratio",
+    "computation_ms",
+    "route_overlap_with_shortest",
+    "route_change_from_baseline"
+  ],
+  "independent_structure": ["scenario_family", "seed"],
+  "bootstrap": {
+    "unit": "seed",
+    "iterations": 2000,
+    "seed": 7301,
+    "ci": 0.95,
+    "comparisons": [
+      "risk-shortest",
+      "risk_uncertainty-risk",
+      "trusted-risk",
+      "trusted-risk_uncertainty"
+    ]
+  },
+  "trigger_replay": {
+    "families": ["moving_center", "dual_center", "anisotropic_band"],
+    "seeds": [7101, 7106, 7112],
+    "od_ids": ["OD01", "OD02", "OD03", "OD04"],
+    "delay_min": 30,
+    "missing_rate": 0.3,
+    "noise": 0.2,
+    "policies": ["never", "always", "triggered"]
+  },
+  "prohibitions": [
+    "parameter selection",
+    "calibration",
+    "validation tuning",
+    "winner tuning",
+    "truth leakage into planner or trigger"
+  ]
+}
