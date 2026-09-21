@@ -1,0 +1,127 @@
+{
+  "event_id": "shenzhen_2023_0907",
+  "event_name": "2023-09-07/08 Shenzhen extreme rainfall",
+  "audit_date": "2026-09-21",
+  "event_window": {
+    "start": "2023-09-07T18:20:00+08:00",
+    "end": "2023-09-08T18:20:00+08:00",
+    "basis_source_id": "SZ-EMERGENCY-ANNOUNCE"
+  },
+  "study_network_wgs84_bounds": [113.880001, 22.5000041, 114.0799986, 22.6200223],
+  "rainfall_selection": {
+    "source_id": "NASA-POWER-HOURLY",
+    "data_type": "REAL_HISTORICAL_COARSE_FORCING",
+    "parameter": "PRECTOTCORR",
+    "source_model": "MERRA-2",
+    "time_resolution": "1 hour",
+    "spatial_resolution": "approximately 0.5 degree latitude by 0.625 degree longitude",
+    "units": "mm/hour",
+    "request_time_standard": "UTC",
+    "derived_timezone": "Asia/Shanghai",
+    "timestamp_definition": "derived timestamp is the end of the preceding one-hour accumulation window",
+    "road_scale_truth": false,
+    "reason": "Account-free official NASA API supports reproducible hourly event forcing; Shenzhen historical grid requires an approved appKey and IMERG files require Earthdata authentication."
+  },
+  "blocked_candidates": [
+    {
+      "source_id": "NASA-GPM-IMERG-FINAL",
+      "status": "blocked_authentication",
+      "reason": "GES DISC file download redirects to Earthdata login; no credentials are stored or bypassed."
+    },
+    {
+      "source_id": "SZ-OPEN-GRID-API",
+      "status": "blocked_app_key",
+      "reason": "Historical API access requires an approved appKey; the public page sample is not a complete 2023 archive."
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "SZ-WATER-2024-STAT",
+      "agency": "Shenzhen Municipal Water Affairs Bureau",
+      "title": "2023年水务基础统计数据",
+      "published": "2024-11-25",
+      "url": "https://swj.sz.gov.cn/gkmlpt/content/11/11813/post_11813427.html",
+      "supports": ["event window", "city mean rainfall 281.7 mm", "seven duration records", "337 rain monitoring points", "148 ponding monitoring points"]
+    },
+    {
+      "source_id": "SZ-MET-2023-CLIMATE",
+      "agency": "Shenzhen Meteorological Bureau",
+      "title": "2023年深圳市气候公报",
+      "published": "2024-01",
+      "url": "https://weather.sz.gov.cn/qixiangfuwu/qihoufuwu/qihouguanceyupinggu/nianduqihougongbao/content/post_11121693.html",
+      "supports": ["event confirmation", "maximum 24-hour sliding rainfall approximately 560 mm", "record-breaking durations"]
+    },
+    {
+      "source_id": "SZ-EMERGENCY-ANNOUNCE",
+      "agency": "Shenzhen Flood, Drought and Typhoon Control Headquarters Office",
+      "title": "深圳市防汛防旱防风指挥部办公室关于防御强降雨的公告",
+      "published": "2023-09-08",
+      "url": "https://www.sz.gov.cn/cn/xxgk/zfxxgj/tzgg/content/post_10824936.html",
+      "supports": ["rain began 2023-09-07 18:20", "deep ponding on multiple Luohu roads", "metro disruptions"]
+    },
+    {
+      "source_id": "SZ-WATER-PROGRESS",
+      "agency": "Shenzhen Municipal Water Affairs Bureau",
+      "title": "深圳雨情最新进展！多部门紧急处置",
+      "published": "2023-09-08",
+      "url": "https://swj.sz.gov.cn/xxgk/zfxxgkml/yjgl/content/post_10824841.html",
+      "supports": ["banded training rain", "severe ponding in Longgang central area", "warning timeline"]
+    },
+    {
+      "source_id": "SZ-TRANSPORT-RESPONSE",
+      "agency": "Shenzhen Municipal Transport Bureau",
+      "title": "众志成城战暴雨 恢复秩序保运转",
+      "published": "2023-09-11",
+      "url": "https://jtys.sz.gov.cn/gkmlpt/content/10/10827/post_10827763.html",
+      "supports": ["named impacted intersections and roads", "traffic impacts", "Nanshan event count"]
+    },
+    {
+      "source_id": "SZ-LONGGANG-RESPONSE",
+      "agency": "Longgang District Emergency Management Bureau",
+      "title": "众志成城战暴雨 龙岗区全力抢险救援",
+      "published": "2023-09-08",
+      "url": "https://www.lg.gov.cn/bmzz/ajj/xxgk/qt/gzdt/content/post_10826123.html",
+      "supports": ["named impacted intersections", "rescues", "rain statistics"]
+    },
+    {
+      "source_id": "SZ-FUTIAN-RESPONSE",
+      "agency": "Futian District Government",
+      "title": "暴雨夜，福田区全员奋力守护城市安全",
+      "published": "2023-09-11",
+      "url": "https://www.szft.gov.cn/gkmlpt/content/10/10825/post_10825052.html",
+      "supports": ["Futian rainfall statistics", "district response", "affected subdistricts"]
+    },
+    {
+      "source_id": "SZNEWS-BEIHUAN-REPLY",
+      "agency": "Shenzhen News; official reply by Futian Water Affairs Bureau",
+      "title": "《问政深圳》简报第153期：北环主干道积水中断交通处理慢？回应来了",
+      "published": "2023-09-14",
+      "url": "https://www.sznews.com/zhuanti/content/mb/2023-09/14/content_30475114.htm",
+      "supports": ["Beihuan Avenue Antuoshan section ponding", "report 2023-09-08 10:23", "road restored 18:20"]
+    },
+    {
+      "source_id": "NASA-POWER-HOURLY",
+      "agency": "NASA POWER",
+      "title": "Hourly API",
+      "published": "continuous service",
+      "url": "https://power.larc.nasa.gov/docs/services/api/temporal/hourly/",
+      "supports": ["hourly corrected precipitation", "mm/hour units", "explicit UTC time standard", "timestamp is hour start"]
+    },
+    {
+      "source_id": "NASA-GPM-IMERG-FINAL",
+      "agency": "NASA GPM / GES DISC",
+      "title": "GPM IMERG Final Run V07 half-hourly",
+      "published": "continuous archive",
+      "url": "https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGHH_07/summary",
+      "supports": ["candidate 0.1 degree 30-minute historical precipitation"]
+    },
+    {
+      "source_id": "SZ-OPEN-GRID-API",
+      "agency": "Shenzhen Meteorological Bureau / Shenzhen Open Data Platform",
+      "title": "深圳范围自动站实况格点数据表",
+      "published": "continuous update",
+      "url": "https://opendata.sz.gov.cn/api/29200_00903509/1/service.xhtml",
+      "supports": ["official 4232-cell WGS84 grid", "rainfall accumulation fields", "appKey access requirement"]
+    }
+  ]
+}
