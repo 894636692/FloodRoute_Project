@@ -1,0 +1,24 @@
+{
+  "input_reports": 10,
+  "reports_with_coordinates": 1,
+  "auditable_candidates": 1,
+  "matched_rows": 1,
+  "main_threshold_m": 100.0,
+  "main_eligible_rows": 1,
+  "threshold_sensitivity": {
+    "50": 1,
+    "100": 1,
+    "200": 1
+  },
+  "unlocated_or_excluded_report_ids": [
+    "IMP-002",
+    "IMP-003",
+    "IMP-004",
+    "IMP-005",
+    "IMP-006",
+    "IMP-007",
+    "IMP-008",
+    "IMP-009",
+    "IMP-010"
+  ]
+}

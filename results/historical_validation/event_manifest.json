@@ -1,0 +1,37 @@
+{
+  "event_id": "shenzhen_2023_0907",
+  "release_basis": {
+    "tag": "v1.2.0",
+    "commit": "0f4f9a2b5e83a9ec0f051a6826731e749d356434"
+  },
+  "frozen_config": "config/selected_v1_1.json",
+  "frozen_config_sha256": "3f8ea08239d12d19b801afec28b5156625dd08daef4f54ff72573756bd7e6dd5",
+  "event_window": {
+    "start": "2023-09-07T18:00:00+08:00",
+    "end": "2023-09-08T19:00:00+08:00"
+  },
+  "inputs": {
+    "source_manifest": {
+      "path": "data/historical/shenzhen_2023_0907/source_manifest.json",
+      "sha256": "b7677c5f5818a3e6da99fb5bf006708c9d32665a80d9b3c19a09d26e2f041ee1"
+    },
+    "rainfall_forcing": {
+      "path": "data/historical/shenzhen_2023_0907/rainfall_forcing.parquet",
+      "sha256": "8ea68185b6f454e6e43d00aecd8473e93d92e7a125ae8f2c6a7c03f47f326b67"
+    },
+    "impact_reports": {
+      "path": "data/historical/shenzhen_2023_0907/impact_reports.csv",
+      "sha256": "8b55f14feffe51ed7f69cb81eff8a82b83c1ce96c94a7cb933ddf89a7762f460"
+    },
+    "impact_roads": {
+      "path": "data/historical/shenzhen_2023_0907/impact_roads.parquet",
+      "sha256": "f76b526d5ca5195361c604c12e42686d90e7382551e85fc0b6fe4028492aafe4"
+    }
+  },
+  "label_use": "offline evaluation only; never planner, risk, trigger, interpolation, or parameter input",
+  "main_match_threshold_m": 100,
+  "output_rows": {
+    "road_risk_timeseries": 2917668,
+    "impact_road_scores": 48
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "comparison": "complete repeat of forcing normalization, label matching and historical replay",
+  "timing_fields_compared": false,
+  "checks": {
+    "data/historical/shenzhen_2023_0907/rainfall_forcing.parquet": {
+      "first_sha256": "8ea68185b6f454e6e43d00aecd8473e93d92e7a125ae8f2c6a7c03f47f326b67",
+      "repeat_sha256": "8ea68185b6f454e6e43d00aecd8473e93d92e7a125ae8f2c6a7c03f47f326b67",
+      "identical": true
+    },
+    "data/historical/shenzhen_2023_0907/impact_roads.parquet": {
+      "first_sha256": "f76b526d5ca5195361c604c12e42686d90e7382551e85fc0b6fe4028492aafe4",
+      "repeat_sha256": "f76b526d5ca5195361c604c12e42686d90e7382551e85fc0b6fe4028492aafe4",
+      "identical": true
+    },
+    "results/historical_validation/road_risk_timeseries.parquet": {
+      "first_sha256": "5d3975eeee776db2d5be536fe9dbc4b09f2f5bed2d4b5ed31b0c993cca30afe7",
+      "repeat_sha256": "5d3975eeee776db2d5be536fe9dbc4b09f2f5bed2d4b5ed31b0c993cca30afe7",
+      "identical": true
+    },
+    "results/historical_validation/impact_road_scores.csv": {
+      "first_sha256": "f78fcac09e253190769139fb8914a336bd50dcba492ad27272dde76b7c1acf24",
+      "repeat_sha256": "f78fcac09e253190769139fb8914a336bd50dcba492ad27272dde76b7c1acf24",
+      "identical": true
+    },
+    "results/historical_validation/matched_background_roads.csv": {
+      "first_sha256": "da28082cc381657702dd5f42089c83835f3b842cd1d67074833e0f6c4f33d52c",
+      "repeat_sha256": "da28082cc381657702dd5f42089c83835f3b842cd1d67074833e0f6c4f33d52c",
+      "identical": true
+    },
+    "results/historical_validation/summary.json": {
+      "first_sha256": "79a835809e24c26ca646c4ad79c06025b9bc0bc17b0237626ad2fe645f50f171",
+      "repeat_sha256": "79a835809e24c26ca646c4ad79c06025b9bc0bc17b0237626ad2fe645f50f171",
+      "identical": true
+    },
+    "results/historical_validation/event_manifest.json": {
+      "first_sha256": "0f080644cdfa799586c87f0d82b7f8327b34d4868d272d5dd7b6b0131b2a6fb2",
+      "repeat_sha256": "0f080644cdfa799586c87f0d82b7f8327b34d4868d272d5dd7b6b0131b2a6fb2",
+      "identical": true
+    }
+  }
+}

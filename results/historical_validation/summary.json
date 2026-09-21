@@ -1,0 +1,35 @@
+{
+  "status": "completed_with_sparse_weak_labels",
+  "interpretation": "offline external ordering check under real coarse historical forcing",
+  "forcing_data_type": "REAL_HISTORICAL_COARSE_FORCING",
+  "forcing_is_road_observation": false,
+  "risk_rows": 2917668,
+  "road_count": 112218,
+  "timestamp_count": 26,
+  "event_rain_total_mm_at_power_point": 87.14000000000001,
+  "event_rain_peak_hourly_mm_at_power_point": 11.55,
+  "frozen_config_sha256": "3f8ea08239d12d19b801afec28b5156625dd08daef4f54ff72573756bd7e6dd5",
+  "water_source_active": false,
+  "eligible_report_count": 1,
+  "eligible_directed_edge_count": 1,
+  "median_reported_risk_percentile": 38.85651143310342,
+  "coverage_at_top_k": {
+    "5": 0.0,
+    "10": 0.0,
+    "20": 0.0
+  },
+  "matched_background_edge_count": 5,
+  "matched_background_comparison": {
+    "reported_mean_risk": 0.32699860217460325,
+    "matched_background_mean_risk": 0.35884447506052775,
+    "mean_difference": -0.0318458728859245,
+    "background_interpretation": "comparison only; not confirmed safe roads"
+  },
+  "no_confirmed_negative_roads": true,
+  "limitations": [
+    "NASA POWER forcing is coarse MERRA-2 data and under-resolves the official Shenzhen extremes.",
+    "Only one reported road segment is both auditable and inside the formal network.",
+    "Unreported roads are not confirmed negatives.",
+    "No road water depth observations are available."
+  ]
+}

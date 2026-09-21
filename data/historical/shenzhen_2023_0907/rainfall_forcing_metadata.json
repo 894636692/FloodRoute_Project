@@ -1,0 +1,35 @@
+{
+  "data_type": "REAL_HISTORICAL_COARSE_FORCING",
+  "product": "NASA/POWER Source Native Resolution Hourly Data",
+  "api": {
+    "version": "v2.10.2",
+    "name": "POWER Hourly API"
+  },
+  "source_model": [
+    "MERRA2"
+  ],
+  "parameter": "PRECTOTCORR",
+  "unit": "mm/hour",
+  "time_resolution": "1 hour",
+  "spatial_resolution": "approximately 0.5 degree latitude by 0.625 degree longitude",
+  "request_time_standard": "UTC",
+  "derived_timezone": "Asia/Shanghai",
+  "raw_timestamp_definition": "start of hour",
+  "derived_timestamp_definition": "end of preceding one-hour accumulation window",
+  "assignment": "single regional POWER point repeated across formal model grid cells",
+  "street_scale_truth": false,
+  "grid_count": 4232,
+  "hour_count": 72,
+  "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=PRECTOTCORR&community=AG&longitude=113.98&latitude=22.56&start=20230907&end=20230909&format=JSON&time-standard=UTC",
+  "raw_path": "data/historical/shenzhen_2023_0907/raw/nasa_power_prectotcorr_20230907_20230909_utc.json",
+  "raw_sha256": "58bdd31e27c00b9ff2e16aeed4efe80440073833993a889b31faca990b9a522a",
+  "derived_path": "data/historical/shenzhen_2023_0907/rainfall_forcing.parquet",
+  "derived_sha256": "8ea68185b6f454e6e43d00aecd8473e93d92e7a125ae8f2c6a7c03f47f326b67",
+  "processing_steps": [
+    "parse PRECTOTCORR hourly values",
+    "interpret raw timestamps as UTC hour starts",
+    "convert to Asia/Shanghai",
+    "move timestamp to hour end and preserve window_start",
+    "repeat the single regional value over formal model grid IDs without interpolation"
+  ]
+}
