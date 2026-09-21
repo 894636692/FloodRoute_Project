@@ -1,0 +1,126 @@
+{
+  "status": "passed",
+  "full_experiment_repeated": true,
+  "first_output": "results/expanded_validation",
+  "repeat_output": "work/expanded_validation_repeat_20260921",
+  "comparison_note": "Runtime timing columns are measured environment effects and excluded; all model inputs, outputs, routes, metrics, bootstrap results, and trigger decisions are compared exactly.",
+  "checks": [
+    {
+      "artifact": "protocol.json",
+      "excluded_nondeterministic_columns": [],
+      "rows": null,
+      "match": true,
+      "first_sha256": "8f3658ea6c96e5889b532c0c360eb9e7a7468a20088dd7ecc0c778a7ee94fcb1",
+      "repeat_sha256": "8f3658ea6c96e5889b532c0c360eb9e7a7468a20088dd7ecc0c778a7ee94fcb1"
+    },
+    {
+      "artifact": "config_snapshot.json",
+      "excluded_nondeterministic_columns": [],
+      "rows": null,
+      "match": true,
+      "first_sha256": "6bf703fb88a01640be4347a84c8bf608d41f2a55169484da0ece6eacc692e4e6",
+      "repeat_sha256": "6bf703fb88a01640be4347a84c8bf608d41f2a55169484da0ece6eacc692e4e6"
+    },
+    {
+      "artifact": "config_sha256.txt",
+      "excluded_nondeterministic_columns": [],
+      "rows": null,
+      "match": true,
+      "first_sha256": "8f9709cf6aa20e59184cc66ff8ef223ea02026aadc6db11089f4a6a4c6c24c60",
+      "repeat_sha256": "8f9709cf6aa20e59184cc66ff8ef223ea02026aadc6db11089f4a6a4c6c24c60"
+    },
+    {
+      "artifact": "od_pairs.csv",
+      "excluded_nondeterministic_columns": [],
+      "rows": 8,
+      "match": true,
+      "first_sha256": "cb7b3e6b3be27f714ca17d2b94ad929c3aeabd31820a0e4774960b196776c6b5",
+      "repeat_sha256": "cb7b3e6b3be27f714ca17d2b94ad929c3aeabd31820a0e4774960b196776c6b5"
+    },
+    {
+      "artifact": "scenario_manifest.csv",
+      "excluded_nondeterministic_columns": [],
+      "rows": 36,
+      "match": true,
+      "first_sha256": "1719b2452a52043afd5b45c4433359c34b75b5884a4f36c4ec85050b0c4aa1fe",
+      "repeat_sha256": "1719b2452a52043afd5b45c4433359c34b75b5884a4f36c4ec85050b0c4aa1fe"
+    },
+    {
+      "artifact": "routes.parquet",
+      "excluded_nondeterministic_columns": [
+        "mapping_ms",
+        "state_ms",
+        "planning_ms",
+        "computation_ms"
+      ],
+      "rows": 27648,
+      "match": true,
+      "first_sha256": "2e9c596b6b43dee3b81c8f35c3805ca96e5e5340874c09009443542f154040f2",
+      "repeat_sha256": "2e9c596b6b43dee3b81c8f35c3805ca96e5e5340874c09009443542f154040f2"
+    },
+    {
+      "artifact": "seed_summary.csv",
+      "excluded_nondeterministic_columns": [
+        "computation_ms"
+      ],
+      "rows": 144,
+      "match": true,
+      "first_sha256": "a9d833bcc5fc3c23893755f7c62167324c10f6d2c6751f1033d568ac1d1c3a51",
+      "repeat_sha256": "a9d833bcc5fc3c23893755f7c62167324c10f6d2c6751f1033d568ac1d1c3a51"
+    },
+    {
+      "artifact": "family_summary.csv",
+      "excluded_nondeterministic_columns": [
+        "mean_computation_ms"
+      ],
+      "rows": 12,
+      "match": true,
+      "first_sha256": "5c38a9ae0bef4a552999dd93757d9e4d645c8eb1454ccb592dc63678009d6f5f",
+      "repeat_sha256": "5c38a9ae0bef4a552999dd93757d9e4d645c8eb1454ccb592dc63678009d6f5f"
+    },
+    {
+      "artifact": "method_comparisons.csv",
+      "excluded_nondeterministic_columns": [],
+      "rows": 144,
+      "match": true,
+      "first_sha256": "0eb52329243c1be1ead1f66c984c569975ed6483a8955c2e160361e08c15e5d7",
+      "repeat_sha256": "0eb52329243c1be1ead1f66c984c569975ed6483a8955c2e160361e08c15e5d7"
+    },
+    {
+      "artifact": "bootstrap_ci.csv",
+      "excluded_nondeterministic_columns": [],
+      "rows": 16,
+      "match": true,
+      "first_sha256": "169f3150f811bfe2e158f939bfd6c84110a8553894332354a7a272e7dd86e309",
+      "repeat_sha256": "169f3150f811bfe2e158f939bfd6c84110a8553894332354a7a272e7dd86e309"
+    },
+    {
+      "artifact": "trigger_summary.csv",
+      "excluded_nondeterministic_columns": [
+        "total_computation_ms"
+      ],
+      "rows": 108,
+      "match": true,
+      "first_sha256": "f6a784b1f224bbcfdf49a1c9ec0e63ac3420963e7bca9fad7d28cca252ab489a",
+      "repeat_sha256": "f6a784b1f224bbcfdf49a1c9ec0e63ac3420963e7bca9fad7d28cca252ab489a"
+    },
+    {
+      "artifact": "trigger_replays.parquet",
+      "excluded_nondeterministic_columns": [
+        "computation_ms"
+      ],
+      "rows": 1296,
+      "match": true,
+      "first_sha256": "74dd0a61a3caf0097ec0150a6947cc5f736cbc1b25816795543ace533f2b0f73",
+      "repeat_sha256": "74dd0a61a3caf0097ec0150a6947cc5f736cbc1b25816795543ace533f2b0f73"
+    },
+    {
+      "artifact": "run_manifest.json",
+      "excluded_nondeterministic_columns": [],
+      "rows": null,
+      "match": true,
+      "first_sha256": "ab3bbfcaa5c224f86cb5cdbc267f5b518f4eab7559e2407869192cdf3618f178",
+      "repeat_sha256": "ab3bbfcaa5c224f86cb5cdbc267f5b518f4eab7559e2407869192cdf3618f178"
+    }
+  ]
+}

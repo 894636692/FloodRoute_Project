@@ -1,0 +1,18 @@
+{
+  "status": "complete",
+  "route_decisions": 27648,
+  "scenario_families": [
+    "moving_center",
+    "dual_center",
+    "anisotropic_band"
+  ],
+  "seed_count": 12,
+  "od_count": 8,
+  "decision_time_count": 2,
+  "paired_observation_groups": 6912,
+  "paired_observation_violations": 0,
+  "config_sha256": "3f8ea08239d12d19b801afec28b5156625dd08daef4f54ff72573756bd7e6dd5",
+  "water_active": false,
+  "parameter_selection_run": false,
+  "truth_use": "offline evaluation only; never planner or trigger input"
+}
