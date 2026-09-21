@@ -1,6 +1,33 @@
 # UI 端到端性能验收报告
 
-日期：2026-09-20。分支：`experiment-ui/v1.1`。人工目视验收：**pending**。
+v1.2 测量日期：2026-09-21。分支：`experiment-ui/v1.2`。人工目视验收：**pending**。
+
+## v1.2 地图查询与图层性能结论
+
+本轮继续使用浏览器 `performance.now()`。三次冷启动都停止并重新启动本地 Streamlit 进程并禁用浏览器缓存；暖交互各重复10次。完成条件是目标 marker、查询点或路线已经在同一个 Leaflet 组件中绘制。外部 OSM 瓦片时间单独记录。
+
+| 用户可见事件 | median / p90 / min / max | 目标 | 结论 |
+|---|---:|---:|---|
+| 页面外壳可见（3次） | 353.3 / 795.8 / 335.5 / 906.4 ms | median < 1000 ms | 通过 |
+| 地图可交互（3次） | 2434.5 / 2450.8 / 1067.4 / 2454.9 ms | median < 3000 ms、约不超过5000 ms | 通过 |
+| 起点 marker 可见（10次） | 250.5 / 309.7 / 234.9 / 381.1 ms | median < 500、p90 < 1000 ms | 通过 |
+| 终点 marker 可见（10次） | 244.8 / 255.2 / 236.0 / 261.7 ms | median < 500、p90 < 1000 ms | 通过 |
+| 查询 marker/数据更新（10次） | 275.4 / 360.4 / 253.5 / 607.9 ms | median < 500 ms | 通过 |
+| 路线与新指标可见（10次） | 279.4 / 310.6 / 264.8 / 564.1 ms | median < 1000 ms | 通过 |
+
+与 v1.1 相比，起点、终点和规划中位数分别由 266.3、250.2、309.8 ms 变为 250.5、244.8、279.4 ms。页面外壳增加34.5 ms，地图可交互增加177.5 ms；增加查询和两个图层后没有出现明显热交互退化。
+
+Python 吸附中位数为3.3 ms（起点）和3.5 ms（终点），Python 路由中位数约12.8 ms；首次查询构建58.9 ms。Leaflet 绘制中位数为3.5、3.0、3.9和4.4 ms。主要余量仍位于 Streamlit fragment rerun、组件消息传输和浏览器提交绘制的组合路径。
+
+降雨格网首次开启514.9 ms，暖开启301.6 ms；道路风险首次开启977.4 ms，暖开启324.3 ms。浏览器分别只加载一次775,503 B格网 geometry和4,292,024 B风险道路 geometry，后续动态消息只有4,232和26,254个 `[ID, value, level]`。图层关闭会清除显示，再开启复用同一图层。在线 OSM 瓦片从 Leaflet `loading` 到 `load` 为157 ms，与内部 marker/route 更新解耦。
+
+起点、终点、查询、降雨开关、风险开关、规划和在线底图切换全程保持同一个 `mapInstanceId`：`full_map_remount = false`，没有 iframe/document/container 替换，没有重发整张地图 HTML，普通点击不重新初始化中心或缩放。规划成功才根据 route + 起终点执行一次 `fitBounds`。
+
+冷启动的主要瓶颈是 Streamlit 组件挂载和后台 Runtime 预热。预加载增加1秒 grace，让组件 delta 先发出；正式 Runtime 仍在后台缓存，算法和数据不变。暖交互的主要瓶颈继续是 Streamlit/组件往返，并非 Python snapping、routing、静态 geometry 序列化或瓦片网络。
+
+完整样本、p90算法、三档响应式证据和 v1.1 对比见 [ui_end_to_end_performance_v2.json](../results/ui_end_to_end_performance_v2.json)。下面保留 v1.1 的原始优化记录作为历史基线。
+
+## v1.1 原始性能报告
 
 本轮只优化地图的装载与状态更新路径。风险、Routing、Trigger、实验参数、实验结果和真实数据均未修改。测量使用浏览器 `performance.now()`，从用户动作开始计时，到页面上 marker、路线或指标真正可见为止；Python 计时只作为其中的诊断子阶段。
 

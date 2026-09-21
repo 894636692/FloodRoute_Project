@@ -63,14 +63,18 @@ Travel time=L/8 m/s is an estimate. Exposure/confidence/freshness/U/high-risk fr
 p95 is a length-weighted quantile. Max preserves edge extremes. Invalid/remote (>2 km) OD points,
 identical snapped nodes or no directed path yield clear errors.
 
-## v1.1 interaction and experiment boundary
+## v1.2 interaction, query and experiment boundary
 
-`scripts/run_demo.py` → `ui/app_v1_1.py` → `ui/observations.py` → available observations → `Runtime.observed_state` → `Runtime.plan`.
+`scripts/run_demo.py` → `ui/app_v1_1.py` → `ui/observations.py` → available observations → `Runtime.observed_state_with_sources` → `Runtime.plan`.
 The app receives observation snapshots; the provider privately invokes scenario observation generation. Neither route planning nor the UI reads offline evaluation results.
 
-`ui/map_view.py` uses Folium and streamlit-folium's `last_clicked`. `ui/controller.py` transforms WGS84 clicks to EPSG:32650, reuses the cached motor-node spatial index and stores clicked coordinates, snapped OSM node ID, snapped WGS84 coordinates and metric distance. UI maximum distance is 500 m in `config/ui_v1_1.json`; the old programmatic router's 2 km guard remains compatible. No per-click rebuilding of the node table or spatial index occurs.
+`ui/components/leaflet_picker/` owns one persistent browser `L.Map`. Streamlit sends JSON state for markers, route, bounds, layer values and tile mode; it does not regenerate Folium HTML or change the component key. Static local roads, 4,232 grid polygons and 26,254 simplified risk-display road geometries are browser assets. Grid/risk reruns send compact `[feature_id,value,style_level]` arrays. Display geometry never enters routing or experiments.
 
-Session state holds endpoints, result and map-component epoch. Clear/swap/new points or scene/time/strategy/perturbation changes invalidate the previous result. Consumed events reset the component so an old click cannot be reused after changing selection mode. Original `app.py` and its 57-test baseline remain; new UI regressions are separate.
+`ui/controller.py` transforms WGS84 clicks to EPSG:32650 and finds the nearest formal candidate motor edge. The displayed marker uses the nearest point on the road, while `snapped_node_id` retains the closer routable endpoint. Endpoint selection accepts at most 100 m (`selectable_distance_m`) and keeps the 500 m backend safety threshold. Rejected clicks preserve endpoints, old results and viewport. “查看信息” bypasses this selection threshold, does not plan, and queries the nearest official grid plus formal road features/current risk through `ui/map_data.py`.
+
+`Runtime.observed_state_with_sources` returns the unchanged `RiskEngine.compute` result together with its mapped observed rainfall frame for explanation. It does not change coefficients or the formal state. Only the source-supported preceding 1-hour accumulation is shown; no unsupported 3h/6h/24h totals are generated. Water remains inactive and no risk index is converted to depth.
+
+Session state holds endpoints, query point, current observed snapshot, result and fit revision. Clear/swap/new points or scene/time/strategy/perturbation changes invalidate the previous result. Request IDs prevent a carried-over click from being consumed again when changing mode. Original `app.py` and its baseline remain; v1.2 regressions are separate.
 
 Replay uses fixed user-selected endpoints and unchanged `ReplayController`: new observations → current route evaluation → trigger/cooldown → candidate search → minimum improvement → switch/keep. Initial planning is the only exception because there is no previous route. Metrics are recomputed under current observations even when retaining the old route. The result time is displayed separately from the single-run time selector.
 

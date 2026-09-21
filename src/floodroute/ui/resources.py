@@ -1,5 +1,6 @@
 """Cached UI resources only. Formal geometry and algorithm inputs are unchanged."""
 import json
+import time
 import pandas as pd
 import streamlit as st
 from floodroute.runtime import ROOT, Runtime
@@ -10,10 +11,18 @@ LOAD_COUNTS = {'runtime': 0, 'display': 0}
 
 @st.cache_resource(show_spinner=False)
 def preload_runtime():
-    """Share one background load; only a click/plan waits if it is still running."""
+    """Share one background load after the initial component delta is emitted.
+
+    A short grace period lets Streamlit mount the persistent Leaflet iframe
+    before GeoPackage parsing competes for the Python GIL. The formal Runtime
+    still warms in the background and remains the single cached instance.
+    """
     from concurrent.futures import ThreadPoolExecutor
     pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix='floodroute-load')
-    future = pool.submit(load_runtime)
+    def delayed_load():
+        time.sleep(1.0)
+        return load_runtime()
+    future = pool.submit(delayed_load)
     future.add_done_callback(lambda _: pool.shutdown(wait=False))
     return future
 

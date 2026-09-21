@@ -94,12 +94,12 @@ def build_query_result(runtime, grids: pd.DataFrame, observed: pd.DataFrame,
 
     rain_mm = None
     rain_time = None
-    rain_source = "受控极端降雨实验（模拟，非历史实测）" if source_kind != "REAL" else None
+    rain_source = ("受控极端降雨实验（模拟，非历史实测）" if source_kind != "REAL"
+                   else "深圳市气象局（台）")
     rain_age = None
     if record is not None and pd.notna(record.get("rain_mm")) and float(record["rain_mm"]) >= 0:
         rain_mm = float(record["rain_mm"])
         rain_time = pd.Timestamp(record["timestamp"]).tz_convert("Asia/Shanghai").isoformat()
-        rain_source = rain_source or str(record.get("source") or "深圳市气象局（台）")
         rain_age = max(0.0, (at - pd.Timestamp(record["timestamp"])).total_seconds() / 60)
 
     rain_risk = None

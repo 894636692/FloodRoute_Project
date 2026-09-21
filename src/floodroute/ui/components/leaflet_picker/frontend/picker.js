@@ -6,7 +6,7 @@
   const riskColors=['#2ca25f','#99d8c9','#fee08b','#fdae61','#d73027'];
   let map,args,route,routeKey=null,tile,roads,roadPromise,eventId=0,fitted=null,queryMarker;
   let gridLayer,gridPromise,riskLayer,riskPromise,rainValues=new Map(),riskValues=new Map();
-  let rainLegend,riskLegend;
+  let rainLegend,riskLegend,feedbackSamples=[];
   const afterPaint = fn => requestAnimationFrame(()=>requestAnimationFrame(fn));
   const valueText = v => v===null||v===undefined||Number.isNaN(Number(v))?'暂无可靠数据':Number(v).toFixed(3);
   const escapeHtml = value => String(value).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -14,9 +14,13 @@
   function viewport(){const b=map.getBounds();return {
     bounds:{_southWest:{lat:b.getSouth(),lng:b.getWest()},_northEast:{lat:b.getNorth(),lng:b.getEast()}},
     zoom:map.getZoom()};}
-  function sendClick(latlng,extra={}){post('streamlit:setComponentValue',{value:{
-    last_clicked:{lat:latlng.lat,lng:latlng.lng},request_id:++eventId,selection:args.selection,
-    ...viewport(),...extra},dataType:'json'});}
+  function sendClick(latlng,extra={}){
+    root.dataset.clickSentAt=String(performance.now());
+    root.dataset.clickKind=extra.road_edge_id?'road_query':args.selection;
+    post('streamlit:setComponentValue',{value:{
+      last_clicked:{lat:latlng.lat,lng:latlng.lng},request_id:++eventId,selection:args.selection,
+      ...viewport(),...extra},dataType:'json'});
+  }
   function setMarker(kind,point) {
     if(!point){if(markers[kind])map.removeLayer(markers[kind]);markers[kind]=null;return;}
     const ll=[point.lat,point.lng];
@@ -65,6 +69,7 @@
         '<br><small>地图显示分级，不代表灾害等级。</small>');});
   }
   function setRainLayer(enabled,data){
+    root.dataset.rainEnabled=String(enabled);
     rainValues=new Map(data.map(x=>[String(x[0]),[x[1],x[2]]]));
     if(!enabled){if(gridLayer&&map.hasLayer(gridLayer))map.removeLayer(gridLayer);if(rainLegend){map.removeControl(rainLegend);rainLegend=null;}return;}
     if(!rainLegend){rainLegend=legend('降雨量（mm）',rainColors.map((c,i)=>[c,['0','0–10','10–25','25–50','50–100','>100'][i]]));rainLegend.addTo(map);}
@@ -82,6 +87,7 @@
       layer.bindTooltip('道路内涝风险指数：'+valueText(risk),{sticky:true});});
   }
   function setRoadRiskLayer(enabled,data){
+    root.dataset.riskEnabled=String(enabled);
     riskValues=new Map(data.map(x=>[String(x[0]),[x[1],x[2]]]));
     if(!enabled){if(riskLayer&&map.hasLayer(riskLayer))map.removeLayer(riskLayer);if(riskLegend){map.removeControl(riskLegend);riskLegend=null;}return;}
     if(!riskLegend){riskLegend=legend('道路内涝风险指数',riskColors.map((c,i)=>[c,['低','较低','中等','较高','高'][i]]));riskLegend.addTo(map);}
@@ -100,6 +106,7 @@
     args=e.data.args;const received=performance.now();root.dataset.selection=args.selection;
     if(!map){
       map=L.map(root,{preferCanvas:true}).setView(args.center,args.zoom);window.map_div=map;
+      root.dataset.mapInstanceId='leaflet-'+Math.random().toString(36).slice(2);
       map.createPane('offlinePane').style.zIndex=250;map.createPane('rainPane').style.zIndex=350;
       map.createPane('riskPane').style.zIndex=410;map.createPane('routePane').style.zIndex=450;
       L.control.scale().addTo(map);map.on('click',e=>sendClick(e.latlng));
@@ -114,8 +121,19 @@
     if(args.route&&args.bounds&&fitted!==args.revision){map.fitBounds(args.bounds,{padding:[40,40],maxZoom:16,animate:false});fitted=args.revision;}
     root.dataset.renderReceivedAt=String(received);root.dataset.rainValueCount=String((args.rainData||[]).length);
     root.dataset.riskValueCount=String((args.roadRiskData||[]).length);
-    afterPaint(()=>{root.dataset.routeRevision=args.revision;root.dataset.ack=String(args.timing.request_id||0);
-      root.dataset.componentRenderMs=String(performance.now()-received);root.dataset.backendTiming=JSON.stringify(args.timing);});
+    afterPaint(()=>{const painted=performance.now();root.dataset.routeRevision=args.revision;
+      root.dataset.ack=String(args.timing.request_id||0);
+      root.dataset.componentRenderMs=String(painted-received);root.dataset.backendTiming=JSON.stringify(args.timing);
+      if(Number(args.timing.request_id||0)===eventId && root.dataset.clickSentAt &&
+         root.dataset.recordedAck!==String(eventId)){
+        const feedback=painted-Number(root.dataset.clickSentAt);
+        root.dataset.lastFeedbackMs=String(feedback);
+        root.dataset.lastFeedbackKind=root.dataset.clickKind||'';
+        root.dataset.recordedAck=String(eventId);
+        feedbackSamples.push({request_id:eventId,kind:root.dataset.clickKind||'',ms:feedback,
+          component_render_ms:painted-received,backend:args.timing});
+        root.dataset.feedbackSamples=JSON.stringify(feedbackSamples.slice(-50));
+      }});
     post('streamlit:setFrameHeight',{height:560});
   });
   post('streamlit:componentReady',{apiVersion:1});post('streamlit:setFrameHeight',{height:560});

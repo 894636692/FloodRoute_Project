@@ -58,6 +58,7 @@ class FormalMapQueryIntegrationTests(unittest.TestCase):
         self.assertTrue(result['grid_id'])
         self.assertEqual(result['rain_interval_min'],60)
         self.assertIsNotNone(result['rain_mm'])
+        self.assertEqual(result['rain_source'],'深圳市气象局（台）')
         self.assertAlmostEqual(result['road']['risk'],
             float(self.state.loc[tuple(map(int,result['road']['edge_id'].split(':'))),'risk']))
         self.assertEqual(result['water_status'],'真实水位数据：未启用')

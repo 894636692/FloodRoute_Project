@@ -1,10 +1,10 @@
-# 涝途智避 · FloodRoute v1.1
+# 涝途智避 · FloodRoute v1.2
 
 面向异步多源信息可信度的道路内涝风险与触发式路径规划研究原型。
 **输出是 road flood risk index，不是道路积水深度预测。**
 
-当前工作分支：`experiment-ui/v1.1`。稳定分支 `integration/final-v1` 与标签 `v1.0-engineering` 保留原提交。
-本轮增加中文地图选点界面、分组选参实验和两种触发基准；正式 GIS 与真实动态数据保持不变。
+当前工作分支：`experiment-ui/v1.2`。稳定分支 `integration/final-v1`、标签 `v1.0-engineering` 和 v1.1 分支保留原提交。
+本轮在持久 Leaflet 地图上增加 100 米有效道路选点、任意位置查询、真实降雨格网和道路风险解释图层；正式 GIS、真实降雨、风险/路由核心和既有实验结果保持不变。
 
 ## 快速运行
 
@@ -18,7 +18,7 @@ python scripts/run_demo.py
 ```
 
 浏览器打开 `http://127.0.0.1:8501`。默认本地道路地图不需要底图 API Key。
-新界面需先在地图点击选择起终点，然后点击“开始规划”。旧 `src/floodroute/ui/app.py` 只作历史回归测试；启动脚本指向新界面。
+可先打开“降雨格网”或“道路风险”，用“查看信息”查询具体降雨和附近正式道路特征；再在道路附近点击起终点并规划。旧 `src/floodroute/ui/app.py` 只作历史回归测试；启动脚本指向新界面。
 若 8501 已占用：`python scripts/run_demo.py --server.port=8502`。
 Windows / Python 3.13 已验收版本见 `requirements-lock.txt`，可用 `pip install -r requirements-lock.txt`。
 运行时不需要 QGIS/osgeo；A 的原始预处理重建需要 GDAL Python。
@@ -49,7 +49,7 @@ python scripts/run_demo.py
 v1.1 新实验：`python scripts/run_experiment_v2.py`，随后运行 `python scripts/plot_experiment_v2.py` 生成中文图。
 只重跑冻结参数的触发基准：`python scripts/run_trigger_benchmarks.py`。
 完整复现另存目录：`python scripts/run_experiment_v2.py --output work/experiment_v2_reproduction`。
-新结果见 `results/experiment_v2/`、[v1.1 验收](FINAL_STATUS_V1_1.md)、[实验报告](docs/EXPERIMENT_V2_REPORT.md)。以下保留 v1 结果。
+新结果见 `results/experiment_v2/`、[v1.2 验收](FINAL_STATUS_V1_2.md)、[地图查询指南](docs/MAP_DATA_QUERY_GUIDE.md)、[实验报告](docs/EXPERIMENT_V2_REPORT.md)。以下保留 v1 结果。
 
 - `results/real_pipeline/`：三种路线、指标和来源哈希。
 - `results/scenario_experiments/independent.csv`：45 组合 × 4 基线 × 2 tau = 360 条。

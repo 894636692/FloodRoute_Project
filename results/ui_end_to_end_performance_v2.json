@@ -1,0 +1,459 @@
+{
+  "schema_version": 2,
+  "measured_at": "2026-09-21T17:20:00+08:00",
+  "measurement": {
+    "clock": "browser performance.now() via CDP plus component Performance API markers",
+    "browser": "Codex In-app Browser (Chromium)",
+    "viewport": "1920x1080",
+    "cold_start_cache_disabled": true,
+    "cold_start_process_restart_each_sample": true,
+    "cold_start_repetitions": 3,
+    "warm_repetitions_per_event": 10,
+    "percentile_method": "linear interpolation, rank=(n-1)*p",
+    "visible_completion_rule": "marker/query point/route painted in the persistent Leaflet component",
+    "note": "User-visible intervals are browser end-to-end measurements; Python timings are diagnostic sub-intervals."
+  },
+  "targets_ms": {
+    "page_shell_visible": {
+      "median_lt": 1000
+    },
+    "map_interactive": {
+      "preferred_median_lt": 3000,
+      "maximum_about": 5000
+    },
+    "start_click": {
+      "median_lt": 500,
+      "p90_lt": 1000
+    },
+    "goal_click": {
+      "median_lt": 500,
+      "p90_lt": 1000
+    },
+    "query_click": {
+      "median_lt": 500
+    },
+    "route_plan": {
+      "median_lt": 1000
+    }
+  },
+  "cold_start": {
+    "page_shell_visible": {
+      "count": 3,
+      "min_ms": 335.5,
+      "median_ms": 353.3,
+      "p90_ms": 795.8,
+      "max_ms": 906.4,
+      "samples_ms": [
+        353.3,
+        906.4,
+        335.5
+      ]
+    },
+    "map_interactive": {
+      "count": 3,
+      "min_ms": 1067.4,
+      "median_ms": 2434.5,
+      "p90_ms": 2450.8,
+      "max_ms": 2454.9,
+      "samples_ms": [
+        2454.9,
+        1067.4,
+        2434.5
+      ]
+    }
+  },
+  "warm_interactions": {
+    "start_click": {
+      "count": 10,
+      "min_ms": 234.9,
+      "median_ms": 250.5,
+      "p90_ms": 309.7,
+      "max_ms": 381.1,
+      "samples_ms": [
+        296.7,
+        301.8,
+        381.1,
+        277.7,
+        247.9,
+        253.1,
+        247.1,
+        241.7,
+        234.9,
+        247.5
+      ],
+      "passed": true
+    },
+    "goal_click": {
+      "count": 10,
+      "min_ms": 236.0,
+      "median_ms": 244.8,
+      "p90_ms": 255.2,
+      "max_ms": 261.7,
+      "samples_ms": [
+        261.7,
+        254.5,
+        251.7,
+        242.1,
+        241.1,
+        251.3,
+        236.0,
+        242.1,
+        236.6,
+        247.6
+      ],
+      "passed": true
+    },
+    "query_click": {
+      "count": 10,
+      "min_ms": 253.5,
+      "median_ms": 275.4,
+      "p90_ms": 360.4,
+      "max_ms": 607.9,
+      "samples_ms": [
+        607.9,
+        332.9,
+        296.6,
+        314.1,
+        253.5,
+        258.3,
+        266.6,
+        275.5,
+        269.5,
+        275.2
+      ],
+      "passed": true
+    },
+    "route_plan": {
+      "count": 10,
+      "min_ms": 264.8,
+      "median_ms": 279.4,
+      "p90_ms": 310.6,
+      "max_ms": 564.1,
+      "samples_ms": [
+        564.1,
+        280.3,
+        277.8,
+        281.3,
+        278.4,
+        282.4,
+        278.4,
+        264.8,
+        281.2,
+        278.4
+      ],
+      "passed": true
+    }
+  },
+  "python_backend": {
+    "start_snap": {
+      "count": 10,
+      "min_ms": 3.2,
+      "median_ms": 3.3,
+      "p90_ms": 9.6,
+      "max_ms": 15.7,
+      "samples_ms": [
+        15.7,
+        3.2,
+        8.9,
+        4.1,
+        3.3,
+        3.7,
+        3.4,
+        3.2,
+        3.2,
+        3.2
+      ]
+    },
+    "goal_snap": {
+      "count": 10,
+      "min_ms": 3.1,
+      "median_ms": 3.5,
+      "p90_ms": 4.2,
+      "max_ms": 4.2,
+      "samples_ms": [
+        4.2,
+        3.1,
+        3.7,
+        4.2,
+        3.3,
+        3.2,
+        3.3,
+        3.5,
+        3.8,
+        3.6
+      ]
+    },
+    "first_query_build_ms": 58.9,
+    "cached_query_event_median_ms": 0.04,
+    "route": {
+      "count": 10,
+      "min_ms": 11.8,
+      "median_ms": 12.8,
+      "p90_ms": 13.6,
+      "max_ms": 13.6,
+      "samples_ms": [
+        11.9,
+        12.4,
+        12.0,
+        12.1,
+        13.1,
+        13.3,
+        13.6,
+        13.6,
+        11.8,
+        13.2
+      ]
+    }
+  },
+  "leaflet_component_render": {
+    "start_click": {
+      "count": 10,
+      "min_ms": 1.2,
+      "median_ms": 3.5,
+      "p90_ms": 5.2,
+      "max_ms": 6.2,
+      "samples_ms": [
+        3.6,
+        2.4,
+        3.5,
+        6.2,
+        1.8,
+        1.2,
+        4.3,
+        5.1,
+        1.3,
+        3.5
+      ]
+    },
+    "goal_click": {
+      "count": 10,
+      "min_ms": 1.8,
+      "median_ms": 3.0,
+      "p90_ms": 5.2,
+      "max_ms": 5.6,
+      "samples_ms": [
+        3.2,
+        1.8,
+        4.3,
+        5.2,
+        4.8,
+        2.6,
+        5.6,
+        2.2,
+        2.5,
+        2.8
+      ]
+    },
+    "query_click": {
+      "count": 10,
+      "min_ms": 2.5,
+      "median_ms": 3.9,
+      "p90_ms": 14.6,
+      "max_ms": 18.2,
+      "samples_ms": [
+        14.2,
+        5.4,
+        3.0,
+        2.7,
+        4.1,
+        3.8,
+        18.2,
+        3.6,
+        7.5,
+        2.5
+      ]
+    },
+    "route_plan": {
+      "count": 10,
+      "min_ms": 1.4,
+      "median_ms": 4.4,
+      "p90_ms": 16.6,
+      "max_ms": 17.2,
+      "samples_ms": [
+        10.5,
+        1.9,
+        5.0,
+        3.8,
+        2.9,
+        1.4,
+        17.2,
+        3.2,
+        16.5,
+        8.4
+      ]
+    }
+  },
+  "streamlit_transport_and_browser_residual": {
+    "start_click": {
+      "count": 10,
+      "min_ms": 230.4,
+      "median_ms": 245.5,
+      "p90_ms": 303.4,
+      "max_ms": 368.7,
+      "samples_ms": [
+        277.4,
+        296.2,
+        368.7,
+        267.4,
+        242.8,
+        248.2,
+        239.4,
+        233.4,
+        230.4,
+        240.8
+      ]
+    },
+    "goal_click": {
+      "count": 10,
+      "min_ms": 227.1,
+      "median_ms": 238.8,
+      "p90_ms": 250.1,
+      "max_ms": 254.3,
+      "samples_ms": [
+        254.3,
+        249.6,
+        243.7,
+        232.7,
+        233.0,
+        245.5,
+        227.1,
+        236.4,
+        230.3,
+        241.2
+      ]
+    },
+    "route_plan": {
+      "count": 10,
+      "min_ms": 247.6,
+      "median_ms": 261.6,
+      "p90_ms": 295.1,
+      "max_ms": 541.7,
+      "samples_ms": [
+        541.7,
+        266.0,
+        260.8,
+        265.4,
+        262.4,
+        267.7,
+        247.6,
+        248.0,
+        252.9,
+        256.8
+      ]
+    }
+  },
+  "display_layers": {
+    "rain_grid": {
+      "dynamic_value_count": 4232,
+      "static_geometry_bytes": 775503,
+      "first_enable_ms": 514.9,
+      "warm_enable_ms": 301.6,
+      "static_geometry_load_count": 1
+    },
+    "road_risk": {
+      "dynamic_value_count": 26254,
+      "static_geometry_bytes": 4292024,
+      "first_enable_ms": 977.4,
+      "warm_enable_ms": 324.3,
+      "static_geometry_load_count": 1
+    },
+    "geometry_transport": "Static GeoJSON fetched once by browser; reruns send [feature_id,value,style_level] arrays only.",
+    "map_instance_stable": true
+  },
+  "external_tile_latency": {
+    "provider": "OpenStreetMap",
+    "loading_to_complete_ms": 157.0,
+    "separate_from_internal_interaction": true,
+    "map_instance_stable": true
+  },
+  "map_lifecycle": {
+    "full_map_remount": false,
+    "leaflet_map_recreated": false,
+    "iframe_remounted": false,
+    "document_replaced": false,
+    "container_changed": false,
+    "zoom_center_reinitialized_on_click": false,
+    "route_fit_bounds_only_after_plan": true,
+    "map_html_payload_resent": false,
+    "stable_map_instance_id_observed_across": "start, goal, query, rain toggle, risk toggle, route plan, online tile toggle"
+  },
+  "responsive_layout": {
+    "1366x768": {
+      "horizontal_scroll": false,
+      "metrics": [
+        "2.25 km",
+        "0.340",
+        "0.845",
+        "1.000",
+        "0.155",
+        "4.7 分钟",
+        "单次规划"
+      ],
+      "iframe_width_px": 896
+    },
+    "1600x900": {
+      "horizontal_scroll": false,
+      "metrics": [
+        "2.25 km",
+        "0.340",
+        "0.845",
+        "1.000",
+        "0.155",
+        "4.7 分钟",
+        "单次规划"
+      ],
+      "iframe_width_px": 1130
+    },
+    "1920x1080": {
+      "horizontal_scroll": false,
+      "metrics": [
+        "2.25 km",
+        "0.340",
+        "0.845",
+        "1.000",
+        "0.155",
+        "4.7 分钟",
+        "单次规划"
+      ],
+      "iframe_width_px": 1450
+    }
+  },
+  "v1_1_comparison": {
+    "page_shell_visible": {
+      "v1_1_median_ms": 318.8,
+      "v1_2_median_ms": 353.3,
+      "change_ms": 34.5,
+      "change_percent": 10.8
+    },
+    "map_interactive": {
+      "v1_1_median_ms": 2257.0,
+      "v1_2_median_ms": 2434.5,
+      "change_ms": 177.5,
+      "change_percent": 7.9
+    },
+    "start_click": {
+      "v1_1_median_ms": 266.3,
+      "v1_2_median_ms": 250.5,
+      "change_ms": -15.8,
+      "change_percent": -5.9
+    },
+    "goal_click": {
+      "v1_1_median_ms": 250.2,
+      "v1_2_median_ms": 244.8,
+      "change_ms": -5.4,
+      "change_percent": -2.2
+    },
+    "route_plan": {
+      "v1_1_median_ms": 309.8,
+      "v1_2_median_ms": 279.4,
+      "change_ms": -30.4,
+      "change_percent": -9.8
+    }
+  },
+  "bottleneck": {
+    "warm_interaction": "Streamlit fragment rerun and component message transport dominate; Python snapping/routing and Leaflet paint remain small.",
+    "cold_start": "Streamlit component mounting and background Runtime warm-up dominate. A one-second preload grace lets the Leaflet frame mount first.",
+    "layers": "First enable includes one-time static GeoJSON parsing; later toggles reuse layers."
+  },
+  "manual_visual_review": "pending"
+}
