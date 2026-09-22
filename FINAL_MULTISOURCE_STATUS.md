@@ -22,9 +22,8 @@
 20. **trusted 是否有效？** 未得到总体支持。source-specific trusted 相对 rain-only 的均值差为 +0.005256，95% CI [+0.004805, +0.005646]。
 21. **Trigger 是否改善？** 它减少计算：triggered 平均调用 1.849 次，always 12 次；但平均 exposure 0.433071，高于 always 的 0.429953，因此仍是风险与计算的折中。
 22. **所有 failure cases？** 共 924 条：multisource worse than rain-only 496、trusted worse than naive 279、unnecessary replan 85、route oscillation 36、missed useful replan 22、stale-source-induced bad route 6。全部保留。
-23. **reproducibility？** 完整实验独立运行两次；科学输出会以剔除 wall-clock timing 后的逐文件 hash 验证，结果记录在 `results/multisource_synthetic_water/reproducibility.json`。
-24. **tests？** 新增 20 项机制与边界测试；最终总数及 `pip check` 结果在最终提交前由全套测试记录确认。
+23. **reproducibility？** 通过。完整实验独立运行两次；剔除 wall-clock timing 后，11 个科学输出文件的逐文件 hash 全部一致，详见 `results/multisource_synthetic_water/reproducibility.json`。
+24. **tests？** 新增 20 项机制与边界测试；完整测试共 130 项，全部通过。`python -m pip check` 返回 `No broken requirements found.`。
 25. **研究边界？** 这是 controlled multi-source mechanism validation。它不是深圳真实水位实验、真实积水深度预测、历史水位重建、水动力模型或现实应急导航安全证明。生产与历史配置继续 `water.active=false`。
 
 详细方法、统计结果和未获支持结论见 `docs/MULTISOURCE_SYNTHETIC_WATER_REPORT.md`。本分支在人工复核前不合并到 `main`。
-

@@ -1,0 +1,236 @@
+{
+  "schema_version": "multisource-synthetic-water-v1",
+  "static_path": "data/derived/static/road_static_features.gpkg",
+  "rainfall_path": "data/derived/dynamic/shenzhen_grid/rainfall.csv",
+  "grids_path": "data/derived/dynamic/shenzhen_grid/grid_cells.csv",
+  "mapping_path": "data/derived/mappings/edge_grid_weights.parquet",
+  "sources": {
+    "rain": {
+      "active": true,
+      "tau_min": 60,
+      "scale": 80,
+      "weight": 0.55
+    },
+    "water": {
+      "active": true,
+      "tau_min": 20,
+      "scale": 1.0,
+      "weight": 0.2
+    },
+    "forecast": {
+      "active": false,
+      "tau_min": 90,
+      "scale": 80,
+      "weight": 0.15
+    }
+  },
+  "static": {
+    "weight": 0.45,
+    "missing_prior": 0.5,
+    "low_elev_norm": 0.42,
+    "flatness_risk": 0.24,
+    "builtup_frac": 0.22,
+    "water_frac": 0.1,
+    "vegetation_relief": 0.02
+  },
+  "uncertainty": {
+    "base": 0.08,
+    "missing": 0.5,
+    "quality": 0.15,
+    "static_missing": 0.3
+  },
+  "trusted": {
+    "uncertainty_weight": 0.3,
+    "staleness_weight": 0.15
+  },
+  "routing": {
+    "risk_alpha": 4,
+    "trusted_alpha": 5,
+    "default_speed_mps": 8.0,
+    "high_risk": 0.65
+  },
+  "scenario": {
+    "random_seed": 20260920,
+    "start": "2023-09-07T12:00:00+08:00",
+    "steps": 17,
+    "step_min": 15,
+    "peak_mm": 120,
+    "background_mm": 2,
+    "width_fraction": 0.12
+  },
+  "trigger": {
+    "min_confidence": 0.55,
+    "high_risk_ratio": 0.22,
+    "risk_increase": 0.08,
+    "cooldown_min": 30,
+    "minimum_improvement": 0.03,
+    "hysteresis": 0.03
+  },
+  "experiment": {
+    "delays_min": [
+      0,
+      15,
+      30,
+      60,
+      120
+    ],
+    "missing_rates": [
+      0,
+      0.2,
+      0.4
+    ],
+    "noise_levels": [
+      0,
+      0.1,
+      0.2
+    ],
+    "universal_tau_min": 60
+  },
+  "experiment_only": true,
+  "source_kind": "SIMULATED_WATER_SENSOR",
+  "synthetic_water": {
+    "sensor_count": 48,
+    "sensor_selection_seed": 7401,
+    "spatial_strata": [
+      4,
+      4
+    ],
+    "susceptibility_weights": {
+      "low_elev_norm": 0.35,
+      "flatness_risk": 0.25,
+      "builtup_frac": 0.3,
+      "vegetation_relief": 0.1
+    },
+    "integration_step_min": 5,
+    "inflow_gain": 1.35,
+    "drainage_tau_formula": "clip(45 + 75*flatness_risk + 45*builtup_frac - 30*vegetation_frac, 30, 180)",
+    "sensor_cadence_min": 10,
+    "sensor_group_offsets_min": [
+      0,
+      3,
+      6
+    ],
+    "mapping_radius_m": 1000,
+    "mapping_scale_m": 400,
+    "mapping_full_weight": 1.5,
+    "source_name": "受控模拟积涝监测源",
+    "source_kind": "SIMULATED_WATER_SENSOR"
+  },
+  "multisource_experiment": {
+    "scenario_families": [
+      "moving_center",
+      "dual_center",
+      "anisotropic_band"
+    ],
+    "seeds": [
+      8101,
+      8102,
+      8103,
+      8104,
+      8105,
+      8106,
+      8107,
+      8108,
+      8109,
+      8110,
+      8111,
+      8112
+    ],
+    "od_source": "results/expanded_validation/od_pairs.csv",
+    "decision_steps": [
+      4,
+      8
+    ],
+    "conditions": [
+      {
+        "condition_id": "C00",
+        "delay_min": 0,
+        "missing_rate": 0.0,
+        "noise_sigma": 0.0
+      },
+      {
+        "condition_id": "C01",
+        "delay_min": 10,
+        "missing_rate": 0.2,
+        "noise_sigma": 0.05
+      },
+      {
+        "condition_id": "C02",
+        "delay_min": 30,
+        "missing_rate": 0.5,
+        "noise_sigma": 0.15
+      },
+      {
+        "condition_id": "C03",
+        "delay_min": 60,
+        "missing_rate": 0.2,
+        "noise_sigma": 0.15
+      },
+      {
+        "condition_id": "C04",
+        "delay_min": 10,
+        "missing_rate": 0.5,
+        "noise_sigma": 0.0
+      },
+      {
+        "condition_id": "C05",
+        "delay_min": 30,
+        "missing_rate": 0.0,
+        "noise_sigma": 0.05
+      },
+      {
+        "condition_id": "C06",
+        "delay_min": 60,
+        "missing_rate": 0.5,
+        "noise_sigma": 0.05
+      },
+      {
+        "condition_id": "C07",
+        "delay_min": 0,
+        "missing_rate": 0.2,
+        "noise_sigma": 0.15
+      }
+    ],
+    "methods": [
+      "shortest",
+      "rain_risk",
+      "multisource_naive",
+      "multisource_uncertainty",
+      "trusted_universal_tau",
+      "trusted_source_specific_tau"
+    ],
+    "perfect_reference": true,
+    "bootstrap_iterations": 2000,
+    "bootstrap_seed": 8301,
+    "truth_weights": {
+      "static": 0.45,
+      "rain_dynamic": 0.275,
+      "latent_water": 0.275
+    },
+    "trigger": {
+      "seeds": [
+        8101,
+        8106,
+        8112
+      ],
+      "od_ids": [
+        "OD01",
+        "OD02"
+      ],
+      "policies": [
+        "never",
+        "always",
+        "triggered"
+      ],
+      "stress_cases": [
+        "rain_down_water_high",
+        "water_delay",
+        "water_block_missing",
+        "water_recovery",
+        "water_stale_rain_fresh",
+        "rain_stale_water_fresh",
+        "source_disagreement"
+      ]
+    }
+  }
+}

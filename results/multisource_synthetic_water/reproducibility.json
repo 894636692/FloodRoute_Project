@@ -1,0 +1,78 @@
+{
+  "status": "passed",
+  "runs": 2,
+  "comparison_scope": "All scientific fields; wall-clock timing columns ending _ms and total_computation_ms excluded",
+  "count_checks": {
+    "route_count": true,
+    "formal_route_count": true,
+    "perfect_reference_count": true,
+    "trigger_summary_count": true,
+    "trigger_detail_count": true,
+    "failure_count": true
+  },
+  "stable_output_hashes": {
+    "sensor_registry.csv": {
+      "run_1": "f87cd15f6061ac421dfc2cd095aeeb34a52884d0dc6a82fbb2dfeeb3622dc8fc",
+      "run_2": "f87cd15f6061ac421dfc2cd095aeeb34a52884d0dc6a82fbb2dfeeb3622dc8fc",
+      "match": true
+    },
+    "latent_water_summary.csv": {
+      "run_1": "df817f75f44ef9f24abc76025bb5341980ea486f79ea9a11848ba37a3fef8a5f",
+      "run_2": "df817f75f44ef9f24abc76025bb5341980ea486f79ea9a11848ba37a3fef8a5f",
+      "match": true
+    },
+    "observation_conditions.csv": {
+      "run_1": "e7b28950345178b1b9867cc65293b311be98a844ccea70787fd1f032a177a0eb",
+      "run_2": "e7b28950345178b1b9867cc65293b311be98a844ccea70787fd1f032a177a0eb",
+      "match": true
+    },
+    "routes.parquet": {
+      "run_1": "83ac3da6d5799b464dbe74c7bd30245f9f9c480ffdd7ea1a396ff1c7363a384b",
+      "run_2": "83ac3da6d5799b464dbe74c7bd30245f9f9c480ffdd7ea1a396ff1c7363a384b",
+      "match": true
+    },
+    "seed_summary.csv": {
+      "run_1": "398def1f6a5a031b0b25dc643db629eed319be0e50e4049cf5ea7f4dc423a895",
+      "run_2": "398def1f6a5a031b0b25dc643db629eed319be0e50e4049cf5ea7f4dc423a895",
+      "match": true
+    },
+    "family_summary.csv": {
+      "run_1": "c811b2e091e31d8e28ccfba19d731729b6ea5005c8cfbae8422d5daf542bff35",
+      "run_2": "c811b2e091e31d8e28ccfba19d731729b6ea5005c8cfbae8422d5daf542bff35",
+      "match": true
+    },
+    "method_comparisons.csv": {
+      "run_1": "8d5bf9f4a20cc0a68f6bbdbf4bcc42500855daa05721afc28388fdf7e9500853",
+      "run_2": "8d5bf9f4a20cc0a68f6bbdbf4bcc42500855daa05721afc28388fdf7e9500853",
+      "match": true
+    },
+    "bootstrap_ci.csv": {
+      "run_1": "ba42446428bdf0ccd9783fa7d4bbf5fcf900d0ade7fb2bae1389f5e282134eb2",
+      "run_2": "ba42446428bdf0ccd9783fa7d4bbf5fcf900d0ade7fb2bae1389f5e282134eb2",
+      "match": true
+    },
+    "trigger_summary.csv": {
+      "run_1": "c9a9ecfe097d2a314567a3b2151f1fc422e92e0c60fea1b6955fc8bca74534e4",
+      "run_2": "c9a9ecfe097d2a314567a3b2151f1fc422e92e0c60fea1b6955fc8bca74534e4",
+      "match": true
+    },
+    "failure_cases.csv": {
+      "run_1": "ff1a631e62ce26476bd45959807bd5bc2cda6583fb8de2f7bc6b5ab4075a974e",
+      "run_2": "ff1a631e62ce26476bd45959807bd5bc2cda6583fb8de2f7bc6b5ab4075a974e",
+      "match": true
+    },
+    "trigger_detail.parquet": {
+      "run_1": "a62fe6a9b3769dd16ed26fc9516f168b72454a73e5f161d68555263c5f7018af",
+      "run_2": "a62fe6a9b3769dd16ed26fc9516f168b72454a73e5f161d68555263c5f7018af",
+      "match": true
+    }
+  },
+  "sensor_layout_identical": true,
+  "latent_truth_summary_identical": true,
+  "observations_identical": true,
+  "routes_identical": true,
+  "aggregates_identical": true,
+  "bootstrap_identical": true,
+  "trigger_decisions_identical": true,
+  "failure_cases_identical": true
+}
