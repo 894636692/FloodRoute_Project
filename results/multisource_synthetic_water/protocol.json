@@ -1,0 +1,170 @@
+{
+  "protocol_version": "1.0",
+  "status": "preregistered",
+  "protocol_date": "2026-09-22",
+  "baseline_tag": "v1.3.0-research",
+  "baseline_commit": "6d68a89f4c774270aee9430a012fdc5577cca47f",
+  "frozen_config": "config/selected_v1_1.json",
+  "frozen_config_sha256": "3f8ea08239d12d19b801afec28b5156625dd08daef4f54ff72573756bd7e6dd5",
+  "experiment_config": "config/multisource_synthetic_water.json",
+  "production_water_active": false,
+  "experiment_only": true,
+  "source_kind": "SIMULATED_WATER_SENSOR",
+  "design": {
+    "scenario_families": [
+      "moving_center",
+      "dual_center",
+      "anisotropic_band"
+    ],
+    "seeds": [
+      8101,
+      8102,
+      8103,
+      8104,
+      8105,
+      8106,
+      8107,
+      8108,
+      8109,
+      8110,
+      8111,
+      8112
+    ],
+    "od_source": "results/expanded_validation/od_pairs.csv",
+    "decision_steps": [
+      4,
+      8
+    ],
+    "conditions": [
+      {
+        "condition_id": "C00",
+        "delay_min": 0,
+        "missing_rate": 0.0,
+        "noise_sigma": 0.0
+      },
+      {
+        "condition_id": "C01",
+        "delay_min": 10,
+        "missing_rate": 0.2,
+        "noise_sigma": 0.05
+      },
+      {
+        "condition_id": "C02",
+        "delay_min": 30,
+        "missing_rate": 0.5,
+        "noise_sigma": 0.15
+      },
+      {
+        "condition_id": "C03",
+        "delay_min": 60,
+        "missing_rate": 0.2,
+        "noise_sigma": 0.15
+      },
+      {
+        "condition_id": "C04",
+        "delay_min": 10,
+        "missing_rate": 0.5,
+        "noise_sigma": 0.0
+      },
+      {
+        "condition_id": "C05",
+        "delay_min": 30,
+        "missing_rate": 0.0,
+        "noise_sigma": 0.05
+      },
+      {
+        "condition_id": "C06",
+        "delay_min": 60,
+        "missing_rate": 0.5,
+        "noise_sigma": 0.05
+      },
+      {
+        "condition_id": "C07",
+        "delay_min": 0,
+        "missing_rate": 0.2,
+        "noise_sigma": 0.15
+      }
+    ],
+    "methods": [
+      "shortest",
+      "rain_risk",
+      "multisource_naive",
+      "multisource_uncertainty",
+      "trusted_universal_tau",
+      "trusted_source_specific_tau"
+    ],
+    "perfect_reference": true,
+    "bootstrap_iterations": 2000,
+    "bootstrap_seed": 8301,
+    "truth_weights": {
+      "static": 0.45,
+      "rain_dynamic": 0.275,
+      "latent_water": 0.275
+    },
+    "trigger": {
+      "seeds": [
+        8101,
+        8106,
+        8112
+      ],
+      "od_ids": [
+        "OD01",
+        "OD02"
+      ],
+      "policies": [
+        "never",
+        "always",
+        "triggered"
+      ],
+      "stress_cases": [
+        "rain_down_water_high",
+        "water_delay",
+        "water_block_missing",
+        "water_recovery",
+        "water_stale_rain_fresh",
+        "rain_stale_water_fresh",
+        "source_disagreement"
+      ]
+    }
+  },
+  "synthetic_water": {
+    "sensor_count": 48,
+    "sensor_selection_seed": 7401,
+    "spatial_strata": [
+      4,
+      4
+    ],
+    "susceptibility_weights": {
+      "low_elev_norm": 0.35,
+      "flatness_risk": 0.25,
+      "builtup_frac": 0.3,
+      "vegetation_relief": 0.1
+    },
+    "integration_step_min": 5,
+    "inflow_gain": 1.35,
+    "drainage_tau_formula": "clip(45 + 75*flatness_risk + 45*builtup_frac - 30*vegetation_frac, 30, 180)",
+    "sensor_cadence_min": 10,
+    "sensor_group_offsets_min": [
+      0,
+      3,
+      6
+    ],
+    "mapping_radius_m": 1000,
+    "mapping_scale_m": 400,
+    "mapping_full_weight": 1.5,
+    "source_name": "受控模拟积涝监测源",
+    "source_kind": "SIMULATED_WATER_SENSOR"
+  },
+  "planned_main_routes": 27648,
+  "planned_perfect_reference_routes": 576,
+  "planned_total_routes": 28224,
+  "independent_unit": "scenario_family × seed",
+  "paired_repeated_measures": [
+    "OD",
+    "decision_time",
+    "condition",
+    "method"
+  ],
+  "truth_boundary": "SIMULATED_TRUTH; observation generation and offline evaluation only",
+  "result_selection_prohibited": true
+}
