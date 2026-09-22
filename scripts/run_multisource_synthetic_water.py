@@ -130,7 +130,7 @@ def evaluate_main(runtime, config, protocol, grids, sensors, mapping, ods):
     index = source_engine.index
     bounds = runtime.edges.total_bounds
     rows, condition_rows, latent_rows, manifest_rows, archived_truth = [], [], [], [], []
-    shortest_cache = {}
+    shortest_cache = {}; rain_route_cache = {}
 
     for family in design["scenario_families"]:
         for seed in design["seeds"]:
@@ -219,8 +219,15 @@ def evaluate_main(runtime, config, protocol, grids, sensors, mapping, ods):
                         for method in method_order:
                             state, mode = states[str(method)]
                             start = time.perf_counter()
-                            route = shortest if method == "shortest" else runtime.plan(state, request_for(od, at, mode))
-                            planning_ms = shortest_cache[cache_key + "_ms"] if method == "shortest" else (time.perf_counter() - start) * 1000
+                            rain_key = (family, seed, step, od.od_id)
+                            if method == "shortest":
+                                route = shortest; planning_ms = shortest_cache[cache_key + "_ms"]
+                            elif method == "rain_risk" and rain_key in rain_route_cache:
+                                route, planning_ms = rain_route_cache[rain_key]
+                            else:
+                                route = runtime.plan(state, request_for(od, at, mode))
+                                planning_ms = (time.perf_counter() - start) * 1000
+                                if method == "rain_risk": rain_route_cache[rain_key] = (route, planning_ms)
                             metrics = truth_metrics(route, truth_state, lengths, config["routing"]["high_risk"])
                             mech = mechanism_metrics(route, mapped_water, state, universal_state)
                             rain_sel = normalized_at.reindex(route.edge_ids).value
