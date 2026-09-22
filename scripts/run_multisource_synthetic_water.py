@@ -89,24 +89,29 @@ def latent_at(states, timestamp):
     return states[before]
 
 
-def mechanism_metrics(route, mapped_water, state, universal_state=None):
+def mechanism_metrics(route, mapped_water, state, lengths, water_weight=.2, universal_state=None):
     selected = mapped_water.reindex(route.edge_ids)
-    length = state.loc[route.edge_ids].index
-    stale = selected.age_min.gt(20) & selected.value.notna()
+    route_lengths = lengths.loc[route.edge_ids].to_numpy(float)
+    weighted = lambda values: float(np.average(np.asarray(values, dtype=float), weights=route_lengths))
+    contribution = water_weight * selected.value.fillna(0).to_numpy(float) * selected.coverage.fillna(0).to_numpy(float)
+    stale = selected.coverage.fillna(0).ge(.05).to_numpy() & selected.age_min.gt(20).fillna(False).to_numpy() & (contribution >= .025)
+    water_uncertainty = .5 * (1 - selected.coverage.fillna(0).to_numpy(float)) + .15 * selected.quality.fillna(1).to_numpy(float)
+    state_selected = state.loc[route.edge_ids]
+    water_freshness = state_selected.water_freshness.to_numpy(float) if "water_freshness" in state_selected else np.ones(len(state_selected))
     result = {
-        "stale_water_usage": float(stale.mean()),
-        "mean_water_coverage_on_route": float(selected.coverage.fillna(0).mean()),
-        "mean_water_age_on_route": float(selected.age_min.mean()) if selected.age_min.notna().any() else np.nan,
-        "bad_source_exposure": float(((1 - selected.coverage.fillna(0)) + selected.quality.fillna(1)).mean() / 2),
+        "stale_water_usage": weighted(stale.astype(float)),
+        "mean_water_coverage_on_route": weighted(selected.coverage.fillna(0)),
+        "mean_water_age_on_route": weighted(selected.age_min.fillna(0)) if selected.age_min.notna().any() else np.nan,
+        "water_source_uncertainty": weighted(water_uncertainty),
+        "bad_source_exposure": weighted(water_uncertainty),
         "source_disagreement": np.nan,
-        "trusted_penalty_due_to_staleness_uncertainty": float(
-            (state.loc[route.edge_ids].trusted_risk - state.loc[route.edge_ids].risk).mean()
-        ),
+        "trusted_penalty_due_to_staleness": weighted(.15 * (1 - water_freshness) / 2),
+        "trusted_penalty_due_to_uncertainty": weighted(.30 * state_selected.uncertainty.to_numpy(float)),
         "trusted_penalty_source_specific_minus_universal": np.nan,
     }
     if universal_state is not None:
-        result["trusted_penalty_source_specific_minus_universal"] = float(
-            (state.loc[route.edge_ids].trusted_risk - universal_state.loc[route.edge_ids].trusted_risk).mean()
+        result["trusted_penalty_source_specific_minus_universal"] = weighted(
+            state_selected.trusted_risk.to_numpy(float) - universal_state.loc[route.edge_ids].trusted_risk.to_numpy(float)
         )
     return result
 
@@ -229,10 +234,16 @@ def evaluate_main(runtime, config, protocol, grids, sensors, mapping, ods):
                                 planning_ms = (time.perf_counter() - start) * 1000
                                 if method == "rain_risk": rain_route_cache[rain_key] = (route, planning_ms)
                             metrics = truth_metrics(route, truth_state, lengths, config["routing"]["high_risk"])
-                            mech = mechanism_metrics(route, mapped_water, state, universal_state)
+                            mech = mechanism_metrics(route, mapped_water, state, lengths, config["sources"]["water"]["weight"], universal_state)
                             rain_sel = normalized_at.reindex(route.edge_ids).value
                             water_sel = mapped_water.reindex(route.edge_ids).value
-                            mech["source_disagreement"] = float((rain_sel - water_sel).abs().mean()) if water_sel.notna().any() else np.nan
+                            disagreement_mask = water_sel.notna() & mapped_water.reindex(route.edge_ids).coverage.fillna(0).gt(0)
+                            if disagreement_mask.any():
+                                mechanism_lengths = lengths.loc[route.edge_ids].to_numpy(float)[disagreement_mask.to_numpy()]
+                                mech["source_disagreement"] = float(np.average(
+                                    (rain_sel[disagreement_mask] - water_sel[disagreement_mask]).abs().to_numpy(float),
+                                    weights=mechanism_lengths,
+                                ))
                             rows.append({
                                 "scenario_family": family, "seed": seed, "od_id": od.od_id,
                                 "decision_step": step, "timestamp": at, **condition,
@@ -258,9 +269,14 @@ def evaluate_main(runtime, config, protocol, grids, sensors, mapping, ods):
                         "observation_digest": "PERFECT_FULL_EDGE_TRUTH_REFERENCE",
                         **truth_metrics(route, truth_state, lengths, config["routing"]["high_risk"]),
                         "stale_water_usage": 0.0, "mean_water_coverage_on_route": 1.0,
-                        "mean_water_age_on_route": 0.0, "bad_source_exposure": 0.0,
-                        "source_disagreement": float((normalized_at.reindex(route.edge_ids).value.to_numpy() - latent_at(latent, at)[index.get_indexer(route.edge_ids)]).mean()),
-                        "trusted_penalty_due_to_staleness_uncertainty": 0.0,
+                        "mean_water_age_on_route": 0.0, "water_source_uncertainty": 0.0,
+                        "bad_source_exposure": 0.0,
+                        "source_disagreement": float(np.average(
+                            np.abs(normalized_at.reindex(route.edge_ids).value.to_numpy() - latent_at(latent, at)[index.get_indexer(route.edge_ids)]),
+                            weights=lengths.loc[route.edge_ids].to_numpy(float),
+                        )),
+                        "trusted_penalty_due_to_staleness": 0.0,
+                        "trusted_penalty_due_to_uncertainty": 0.0,
                         "trusted_penalty_source_specific_minus_universal": 0.0,
                         "route_overlap_with_shortest": route_overlap(route, shortest, lengths),
                         "mapping_ms": 0.0, "state_ms": 0.0, "planning_ms": planning_ms,
@@ -468,8 +484,19 @@ def save_figures(output, routes, latent_summary, sensor_registry, trigger_summar
     plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei", "DejaVu Sans"]
     plt.rcParams["axes.unicode_minus"] = False
     figure_dir = output / "figures"; figure_dir.mkdir(parents=True, exist_ok=True)
-    sample = latent_summary[(latent_summary.scenario_family == "moving_center") & (latent_summary.seed == 8101)]
-    fig, ax = plt.subplots(figsize=(8, 4)); ax.plot(pd.to_datetime(sample.timestamp), sample["mean"], marker="o", label="模拟积涝监测源 latent mean"); ax.set_ylabel("无量纲积涝状态指数"); ax.set_title("降雨与模拟积涝时间滞后示例"); ax.legend(); fig.autofmt_xdate(); fig.tight_layout(); fig.savefig(figure_dir / "降雨与模拟积涝时间滞后示例.png", dpi=180); plt.close(fig)
+    # A transparent one-edge mechanism illustration (not a real observation).
+    example_times = pd.date_range("2023-09-07T12:00:00+08:00", periods=9, freq="15min")
+    example_rain = np.array([0, .2, .7, 1., .5, 0, 0, 0, 0])
+    example_water = [0.]
+    retention = np.exp(-15 / 120)
+    for forcing in example_rain[:-1]:
+        example_water.append(retention * example_water[-1] + (1 - retention) * .8 * forcing)
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.plot(example_times, example_rain, marker="o", label="降雨强迫（归一化）")
+    ax.plot(example_times, example_water, marker="o", label="模拟积涝状态指数")
+    ax.axvline(example_times[5], color="grey", linestyle="--", linewidth=1, label="降雨停止")
+    ax.set_ylabel("无量纲指数"); ax.set_title("降雨与模拟积涝时间滞后示例（受控示例，非实测）")
+    ax.legend(); fig.autofmt_xdate(); fig.tight_layout(); fig.savefig(figure_dir / "降雨与模拟积涝时间滞后示例.png", dpi=180); plt.close(fig)
 
     labels = {
         "rain_risk": "仅降雨", "multisource_naive": "朴素多源", "multisource_uncertainty": "多源+不确定性",
