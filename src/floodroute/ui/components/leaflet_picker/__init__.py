@@ -6,7 +6,7 @@ _picker = components.declare_component('leaflet_picker', path=str(Path(__file__)
 
 def leaflet_picker(points, response, revision, online, config, selection, timing=None,
                    layers=None, rain_data=None, rain_meta=None, road_risk_data=None,
-                   query_point=None,
+                   query_point=None, sensor_data=None,
                    key='main_route_map', on_change=None):
     """WGS84 points/GeoJSON in; clicked coordinates plus viewport and request id out.
 
@@ -25,5 +25,6 @@ def leaflet_picker(points, response, revision, online, config, selection, timing
                    selection=selection, timing=timing or {}, layers=layers,
                    rainData=rain_data or [], rainMeta=rain_meta or {},
                    roadRiskData=road_risk_data or [],
+                   sensorData=sensor_data or [],
                    queryPoint=query_point, default=None, key=key,
                    on_change=on_change)

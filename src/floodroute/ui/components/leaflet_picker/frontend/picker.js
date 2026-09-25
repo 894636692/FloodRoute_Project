@@ -5,7 +5,7 @@
   const rainColors=['#d9edf7','#a6cee3','#4aa8d8','#fee08b','#f46d43','#a50026'];
   const riskColors=['#2ca25f','#99d8c9','#fee08b','#fdae61','#d73027'];
   let map,args,route,routeKey=null,tile,roads,roadPromise,eventId=0,fitted=null,queryMarker;
-  let gridLayer,gridPromise,riskLayer,riskPromise,rainValues=new Map(),riskValues=new Map();
+  let gridLayer,gridPromise,riskLayer,riskPromise,sensorLayer,rainValues=new Map(),riskValues=new Map();
   let rainLegend,riskLegend,feedbackSamples=[];
   const afterPaint = fn => requestAnimationFrame(()=>requestAnimationFrame(fn));
   const valueText = v => v===null||v===undefined||Number.isNaN(Number(v))?'暂无可靠数据':Number(v).toFixed(3);
@@ -100,6 +100,27 @@
       root.dataset.riskGeometryLoads=String(Number(root.dataset.riskGeometryLoads||0)+1);
     }).catch(()=>{root.dataset.riskError='true';riskPromise=null;});
   }
+  function setSensorLayer(enabled,data){
+    root.dataset.sensorEnabled=String(enabled);root.dataset.sensorCount=String(data.length);
+    if(sensorLayer){map.removeLayer(sensorLayer);sensorLayer=null;}
+    if(!enabled)return;
+    sensorLayer=L.layerGroup();
+    data.forEach(item=>{
+      const unavailable=item.value===null||item.value===undefined;
+      const value=unavailable?null:Number(item.value);
+      const color=unavailable?'#8c8c8c':value>=.7?'#d73027':value>=.4?'#fdae61':'#2b83ba';
+      const marker=L.circleMarker([item.lat,item.lon],{pane:'markerPane',radius:5,color:'#222',weight:1,fillColor:color,fillOpacity:.9});
+      marker.bindPopup('<b>模拟积涝监测点：</b>'+escapeHtml(item.sensor_id)+
+        '<br><b>积涝状态指数：</b>'+(unavailable?'暂无可靠数据':value.toFixed(3))+
+        '<br><b>观测时间：</b>'+escapeHtml(item.timestamp||'暂无可靠数据')+
+        '<br><b>到达时间：</b>'+escapeHtml(item.retrieved_at||'暂无可靠数据')+
+        '<br><b>信息年龄：</b>'+(item.age_min===null?'暂无可靠数据':Number(item.age_min).toFixed(0)+' 分钟')+
+        '<br><b>质量：</b>'+escapeHtml(item.quality)+'<br><b>状态：</b>'+escapeHtml(item.availability)+
+        '<br><b>类型：</b>'+escapeHtml(item.source_type)+
+        '<br><small>该数据为受控模拟积涝状态指数，不代表真实道路积水深度。</small>');
+      marker.on('click',e=>{if(e.originalEvent)L.DomEvent.stopPropagation(e.originalEvent);});marker.addTo(sensorLayer);
+    });sensorLayer.addTo(map);
+  }
 
   addEventListener('message',e=>{
     if(e.source!==parent||e.data.type!=='streamlit:render')return;
@@ -114,6 +135,7 @@
     }
     setTileMode(args.online);setRainLayer(!!args.layers.rain,args.rainData||[]);
     setRoadRiskLayer(!!args.layers.road_risk,args.roadRiskData||[]);
+    setSensorLayer(!!args.layers.sensors,args.sensorData||[]);
     setMarker('start',args.markers.start);setMarker('goal',args.markers.goal);setQueryMarker(args.queryPoint);
     const nextKey=JSON.stringify(args.route);
     if(nextKey!==routeKey){if(route)map.removeLayer(route);route=args.route?L.geoJSON(args.route,{pane:'routePane',style:{color:'#14834d',weight:5},interactive:false}).addTo(map):null;routeKey=nextKey;}

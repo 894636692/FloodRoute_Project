@@ -186,5 +186,29 @@ class MultisourceFusionV2Tests(unittest.TestCase):
         self.assertNotEqual((ROOT / "results/multisource_synthetic_water").resolve(),
                             (ROOT / "results/multisource_fusion_v2").resolve())
 
+    def test_29_only_multisource_scene_enables_simulated_water(self):
+        text=(ROOT/'src/floodroute/ui/app_v1_1.py').read_text(encoding='utf-8')
+        self.assertIn("'异步多源机制实验': 'MULTISOURCE_V2'",text)
+        self.assertIn("kind == 'MULTISOURCE_V2'",text)
+        self.assertIn("kind in {'REAL', 'MULTISOURCE_V2'}",text)
+        self.assertIn('show_risk or show_sensors or',text)
+
+    def test_30_real_ui_keeps_water_disabled_label(self):
+        text=(ROOT/'src/floodroute/ui/app_v1_1.py').read_text(encoding='utf-8')
+        self.assertIn('真实水位数据：未启用',text)
+        self.assertIn("if kind == 'REAL'",text)
+
+    def test_31_persistent_map_instance_and_sensor_update(self):
+        text=(ROOT/'src/floodroute/ui/components/leaflet_picker/frontend/picker.js').read_text(encoding='utf-8')
+        self.assertEqual(text.count('L.map('),1); self.assertIn('setSensorLayer',text)
+
+    def test_32_sensor_popup_marks_simulation_and_missing(self):
+        text=(ROOT/'src/floodroute/ui/components/leaflet_picker/frontend/picker.js').read_text(encoding='utf-8')
+        self.assertIn('不代表真实道路积水深度',text); self.assertIn('暂无可靠数据',text)
+
+    def test_33_ground_truth_not_exposed_by_ui_adapter(self):
+        text=(ROOT/'src/floodroute/ui/multisource_v2.py').read_text(encoding='utf-8')
+        self.assertNotIn("'latent_ponding_truth'",text.split('def multisource_snapshot',1)[1])
+
 
 if __name__ == "__main__": unittest.main()

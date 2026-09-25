@@ -8,7 +8,7 @@ from floodroute.runtime import ROOT, read_rainfall
 from floodroute.experiments.scenario import observe
 
 
-TABLE_LOAD_COUNTS = {'REAL': 0, 'SIMULATED_SCENARIO': 0}
+TABLE_LOAD_COUNTS = {'REAL': 0, 'SIMULATED_SCENARIO': 0, 'MULTISOURCE_V2': 0}
 
 
 @st.cache_data(show_spinner=False)
@@ -16,6 +16,8 @@ def source_table(kind):
     TABLE_LOAD_COUNTS[kind] += 1
     if kind == 'REAL':
         return read_rainfall(ROOT / 'data/derived/dynamic/shenzhen_grid/rainfall.csv')
+    if kind == 'MULTISOURCE_V2':
+        kind = 'SIMULATED_SCENARIO'
     return pd.read_parquet(ROOT / 'data/scenarios/simulated_extreme/truth_rainfall.parquet')
 
 

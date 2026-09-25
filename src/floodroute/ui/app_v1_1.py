@@ -10,7 +10,8 @@ st.set_page_config(page_title='涝途智避', layout='wide', initial_sidebar_sta
 st.markdown('<style>[data-testid="stAppDeployButton"],#MainMenu,footer{display:none;}'
             '.block-container{padding-top:1.4rem;}h1{font-size:1.8rem!important;}</style>', unsafe_allow_html=True)
 CFG = json.loads((ROOT / 'config/ui_v1_1.json').read_text(encoding='utf-8'))
-SCENES = {'深圳真实降雨快照': 'REAL', '受控极端降雨场景': 'SIMULATED_SCENARIO'}
+SCENES = {'深圳真实降雨快照': 'REAL', '受控极端降雨场景': 'SIMULATED_SCENARIO',
+          '异步多源机制实验': 'MULTISOURCE_V2'}
 EXPLANATIONS = {
     '最短路径': '当前路线仅根据道路距离规划，不主动规避内涝风险，可作为风险路径算法的对照基准。',
     '风险优先': '当前路线综合考虑道路距离和道路内涝风险，允许适度绕行，以降低整体风险暴露。',
@@ -45,7 +46,8 @@ iframe {max-width:100%;}
 </style>""", unsafe_allow_html=True)
 for k, value in dict(start=None, goal=None, result=None, click_error=None, click_notice=None,
                      query_point=None, query_road_edge_id=None, query_result=None,
-                     result_stale=False, fit_revision=0, playback_active=False).items():
+                     result_stale=False, fit_revision=0, playback_active=False,
+                     ui_sensor_payload=[]).items():
     if k not in st.session_state: st.session_state[k] = value
 
 st.title('涝途智避')
@@ -69,6 +71,7 @@ from floodroute.ui.resources import (preload_runtime, edge_lengths, grid_registr
 from floodroute.ui.observations import scenario_times, get_observations
 from floodroute.ui.map_data import (build_query_result, rainfall_layer_values,
     road_risk_layer_values)
+from floodroute.ui.multisource_v2 import multisource_snapshot, nearest_sensor
 
 
 def display_time(value):
@@ -138,6 +141,14 @@ def query_panel(result):
     road_type = ROAD_TYPES.get(road['highway'], '暂无可靠数据')
     st.caption(f"道路：{road_name} ｜ 类型：{road_type} ｜ 长度：{reliable(road['length_m'], '{:.1f}', ' m')}")
     st.caption(result['water_status'], help=result['water_reason'])
+    if result.get('water_sensor'):
+        sensor=result['water_sensor']; st.markdown('**模拟积涝监测**')
+        st.write(f"最近监测点：{sensor['sensor_id']}（{sensor['distance_m']:.0f} 米）")
+        st.write('积涝状态指数：'+reliable(sensor['value']))
+        st.write('观测时间：'+(display_time(sensor['timestamp']) if sensor['timestamp'] else '暂无可靠数据'))
+        st.write('到达时间：'+(display_time(sensor['retrieved_at']) if sensor['retrieved_at'] else '暂无可靠数据'))
+        st.write(f"状态：{sensor['availability']} ｜ 质量：{sensor['quality']}")
+        st.caption('该数据为受控模拟积涝状态指数，不代表真实道路积水深度。')
     with st.expander('查询详细信息'):
         st.write(f"查询点：{result['lon']:.6f}, {result['lat']:.6f}（WGS84 / EPSG:4326）")
         st.write(f"格网中心：{result['grid_center_lon']:.6f}, {result['grid_center_lat']:.6f}")
@@ -168,46 +179,49 @@ def workspace():
             show_route = st.checkbox('当前路线', value=True)
             show_rain = st.checkbox('降雨格网', value=False)
             show_risk = st.checkbox('道路风险', value=False)
+            show_sensors = st.checkbox('模拟积涝监测点', value=kind == 'MULTISOURCE_V2',
+                                       disabled=kind != 'MULTISOURCE_V2')
             st.caption('降雨和风险颜色仅为地图显示分级。')
         # Changes are submitted together. Selecting a map point never submits it.
         with st.form('planning_settings', border=False):
             plan = st.form_submit_button('开始规划', type='primary', disabled=not can_plan(st.session_state))
-            timestamp = st.selectbox('场景时间', times, index=len(times)-1 if kind == 'REAL' else 0,
+            timestamp = st.selectbox('场景时间', times,
+                                    index=len(times)-1 if kind in {'REAL', 'MULTISOURCE_V2'} else 0,
                                     format_func=display_time)
             mode = st.selectbox('路径策略', list(MODES))
             delay, missing, noise = 0, 0., 0.
             replay = False
+            outage_mode = '正常'
             if kind != 'REAL':
                 delay = st.slider('模拟观测延迟（分钟）', 0, 120, 30, 15)
                 with st.expander('高级实验设置', expanded=False):
                     missing = st.slider('数据缺失率', 0., .8, .2, .1)
                     noise = st.slider('噪声水平', 0., .5, .1, .05)
+                    if kind == 'MULTISOURCE_V2':
+                        outage_mode = st.selectbox('模拟监测通信状态', ['正常','通信中断','恢复演示'])
                 replay = st.form_submit_button('动态回放', disabled=not can_plan(st.session_state))
                 st.caption('动态回放使用可信优先策略，保持本次地图选定的起终点。')
-    with note_slot.container():
-        with st.container(key='data_note'):
-            if kind == 'REAL':
-                st.info('数据说明：当前使用深圳真实气象格网降雨快照。系统输出为道路内涝风险指数，用于路径风险比较，不代表实际积水深度或道路通行安全承诺。')
-                st.caption('数据来源：深圳市气象局（台） · 气象格网共 4232 个，坐标系为世界大地坐标系。')
-                st.caption('观测时间：' + display_time(timestamp) + '（北京时间） · 本时次真实降雨较弱，主要用于验证真实动态数据链路。')
-                st.caption('真实水位数据：未启用', help=WATER_REASON)
-            else:
-                st.info('场景说明：当前为受控极端降雨实验。降雨变化由固定随机种子的可重复情景生成，用于测试信息延迟、不确定性和路径重规划，不代表历史实测。')
-                st.caption('模拟积涝强度：仅为无物理水深含义的实验指标；本界面不显示模拟厘米水深。')
-    signature = (kind, timestamp, mode, delay, missing, noise)
+    signature = (kind, timestamp, mode, delay, missing, noise, outage_mode)
     if st.session_state.get('last_conditions') != signature:
         st.session_state.result_stale = st.session_state.result is not None
         st.session_state.playback_active = False
         st.session_state.last_conditions = signature
     resource_future = preload_runtime()
-    need_snapshot = bool(plan or replay or show_rain or show_risk or st.session_state.query_point)
+    need_snapshot = bool(plan or replay or show_rain or show_risk or show_sensors or
+                         st.session_state.query_point)
     observed = state = mapped_rain = None
     if need_snapshot:
         runtime = resource_future.result()
-        snapshot_key = (kind, str(timestamp), int(delay), float(missing), float(noise))
+        snapshot_key = (kind, str(timestamp), int(delay), float(missing), float(noise), outage_mode)
         if st.session_state.get('ui_snapshot_key') != snapshot_key:
             observed = get_observations(kind, timestamp, delay, missing, noise)
-            state, sources = runtime.observed_state_with_sources(observed, timestamp)
+            if kind == 'MULTISOURCE_V2':
+                state,mapped_rain,water_observed,mapped_water,sensor_payload=multisource_snapshot(runtime,observed,timestamp,delay,missing,noise,outage_mode)
+                sources={'rain':mapped_rain}; st.session_state.ui_sensor_payload=sensor_payload
+                st.session_state.ui_water_observed=water_observed; st.session_state.ui_mapped_water=mapped_water
+            else:
+                state, sources = runtime.observed_state_with_sources(observed, timestamp)
+                st.session_state.ui_sensor_payload=[]
             st.session_state.update(ui_snapshot_key=snapshot_key, ui_observed=observed,
                                     ui_risk_state=state, ui_mapped_rain=sources['rain'],
                                     ui_rain_payload=None, ui_risk_payload=None)
@@ -215,6 +229,22 @@ def workspace():
             observed = st.session_state.ui_observed
             state = st.session_state.ui_risk_state
         mapped_rain = st.session_state.ui_mapped_rain
+    with note_slot.container():
+        with st.container(key='data_note'):
+            if kind == 'REAL':
+                st.info('数据说明：当前使用深圳真实气象格网降雨快照。系统输出为道路内涝风险指数，用于路径风险比较，不代表实际积水深度或道路通行安全承诺。')
+                st.caption('数据来源：深圳市气象局（台） · 气象格网共 4232 个，坐标系为世界大地坐标系。')
+                st.caption('观测时间：' + display_time(timestamp) + '（北京时间） · 本时次真实降雨较弱，主要用于验证真实动态数据链路。')
+                st.caption('真实水位数据：未启用', help=WATER_REASON)
+            elif kind == 'SIMULATED_SCENARIO':
+                st.info('场景说明：当前为受控极端降雨实验。降雨变化由固定随机种子的可重复情景生成，用于测试信息延迟、不确定性和路径重规划，不代表历史实测。')
+                st.caption('模拟积涝强度：仅为无物理水深含义的实验指标；本界面不显示模拟厘米水深。')
+            else:
+                st.info('场景说明：当前为异步多源机制实验，使用受控模拟降雨与受控模拟积涝监测。所有数值仅用于机制验证，不是历史实测。')
+                c1,c2=st.columns(2); c1.metric('降雨数据','受控模拟')
+                valid=sum(x.get('value') is not None for x in st.session_state.ui_sensor_payload)
+                c2.metric('模拟积涝监测',f'{valid}/48 点有效')
+                st.caption('积涝状态指数 0~1，不代表实际道路积水深度。')
     if plan or replay:
         lengths = edge_lengths()
     display_edges = risk_display_edge_ids() if show_risk else []
@@ -233,9 +263,16 @@ def workspace():
         return changed
 
     def package(route, state, at, label, status, message=''):
+        selected=state.reindex(route.edge_ids)
+        fusion={'rain_freshness':float(selected.get('rain_freshness',pd.Series(1.,index=selected.index)).mean()),
+                'water_freshness':None if 'water_freshness' not in selected else float(selected.water_freshness.mean()),
+                'rain_effective_contribution':None if 'rain_effective_weight' not in selected else float(selected.rain_effective_weight.mean()),
+                'water_effective_contribution':None if 'water_effective_weight' not in selected else float(selected.water_effective_weight.mean()),
+                'fallback_fraction':None if 'fallback_static_only' not in selected else float(selected.fallback_static_only.mean())}
         return {'response': route.to_response(), 'metrics': route_metrics(route, state, lengths,
                 runtime.config['routing']['high_risk']), 'timestamp': at, 'mode_label': label,
                 'status': status, 'message': message, 'data_type': kind,
+                'fusion': fusion,
                 'selected_points': {k: dict(st.session_state[k]) for k in ('start', 'goal')}}
 
     rain_payload, risk_payload = [], []
@@ -256,6 +293,10 @@ def workspace():
             st.session_state.query_result = build_query_result(
                 runtime, grid_registry(), observed, state, mapped_rain, timestamp,
                 point['lon'], point['lat'], kind, st.session_state.query_road_edge_id)
+            if kind == 'MULTISOURCE_V2':
+                st.session_state.query_result['water_sensor']=nearest_sensor(st.session_state.ui_sensor_payload,point['lon'],point['lat'])
+                st.session_state.query_result['water_status']='模拟积涝监测：受控模拟源'
+                st.session_state.query_result['water_reason']='积涝状态指数 0~1，不是实际道路水深。'
             st.session_state.query_result_key = query_key
             st.session_state.backend_timing = {
                 'python_query_ms': (perf_counter()-query_at)*1000,
@@ -277,7 +318,13 @@ def workspace():
             with st.spinner('正在准备动态回放…'):
                 for at in times:
                     frame_observed = get_observations(kind, at, delay, missing, noise)
-                    state, frame_sources = runtime.observed_state_with_sources(frame_observed, at)
+                    frame_sensors = []
+                    if kind == 'MULTISOURCE_V2':
+                        state, frame_rain, _, _, frame_sensors = multisource_snapshot(
+                            runtime, frame_observed, at, delay, missing, noise, outage_mode)
+                        frame_sources = {'rain': frame_rain}
+                    else:
+                        state, frame_sources = runtime.observed_state_with_sources(frame_observed, at)
                     log = controller.step(state, make_request(st.session_state, at, '可信优先'))
                     status = '已切换路线' if log['route_changed'] else '已评估候选' if log['attempted'] else '保持路线'
                     frame = package(controller.current_route, state, at, '可信优先', status, replay_message(log))
@@ -290,6 +337,8 @@ def workspace():
                         frame['rain_layer'] = rainfall_layer_values(frame_observed, at)
                     if show_risk:
                         frame['risk_layer'] = road_risk_layer_values(state, display_edges)
+                    if show_sensors:
+                        frame['sensor_layer'] = frame_sensors
                     frames.append(frame)
             complete_plan(st.session_state, frames[-1])
             st.session_state.update(playback_frames=frames, playback_cursor=0, playback_active=True)
@@ -339,6 +388,7 @@ def workspace():
 
         frame_rain = result.get('rain_layer', rain_payload) if result else rain_payload
         frame_risk = result.get('risk_layer', risk_payload) if result else risk_payload
+        frame_sensors = result.get('sensor_layer', st.session_state.ui_sensor_payload) if result else st.session_state.ui_sensor_payload
         layer_at = result['timestamp'] if result else timestamp
         rain_meta = {'timestamp': display_time(layer_at),
                      'source': '深圳市气象局（台）' if kind == 'REAL'
@@ -346,8 +396,9 @@ def workspace():
         event = leaflet_picker(
             st.session_state, response, revision, online, CFG, selection,
             timing=st.session_state.get('backend_timing'),
-            layers={'route': show_route, 'rain': show_rain, 'road_risk': show_risk},
+            layers={'route': show_route, 'rain': show_rain, 'road_risk': show_risk, 'sensors': show_sensors},
             rain_data=frame_rain, rain_meta=rain_meta, road_risk_data=frame_risk,
+            sensor_data=frame_sensors if show_sensors else [],
             query_point=st.session_state.query_point,
             key=MAP_KEY, on_change=on_map_change)
         try:
@@ -369,6 +420,19 @@ def workspace():
             if result['message']: st.info(result['message'])
             st.subheader('规划结果说明')
             st.write(EXPLANATIONS[result['mode_label']])
+            st.markdown('**本次规划使用的数据源**')
+            if result['data_type']=='MULTISOURCE_V2':
+                water_ok=any(x.get('value') is not None for x in st.session_state.ui_sensor_payload)
+                st.write('降雨：有效 ｜ 模拟积涝：'+('有效' if water_ok else '当前缺失'))
+                st.caption('当前路线综合使用降雨与模拟积涝监测信息计算道路风险。' if water_ok else '当前模拟积涝源不可用，系统已主要依据可用降雨信息进行风险计算。')
+                with st.expander('查看融合详情'):
+                    f=result['fusion']; st.write(f"Rain freshness：{f['rain_freshness']:.3f}")
+                    st.write('Water freshness：'+reliable(f['water_freshness']))
+                    st.write('Rain effective contribution：'+reliable(f['rain_effective_contribution']))
+                    st.write('Water effective contribution：'+reliable(f['water_effective_contribution']))
+                    st.write('Fallback fraction：'+reliable(f['fallback_fraction']))
+            else:
+                st.write('降雨：有效 ｜ 真实水位：未启用')
             with st.expander('详细风险指标'):
                 m = result['metrics']
                 st.write(f"最大风险：{m['max_risk']:.3f}；长度加权第九十五百分位风险：{m['p95_risk']:.3f}；高风险道路长度占比：{m['high_risk_length_ratio']:.1%}。")
