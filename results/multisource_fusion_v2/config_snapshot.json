@@ -1,0 +1,244 @@
+{
+  "schema_version": "multisource-fusion-v2-confirmatory-1.0",
+  "static_path": "data/derived/static/road_static_features.gpkg",
+  "rainfall_path": "data/derived/dynamic/shenzhen_grid/rainfall.csv",
+  "grids_path": "data/derived/dynamic/shenzhen_grid/grid_cells.csv",
+  "mapping_path": "data/derived/mappings/edge_grid_weights.parquet",
+  "sources": {
+    "rain": {
+      "active": true,
+      "tau_min": 60,
+      "scale": 80,
+      "weight": 0.55
+    },
+    "water": {
+      "active": true,
+      "tau_min": 20,
+      "scale": 1.0,
+      "weight": 0.2
+    },
+    "forecast": {
+      "active": false,
+      "tau_min": 90,
+      "scale": 80,
+      "weight": 0.15
+    }
+  },
+  "static": {
+    "weight": 0.45,
+    "missing_prior": 0.5,
+    "low_elev_norm": 0.42,
+    "flatness_risk": 0.24,
+    "builtup_frac": 0.22,
+    "water_frac": 0.1,
+    "vegetation_relief": 0.02
+  },
+  "uncertainty": {
+    "base": 0.08,
+    "missing": 0.5,
+    "quality": 0.15,
+    "static_missing": 0.3
+  },
+  "trusted": {
+    "uncertainty_weight": 0.3,
+    "staleness_weight": 0.15
+  },
+  "routing": {
+    "risk_alpha": 4,
+    "trusted_alpha": 5,
+    "default_speed_mps": 8.0,
+    "high_risk": 0.65
+  },
+  "scenario": {
+    "random_seed": 20260920,
+    "start": "2023-09-07T12:00:00+08:00",
+    "steps": 17,
+    "step_min": 15,
+    "peak_mm": 120,
+    "background_mm": 2,
+    "width_fraction": 0.12
+  },
+  "trigger": {
+    "min_confidence": 0.55,
+    "high_risk_ratio": 0.22,
+    "risk_increase": 0.08,
+    "cooldown_min": 30,
+    "minimum_improvement": 0.03,
+    "hysteresis": 0.03
+  },
+  "experiment": {
+    "seeds": [
+      9201,
+      9202,
+      9203,
+      9204,
+      9205,
+      9206,
+      9207,
+      9208,
+      9209,
+      9210,
+      9211,
+      9212
+    ],
+    "bootstrap_seed": 9301,
+    "bootstrap_iterations": 2000,
+    "od_source": "results/expanded_validation/od_pairs.csv",
+    "decision_steps": [
+      4,
+      8
+    ],
+    "scenario_families": [
+      "moving_center",
+      "dual_center",
+      "anisotropic_band"
+    ],
+    "truth_weights": {
+      "static": 0.45,
+      "rain_dynamic": 0.275,
+      "latent_water": 0.275
+    },
+    "conditions": [
+      {
+        "condition_id": "C00_clean",
+        "rain_delay_min": 0,
+        "water_delay_min": 0,
+        "water_missing_rate": 0.0,
+        "water_noise_sigma": 0.0,
+        "bias": false
+      },
+      {
+        "condition_id": "C01_typical",
+        "rain_delay_min": 0,
+        "water_delay_min": 10,
+        "water_missing_rate": 0.2,
+        "water_noise_sigma": 0.05,
+        "bias": false
+      },
+      {
+        "condition_id": "C02_degraded",
+        "rain_delay_min": 0,
+        "water_delay_min": 30,
+        "water_missing_rate": 0.5,
+        "water_noise_sigma": 0.15,
+        "bias": false
+      },
+      {
+        "condition_id": "C03_water_stale",
+        "rain_delay_min": 0,
+        "water_delay_min": 60,
+        "water_missing_rate": 0.2,
+        "water_noise_sigma": 0.15,
+        "bias": false
+      },
+      {
+        "condition_id": "C04_water_missing",
+        "rain_delay_min": 0,
+        "water_delay_min": 0,
+        "water_missing_rate": 1.0,
+        "water_noise_sigma": 0.0,
+        "bias": false
+      },
+      {
+        "condition_id": "C05_rain_stale",
+        "rain_delay_min": 60,
+        "water_delay_min": 0,
+        "water_missing_rate": 0.0,
+        "water_noise_sigma": 0.05,
+        "bias": false
+      },
+      {
+        "condition_id": "C06_asynchronous",
+        "rain_delay_min": 0,
+        "water_delay_min": 60,
+        "water_missing_rate": 0.5,
+        "water_noise_sigma": 0.05,
+        "bias": false
+      },
+      {
+        "condition_id": "C07_disagreement",
+        "rain_delay_min": 0,
+        "water_delay_min": 0,
+        "water_missing_rate": 0.2,
+        "water_noise_sigma": 0.15,
+        "bias": true
+      }
+    ],
+    "methods": [
+      "S0_shortest",
+      "S1_rain_only",
+      "S2_v1_redundant_naive",
+      "S3_v2_local_naive",
+      "S4_v2_reliability_universal",
+      "S5_v2_reliability_source_specific"
+    ],
+    "perfect_reference": "S6_perfect_water_v2",
+    "trigger": {
+      "seeds": [
+        9201,
+        9206,
+        9212
+      ],
+      "od_ids": [
+        "OD01",
+        "OD02"
+      ],
+      "policies": [
+        "never",
+        "always",
+        "triggered"
+      ],
+      "stress_cases": [
+        "rain_down_water_high",
+        "water_gradually_stale",
+        "water_block_outage",
+        "water_recovery",
+        "rain_stale_water_fresh",
+        "water_stale_rain_fresh",
+        "sources_disagreement"
+      ]
+    }
+  },
+  "synthetic_water": {
+    "sensor_count": 48,
+    "sensor_selection_seed": 7401,
+    "integration_step_min": 5,
+    "inflow_gain": 1.35,
+    "sensor_cadence_min": 10,
+    "sensor_group_offsets_min": [
+      0,
+      3,
+      6
+    ],
+    "mapping_radius_m": 1000,
+    "mapping_scale_m": 400,
+    "mapping_full_weight": 1.5
+  },
+  "water_v2": {
+    "local_field_seed": 9401,
+    "anchor_count": 12,
+    "length_scale": 0.18,
+    "disturbance_min_patches": 1,
+    "disturbance_max_patches": 3,
+    "local_tau_multiplier": "0.35 + 2.50*H + 1.20*B",
+    "local_inflow_formula": "1.35 * (0.55*local_rain*static_susceptibility + 0.90*regional_rain_p90*H + 0.65*regional_rain_p90*B)"
+  },
+  "fusion_v2": {
+    "strategy": "reliability_weighted_v2",
+    "sources": [
+      "rain",
+      "water"
+    ],
+    "base_weights": {
+      "rain": 1.0,
+      "water": 3.0
+    },
+    "dynamic_weight": 0.55,
+    "universal_tau_min": 60,
+    "reliability_formula": "sqrt(coverage) * (1 - quality)",
+    "effective_weight_formula": "base_weight * freshness * reliability * availability",
+    "fallback_epsilon": 1e-09,
+    "fallback": "static_only"
+  },
+  "experiment_only": true
+}

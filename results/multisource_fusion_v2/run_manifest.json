@@ -1,0 +1,22 @@
+{
+  "protocol_commit": "59da81f",
+  "route_count": 28224,
+  "formal_route_count": 27648,
+  "perfect_reference_count": 576,
+  "trigger_summary_count": 378,
+  "failure_count": 462,
+  "stable_output_hashes": {
+    "routes.parquet": "a419f1414333ab9c9576dacd19db446a10ff9e84ea3e56d137fa02303ef6e289",
+    "latent_state_summary.csv": "ca874755107d6020032bddcda88285f153d12f7fcc09541d268494cde4a21446",
+    "disturbance_patches.csv": "dfe65e97774f5f31ba87150a2098067ae82b6689294d8ced1a97912f55ff9728",
+    "sensor_registry.csv": "f87cd15f6061ac421dfc2cd095aeeb34a52884d0dc6a82fbb2dfeeb3622dc8fc",
+    "seed_summary.csv": "2b31c68164f89fd0ed6e6e1702944ec0e4854fc9292571216354e1b61cdcd1fa",
+    "family_summary.csv": "47000c4874fe3f29eb5a7a1e00aee3db213c8644034badb7f49fb3974ff9b58d",
+    "method_comparisons.csv": "c43482b76b05c43cc504dd4988e69a2d3b0adbc7007df83a31b334677bab34d3",
+    "bootstrap_ci.csv": "e48d87d326d6862f7774b42f659d61f91a830a3a555012a9a5290ea8de25699a",
+    "mechanism_metrics.csv": "8c1582ce802bac75f965c2a6deeb9bdb34888417d71f9341eae4d0b748257c65",
+    "trigger_summary.csv": "914409f38e7981bee3af9ee91b74e9708b037e77eb160e5c045020be8bd4b449",
+    "trigger_detail.parquet": "6863b84aa1b7b61aca99f953b3bacdbef77e2bb7e51401cceaf7d4de8ca8504a",
+    "failure_cases.csv": "e6d20d9a6cad6e53773447a7fc6a0fb57d7fb276be452401533e670ec7cc0726"
+  }
+}
