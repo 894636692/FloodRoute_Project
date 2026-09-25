@@ -1,0 +1,217 @@
+{
+  "protocol_version": "2.0",
+  "status": "PREREGISTERED_BEFORE_CONFIRMATORY_RESULTS",
+  "baseline_commit": "6d943eb",
+  "frozen_engine_config": "config/selected_v1_1.json",
+  "frozen_engine_sha256": "3f8ea08239d12d19b801afec28b5156625dd08daef4f54ff72573756bd7e6dd5",
+  "experiment_config": "config/multisource_fusion_v2.json",
+  "experiment_only": true,
+  "production_water_active": false,
+  "design": {
+    "seeds": [
+      9201,
+      9202,
+      9203,
+      9204,
+      9205,
+      9206,
+      9207,
+      9208,
+      9209,
+      9210,
+      9211,
+      9212
+    ],
+    "bootstrap_seed": 9301,
+    "bootstrap_iterations": 2000,
+    "od_source": "results/expanded_validation/od_pairs.csv",
+    "decision_steps": [
+      4,
+      8
+    ],
+    "scenario_families": [
+      "moving_center",
+      "dual_center",
+      "anisotropic_band"
+    ],
+    "truth_weights": {
+      "static": 0.45,
+      "rain_dynamic": 0.275,
+      "latent_water": 0.275
+    },
+    "conditions": [
+      {
+        "condition_id": "C00_clean",
+        "rain_delay_min": 0,
+        "water_delay_min": 0,
+        "water_missing_rate": 0.0,
+        "water_noise_sigma": 0.0,
+        "bias": false
+      },
+      {
+        "condition_id": "C01_typical",
+        "rain_delay_min": 0,
+        "water_delay_min": 10,
+        "water_missing_rate": 0.2,
+        "water_noise_sigma": 0.05,
+        "bias": false
+      },
+      {
+        "condition_id": "C02_degraded",
+        "rain_delay_min": 0,
+        "water_delay_min": 30,
+        "water_missing_rate": 0.5,
+        "water_noise_sigma": 0.15,
+        "bias": false
+      },
+      {
+        "condition_id": "C03_water_stale",
+        "rain_delay_min": 0,
+        "water_delay_min": 60,
+        "water_missing_rate": 0.2,
+        "water_noise_sigma": 0.15,
+        "bias": false
+      },
+      {
+        "condition_id": "C04_water_missing",
+        "rain_delay_min": 0,
+        "water_delay_min": 0,
+        "water_missing_rate": 1.0,
+        "water_noise_sigma": 0.0,
+        "bias": false
+      },
+      {
+        "condition_id": "C05_rain_stale",
+        "rain_delay_min": 60,
+        "water_delay_min": 0,
+        "water_missing_rate": 0.0,
+        "water_noise_sigma": 0.05,
+        "bias": false
+      },
+      {
+        "condition_id": "C06_asynchronous",
+        "rain_delay_min": 0,
+        "water_delay_min": 60,
+        "water_missing_rate": 0.5,
+        "water_noise_sigma": 0.05,
+        "bias": false
+      },
+      {
+        "condition_id": "C07_disagreement",
+        "rain_delay_min": 0,
+        "water_delay_min": 0,
+        "water_missing_rate": 0.2,
+        "water_noise_sigma": 0.15,
+        "bias": true
+      }
+    ],
+    "methods": [
+      "S0_shortest",
+      "S1_rain_only",
+      "S2_v1_redundant_naive",
+      "S3_v2_local_naive",
+      "S4_v2_reliability_universal",
+      "S5_v2_reliability_source_specific"
+    ],
+    "perfect_reference": "S6_perfect_water_v2",
+    "trigger": {
+      "seeds": [
+        9201,
+        9206,
+        9212
+      ],
+      "od_ids": [
+        "OD01",
+        "OD02"
+      ],
+      "policies": [
+        "never",
+        "always",
+        "triggered"
+      ],
+      "stress_cases": [
+        "rain_down_water_high",
+        "water_gradually_stale",
+        "water_block_outage",
+        "water_recovery",
+        "rain_stale_water_fresh",
+        "water_stale_rain_fresh",
+        "sources_disagreement"
+      ]
+    }
+  },
+  "sensor_registry": {
+    "count": 48,
+    "seed": 7401,
+    "spatial_strata": [
+      4,
+      4
+    ],
+    "cadence_min": 10,
+    "group_offsets_min": [
+      0,
+      3,
+      6
+    ]
+  },
+  "latent_local_state": {
+    "local_field_seed": 9401,
+    "anchor_count": 12,
+    "length_scale": 0.18,
+    "disturbance_min_patches": 1,
+    "disturbance_max_patches": 3,
+    "local_tau_multiplier": "0.35 + 2.50*H + 1.20*B",
+    "local_inflow_formula": "1.35 * (0.55*local_rain*static_susceptibility + 0.90*regional_rain_p90*H + 0.65*regional_rain_p90*B)"
+  },
+  "fusion": {
+    "strategy": "reliability_weighted_v2",
+    "sources": [
+      "rain",
+      "water"
+    ],
+    "base_weights": {
+      "rain": 1.0,
+      "water": 3.0
+    },
+    "dynamic_weight": 0.55,
+    "universal_tau_min": 60,
+    "reliability_formula": "sqrt(coverage) * (1 - quality)",
+    "effective_weight_formula": "base_weight * freshness * reliability * availability",
+    "fallback_epsilon": 1e-09,
+    "fallback": "static_only"
+  },
+  "observation_quality": {
+    "normal": 0.0,
+    "degraded_sensor_mode": 0.5,
+    "communication_issue": 0.5,
+    "missing": 1.0,
+    "oracle_error_prohibited": true
+  },
+  "statistics": {
+    "independent_unit": "scenario_family × seed",
+    "paired_repeated": [
+      "OD",
+      "decision_step",
+      "condition",
+      "method"
+    ],
+    "bootstrap_unit": "seed",
+    "iterations": 2000,
+    "seed": 9301
+  },
+  "failure_thresholds": {
+    "multisource_worse_than_rain_only": 0.01,
+    "trusted_worse_than_naive": 0.01,
+    "stale_source_induced_bad_route": 0.01,
+    "missing_source_failed_to_fallback": 1e-09,
+    "bad_source_overweighted_ratio": 1.0,
+    "fresh_source_underweighted_weight": 1e-09,
+    "missed_useful_replan": 0.01
+  },
+  "truth_boundary": "SIMULATED_TRUTH_V2 is used only for observation generation and offline evaluation; planners receive observed frames only.",
+  "result_selection_prohibited": true,
+  "post_freeze_parameter_changes_prohibited": true,
+  "planned_main_routes": 27648,
+  "planned_perfect_reference_routes": 576,
+  "planned_total_routes": 28224
+}
