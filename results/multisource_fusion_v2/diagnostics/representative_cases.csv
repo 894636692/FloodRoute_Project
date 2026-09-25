@@ -1,0 +1,4 @@
+scenario_family,seed,decision_step,timestamp,od_id,route_changed,route_overlap,rain_only_truth_exposure,perfect_water_truth_exposure,difference,global_edge_risk_rank_spearman,category,edge_count_union,large_rank_change_edges
+moving_center,8105,4,2023-09-07 13:00:00+08:00,OD08,True,0.785095787738424,0.47801463270323563,0.47560666267678403,-0.0024079700264516,0.9990093711804681,better,122,0
+anisotropic_band,8101,4,2023-09-07 13:00:00+08:00,OD01,False,1.0,0.4129974106577159,0.4129974106577159,0.0,0.9995023551068538,equal,119,1
+anisotropic_band,8101,4,2023-09-07 13:00:00+08:00,OD08,True,0.20818411212739546,0.427951104809547,0.4586550747108139,0.030703969901266892,0.9995023551068538,worse,177,0

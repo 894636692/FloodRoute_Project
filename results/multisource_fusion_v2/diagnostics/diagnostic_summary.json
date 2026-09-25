@@ -1,0 +1,23 @@
+{
+  "analysis_type": "V1_MECHANISM_DIAGNOSIS",
+  "v1_results_unchanged": true,
+  "thresholds_fixed_before_diagnosis": {
+    "rain_low_max": 0.25,
+    "water_high_min": 0.5
+  },
+  "edge_time_observations": 48478176,
+  "global_pearson_exact": 0.621903780356427,
+  "scenario_weighted_spearman_mean": 0.5655026801326211,
+  "conditional_water_variance_mean": 0.007568798513464797,
+  "high_water_low_rain_count": 17159,
+  "high_water_low_rain_ratio": 0.0003539530860236986,
+  "route_pair_count": 576,
+  "route_change_count": 57,
+  "route_change_rate": 0.09895833333333333,
+  "perfect_better_count": 1,
+  "perfect_equal_count": 519,
+  "perfect_worse_count": 56,
+  "mean_perfect_minus_rain": 0.00039462140564576205,
+  "mean_route_overlap": 0.9807620705235678,
+  "mean_global_edge_risk_rank_spearman": 0.9939312968512171
+}
