@@ -1,0 +1,28 @@
+{
+  "analysis_type": "PRE_ROUTING_INFORMATION_GAIN",
+  "development_seeds_only": true,
+  "thresholds_fixed_before_analysis": {
+    "low_rain_max": 0.25,
+    "high_water_min": 0.5
+  },
+  "sample_timestamp": "2023-09-07T14:00:00+08:00",
+  "generators": {
+    "V1_redundant": {
+      "scenario_weighted_pearson": 0.5263959153273007,
+      "scenario_weighted_spearman": 0.5654775866148034,
+      "conditional_water_variance": 0.007571925120376878,
+      "high_water_low_rain_count": 5776,
+      "high_water_low_rain_ratio": 0.00035743919078143533,
+      "edge_time_count": 16159392
+    },
+    "V2_local_state": {
+      "scenario_weighted_pearson": 0.33697968146481766,
+      "scenario_weighted_spearman": 0.3759156501792297,
+      "conditional_water_variance": 0.011211530493597655,
+      "high_water_low_rain_count": 73806,
+      "high_water_low_rain_ratio": 0.004567374812121644,
+      "edge_time_count": 16159392
+    }
+  },
+  "v2_information_gain_observed": true
+}

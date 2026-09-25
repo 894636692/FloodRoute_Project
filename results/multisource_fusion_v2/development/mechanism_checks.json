@@ -1,0 +1,8 @@
+{
+  "water_stale_weight_lower_than_clean": true,
+  "water_missing_fallbacks_to_rain_route": true,
+  "water_degraded_weight_lower_than_clean": true,
+  "rain_stale_increases_relative_water_weight": true,
+  "missing_gap_to_rain_only": 0.0,
+  "clean_gain_vs_rain": 0.0004245065261637704
+}
